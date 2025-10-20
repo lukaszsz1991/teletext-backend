@@ -38,6 +38,9 @@ public class TeletextPage {
   @OneToMany(mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<TeletextPageContent> content;
 
+  @OneToMany(mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<TeletextPageStats> stats;
+
   @CreationTimestamp
   private Timestamp createdAt;
 
