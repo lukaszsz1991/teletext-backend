@@ -1,6 +1,5 @@
 package pl.studia.teletext.teletext_backend.models;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
