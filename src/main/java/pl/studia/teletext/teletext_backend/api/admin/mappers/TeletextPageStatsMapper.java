@@ -12,9 +12,6 @@ import pl.studia.teletext.teletext_backend.domain.models.TeletextPageStats;
 @Mapper(componentModel = "spring")
 public interface TeletextPageStatsMapper {
 
-  TeletextPageContentResponse toContentResponse(TeletextPageContent content);
-
-
   @Mapping(target = "pageNumber", source = "page.pageNumber")
   SingleTeletextPageStatsResponse toSinglePageStatsResponse(TeletextPageStats stat);
 
