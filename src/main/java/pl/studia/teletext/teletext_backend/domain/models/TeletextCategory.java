@@ -1,4 +1,4 @@
-package pl.studia.teletext.teletext_backend.models;
+package pl.studia.teletext.teletext_backend.domain.models;
 
 public enum TeletextCategory {
   NEWS,

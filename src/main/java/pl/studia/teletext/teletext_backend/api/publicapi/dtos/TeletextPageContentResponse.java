@@ -1,4 +1,4 @@
-package pl.studia.teletext.teletext_backend.dtos;
+package pl.studia.teletext.teletext_backend.api.publicapi.dtos;
 
 public record TeletextPageContentResponse (
     Long id,

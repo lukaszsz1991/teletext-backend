@@ -1,7 +1,7 @@
-package pl.studia.teletext.teletext_backend.repositories;
+package pl.studia.teletext.teletext_backend.domain.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pl.studia.teletext.teletext_backend.models.TeletextPageContent;
+import pl.studia.teletext.teletext_backend.domain.models.TeletextPageContent;
 
 public interface TeletextPageContentRepository extends JpaRepository<TeletextPageContent, Long> {
 }

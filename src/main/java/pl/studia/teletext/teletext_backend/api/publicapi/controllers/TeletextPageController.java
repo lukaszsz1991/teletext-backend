@@ -1,4 +1,4 @@
-package pl.studia.teletext.teletext_backend.controllers;
+package pl.studia.teletext.teletext_backend.api.publicapi.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -6,11 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.studia.teletext.teletext_backend.services.TeletextPageService;
-import pl.studia.teletext.teletext_backend.services.TeletextPageStatsService;
+import pl.studia.teletext.teletext_backend.domain.services.TeletextPageService;
+import pl.studia.teletext.teletext_backend.domain.services.TeletextPageStatsService;
 
 @Controller
-@RequestMapping("/api/pages")
+@RequestMapping("/api/public/pages")
 @RequiredArgsConstructor
 public class TeletextPageController {
 
@@ -28,14 +28,6 @@ public class TeletextPageController {
   ) {
     var page = teletextPageService.getPageWithContent(pageNumber);
     teletextPageStatsService.recordPageVisit(page.id());
-    return ResponseEntity.ok(page);
-  }
-
-  @GetMapping("{pageNumber}/stats")
-  public ResponseEntity<?> getPageStats(
-    @PathVariable Integer pageNumber
-  ) {
-    var page = teletextPageStatsService.getStatsForPage(pageNumber);
     return ResponseEntity.ok(page);
   }
 }

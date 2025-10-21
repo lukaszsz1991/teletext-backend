@@ -1,4 +1,4 @@
-package pl.studia.teletext.teletext_backend.models;
+package pl.studia.teletext.teletext_backend.domain.models;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

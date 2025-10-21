@@ -1,4 +1,4 @@
-package pl.studia.teletext.teletext_backend.configurations;
+package pl.studia.teletext.teletext_backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,9 @@ public class SecurityConfiguration {
   SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     return http
       .authorizeHttpRequests(request -> request
-        .anyRequest().permitAll()
+        .requestMatchers("/api/public/**").permitAll()
+        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+        .anyRequest().denyAll()
       )
       .csrf(AbstractHttpConfigurer::disable)
       .build();

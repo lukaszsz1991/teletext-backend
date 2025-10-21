@@ -1,12 +1,12 @@
-package pl.studia.teletext.teletext_backend.services;
+package pl.studia.teletext.teletext_backend.domain.services;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.studia.teletext.teletext_backend.dtos.TeletextPageResponse;
+import pl.studia.teletext.teletext_backend.api.publicapi.dtos.TeletextPageResponse;
 import pl.studia.teletext.teletext_backend.exceptions.PageNotFoundException;
-import pl.studia.teletext.teletext_backend.mappers.TeletextPageMapper;
-import pl.studia.teletext.teletext_backend.repositories.TeletextPageRepository;
+import pl.studia.teletext.teletext_backend.api.publicapi.mappers.TeletextPageMapper;
+import pl.studia.teletext.teletext_backend.domain.repositories.TeletextPageRepository;
 
 @Service
 @RequiredArgsConstructor
