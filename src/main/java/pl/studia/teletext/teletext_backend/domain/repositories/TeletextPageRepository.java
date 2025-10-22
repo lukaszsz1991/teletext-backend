@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import pl.studia.teletext.teletext_backend.domain.models.TeletextPage;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPage;
 
 public interface TeletextPageRepository extends JpaRepository<TeletextPage, Long> {
 

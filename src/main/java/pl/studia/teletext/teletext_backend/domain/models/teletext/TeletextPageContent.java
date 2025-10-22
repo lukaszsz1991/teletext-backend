@@ -1,4 +1,4 @@
-package pl.studia.teletext.teletext_backend.domain.models;
+package pl.studia.teletext.teletext_backend.domain.models.teletext;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

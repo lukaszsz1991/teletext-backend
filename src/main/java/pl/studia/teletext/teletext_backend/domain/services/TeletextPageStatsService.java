@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.TeletextPageStatsResponse;
 import pl.studia.teletext.teletext_backend.api.admin.mappers.TeletextPageStatsMapper;
 import pl.studia.teletext.teletext_backend.exceptions.PageNotFoundException;
-import pl.studia.teletext.teletext_backend.domain.models.TeletextPageStats;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPageStats;
 import pl.studia.teletext.teletext_backend.domain.repositories.TeletextPageRepository;
 import pl.studia.teletext.teletext_backend.domain.repositories.TeletextPageStatsRepository;
 

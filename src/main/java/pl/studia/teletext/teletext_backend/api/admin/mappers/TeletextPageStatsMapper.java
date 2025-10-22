@@ -5,9 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.SingleTeletextPageStatsResponse;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.TeletextPageStatsResponse;
-import pl.studia.teletext.teletext_backend.api.publicapi.dtos.TeletextPageContentResponse;
-import pl.studia.teletext.teletext_backend.domain.models.TeletextPageContent;
-import pl.studia.teletext.teletext_backend.domain.models.TeletextPageStats;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPageStats;
 
 @Mapper(componentModel = "spring")
 public interface TeletextPageStatsMapper {
