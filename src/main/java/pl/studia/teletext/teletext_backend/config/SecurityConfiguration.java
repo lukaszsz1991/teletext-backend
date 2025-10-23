@@ -13,7 +13,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pl.studia.teletext.teletext_backend.config.middleware.JwtAuthFilter;
 
@@ -22,17 +24,23 @@ import pl.studia.teletext.teletext_backend.config.middleware.JwtAuthFilter;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-  private final JwtAuthFilter jwtAuthFilter;
-  private final UserDetailsService userDetailsService;
-
   @Bean
-  SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+  SecurityFilterChain filterChain(
+    HttpSecurity http,
+    JwtAuthFilter jwtAuthFilter,
+    AuthenticationEntryPoint authEntryPoint,
+    AccessDeniedHandler accessDeniedHandler
+  ) throws Exception {
     return http
       .authorizeHttpRequests(request -> request
         .requestMatchers("/api/public/**").permitAll()
         .requestMatchers("/api/admin/auth/login").permitAll()
         .requestMatchers("/api/admin/**").hasRole("ADMIN")
         .anyRequest().denyAll()
+      )
+      .exceptionHandling(e -> e
+        .authenticationEntryPoint(authEntryPoint)
+        .accessDeniedHandler(accessDeniedHandler)
       )
       .csrf(AbstractHttpConfigurer::disable)
       .sessionManagement(ses -> ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -46,7 +54,7 @@ public class SecurityConfiguration {
   }
 
   @Bean
-  public AuthenticationManager authenticationManager() {
+  public AuthenticationManager authenticationManager(UserDetailsService userDetailsService) {
     var authProvider = new DaoAuthenticationProvider(userDetailsService);
     authProvider.setPasswordEncoder(passwordEncoder());
     return new ProviderManager(authProvider);
