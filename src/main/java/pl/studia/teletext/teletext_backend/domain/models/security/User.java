@@ -33,7 +33,7 @@ public class User implements UserDetails {
   private String password;
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 50)
-  private Role role;
+  private Role role = Role.ADMIN;
   @CreationTimestamp
   private Timestamp createdAt;
   @UpdateTimestamp

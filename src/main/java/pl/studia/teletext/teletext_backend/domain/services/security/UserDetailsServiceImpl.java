@@ -18,6 +18,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     return userRepository.findByUsername(username)
+      .filter(u -> u.getDeletedAt() == null)
       .orElseThrow(() -> new UsernameNotFoundException("User with username " + username + " not found"));
   }
 }

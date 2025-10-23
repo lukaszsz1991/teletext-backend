@@ -1,4 +1,4 @@
-package pl.studia.teletext.teletext_backend.api.admin.dtos;
+package pl.studia.teletext.teletext_backend.api.admin.dtos.stats;
 
 public record SingleTeletextPageStatsResponse(
     Long id,

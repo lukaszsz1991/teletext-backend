@@ -19,6 +19,9 @@ public class TeletextPageController {
 
   @GetMapping
   public ResponseEntity<?> getAllPages() {
+    //TODO: change to TeletextSimplePageResponse (without content)
+    //TODO: add pagination and filtering (filter by: pagenumber [between?], title and category)
+    //TODO: sort by page number asc (or add sorting as an option)
     return ResponseEntity.ok(teletextPageService.getAllPagesWithContent());
   }
 

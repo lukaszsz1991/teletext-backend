@@ -15,6 +15,8 @@ public class AdminStatsController {
 
   private final TeletextPageStatsService teletextPageStatsService;
 
+  //TODO: add all pages stats sorted by views desc
+
   @GetMapping("pages/{pageNumber}")
   public ResponseEntity<?> getPageStats(
     @PathVariable Integer pageNumber

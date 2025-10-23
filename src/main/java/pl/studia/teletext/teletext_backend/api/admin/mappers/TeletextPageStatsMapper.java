@@ -3,8 +3,8 @@ package pl.studia.teletext.teletext_backend.api.admin.mappers;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import pl.studia.teletext.teletext_backend.api.admin.dtos.SingleTeletextPageStatsResponse;
-import pl.studia.teletext.teletext_backend.api.admin.dtos.TeletextPageStatsResponse;
+import pl.studia.teletext.teletext_backend.api.admin.dtos.stats.SingleTeletextPageStatsResponse;
+import pl.studia.teletext.teletext_backend.api.admin.dtos.stats.TeletextPageStatsResponse;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPageStats;
 
 @Mapper(componentModel = "spring")

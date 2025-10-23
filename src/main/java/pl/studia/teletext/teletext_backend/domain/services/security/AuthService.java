@@ -6,8 +6,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-import pl.studia.teletext.teletext_backend.api.admin.dtos.LoginRequest;
-import pl.studia.teletext.teletext_backend.api.admin.dtos.LoginResponse;
+import pl.studia.teletext.teletext_backend.api.admin.dtos.security.LoginRequest;
+import pl.studia.teletext.teletext_backend.api.admin.dtos.security.LoginResponse;
 
 @Log4j2
 @Service
