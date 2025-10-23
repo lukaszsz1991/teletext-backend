@@ -1,0 +1,23 @@
+package pl.studia.teletext.teletext_backend.api.admin.mappers;
+
+import java.util.List;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import pl.studia.teletext.teletext_backend.api.admin.dtos.stats.SingleTeletextPageStatsResponse;
+import pl.studia.teletext.teletext_backend.api.admin.dtos.stats.TeletextPageStatsResponse;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPageStats;
+
+@Mapper(componentModel = "spring")
+public interface TeletextPageStatsMapper {
+
+  @Mapping(target = "pageNumber", source = "page.pageNumber")
+  SingleTeletextPageStatsResponse toSinglePageStatsResponse(TeletextPageStats stat);
+
+  default TeletextPageStatsResponse toPageStatsResponse(List<TeletextPageStats> stats) {
+    var statsResponses = stats.stream()
+        .map(this::toSinglePageStatsResponse)
+        .toList();
+    var views = (long) statsResponses.size();
+    return new TeletextPageStatsResponse(views, statsResponses);
+  }
+}
