@@ -36,9 +36,8 @@ public class UserController {
   @ApiResponse(responseCode = "200", description = "Users found, or empty list if none exist.")
   @GetMapping
   public ResponseEntity<List<UserResponse>> getAllUsers(
-    @RequestParam(required = false) Boolean includeDeleted
+    @RequestParam(defaultValue = "false") Boolean includeDeleted
   ) {
-    includeDeleted = includeDeleted != null && includeDeleted;
     var users = userService.getAllUsers(includeDeleted);
     return ResponseEntity.ok(users);
   }

@@ -1,7 +1,6 @@
 package pl.studia.teletext.teletext_backend.api;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -76,10 +75,8 @@ public class GlobalExceptionHandler {
     problemDetail.setTitle("Method Not Allowed");
     return ResponseEntity.status(status).body(problemDetail);
   }
-  @ApiResponses({
-    @ApiResponse(responseCode = "409", description = "Data integrity violation"),
-    @ApiResponse(responseCode = "500", description = "Database error")
-  })
+
+  @ApiResponse(responseCode = "409", description = "Data integrity violation")
   @ExceptionHandler(DataAccessException.class)
   public ResponseEntity<ProblemDetail> handleDataAccessException(DataAccessException e) {
     HttpStatus status;
