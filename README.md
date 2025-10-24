@@ -1,6 +1,27 @@
+![Java](https://img.shields.io/badge/Java-21-007396?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.6-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-OpenAPI-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
+
 # teletext-backend
 
 Backend aplikacji Teletext.
+
+---
+
+## Dokumentacja API
+
+Po uruchomieniu aplikacji dokumentacja API jest dostępna pod adresem:
+
+```
+http://<host>:<port>/swagger-ui.html
+```
+
+Dokumentacja jest podzielona na grupy, które można zmienić w prawym górnym rogu ekranu w sekcji **Select a definition**.
+Dostępne grupy to:
+- `public`
+- `admin`
+
+W celu wykonywania zapytań try-it-out do zasobów chronionych, należy podać token JWT w okienku po naciśnięciu przycisku `Authorize`.
 
 ---
 
