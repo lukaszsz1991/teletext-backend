@@ -26,8 +26,8 @@ public class AdminStatsController {
   private final TeletextPageStatsService teletextPageStatsService;
 
   @Operation(
-    summary = "Get all pages views",
-    description = "Returns counted views for each page in selected date range."
+    summary = "Get all pages stats",
+    description = "Returns counted views for each page in selected date range. Optionally with details."
   )
   @ApiResponse(responseCode = "200", description = "Pages stats returned successfully.")
   @GetMapping("pages")
@@ -45,7 +45,7 @@ public class AdminStatsController {
     return ResponseEntity.ok(page);
   }
 
-  @Operation(summary = "Get all views of page", description = "Returns counted views. Optionally include details about each view. If details not included return empty list in \"stats\" field.")
+  @Operation(summary = "Get all stats of page", description = "Returns counted views. Optionally include details about each view.")
   @ApiResponse(responseCode = "200", description = "Page found, stats returned successfully.")
   @GetMapping("pages/{pageNumber}")
   public ResponseEntity<TeletextPageStatsResponse> getPageStats(
