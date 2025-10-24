@@ -1,5 +1,7 @@
 package pl.studia.teletext.teletext_backend.api;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -12,6 +14,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import pl.studia.teletext.teletext_backend.exceptions.JwtValidatingException;
 import pl.studia.teletext.teletext_backend.exceptions.NotFoundException;
 
@@ -19,6 +22,7 @@ import pl.studia.teletext.teletext_backend.exceptions.NotFoundException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+  @ResponseStatus(HttpStatus.NOT_FOUND)
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<ProblemDetail> handleNotFoundException(NotFoundException ex) {
     var status = HttpStatus.NOT_FOUND;
@@ -32,6 +36,7 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(status).body(problemDetail);
   }
 
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
   @ExceptionHandler(JwtValidatingException.class)
   public ResponseEntity<ProblemDetail> handleJwtValidatingException(JwtValidatingException ex) {
     var status = HttpStatus.UNAUTHORIZED;
@@ -42,6 +47,7 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(status).body(problemDetail);
   }
 
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
   @ExceptionHandler({ UsernameNotFoundException.class, AuthenticationException.class})
   public ResponseEntity<ProblemDetail> handleUsernameNotFoundException(RuntimeException e) {
     var status = HttpStatus.UNAUTHORIZED;
@@ -52,6 +58,7 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(status).body(problemDetail);
   }
 
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ProblemDetail> handleValidationException(MethodArgumentNotValidException e) {
     var status = HttpStatus.BAD_REQUEST;
@@ -61,6 +68,7 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(status).body(problemDetail);
   }
 
+  @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
   public ResponseEntity<ProblemDetail> handleMethodNotSupported(HttpRequestMethodNotSupportedException ex) {
     var status = HttpStatus.METHOD_NOT_ALLOWED;
@@ -68,7 +76,10 @@ public class GlobalExceptionHandler {
     problemDetail.setTitle("Method Not Allowed");
     return ResponseEntity.status(status).body(problemDetail);
   }
-
+  @ApiResponses({
+    @ApiResponse(responseCode = "409", description = "Data integrity violation"),
+    @ApiResponse(responseCode = "500", description = "Database error")
+  })
   @ExceptionHandler(DataAccessException.class)
   public ResponseEntity<ProblemDetail> handleDataAccessException(DataAccessException e) {
     HttpStatus status;
@@ -85,6 +96,7 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(status).body(problemDetail);
   }
 
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ProblemDetail> handleAllExceptions(Exception ex) {
     log.error("Unhandled exception occurred", ex);
