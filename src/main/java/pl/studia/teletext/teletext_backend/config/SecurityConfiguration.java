@@ -33,7 +33,7 @@ public class SecurityConfiguration {
   ) throws Exception {
     return http
       .authorizeHttpRequests(request -> request
-        .requestMatchers("/api/public/**").permitAll()
+        .requestMatchers("/api/public/**", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
         .requestMatchers("/api/admin/auth/login").permitAll()
         .requestMatchers("/api/admin/**").hasRole("ADMIN")
         .anyRequest().denyAll()
