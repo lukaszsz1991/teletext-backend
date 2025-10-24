@@ -26,8 +26,8 @@ public class TeletextPageStatsService {
     statsRepository.save(stat);
   }
 
-  public TeletextPageStatsResponse getStatsForPage(Integer pageNumber) {
+  public TeletextPageStatsResponse getStatsForPage(Integer pageNumber, Boolean includeDetails) {
     var stats = statsRepository.findAllByPageNumber(pageNumber);
-    return mapper.toPageStatsResponse(stats);
+    return mapper.toPageStatsResponse(stats, includeDetails);
   }
 }
