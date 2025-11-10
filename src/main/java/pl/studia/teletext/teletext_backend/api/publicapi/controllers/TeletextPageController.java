@@ -19,6 +19,7 @@ public class TeletextPageController {
 
   @GetMapping
   public ResponseEntity<?> getAllPages() {
+    //TODO(swagger): change '?' to correct DTO
     //TODO: change to TeletextSimplePageResponse (without content)
     //TODO: add pagination and filtering (filter by: pagenumber [between?], title and category)
     //TODO: sort by page number asc (or add sorting as an option)
@@ -30,7 +31,7 @@ public class TeletextPageController {
     @PathVariable Integer pageNumber
   ) {
     var page = teletextPageService.getPageWithContent(pageNumber);
-    teletextPageStatsService.recordPageVisit(page.id());
+    teletextPageStatsService.recordPageVisit(page.id()); // TODO: move it to the middleware
     return ResponseEntity.ok(page);
   }
 }

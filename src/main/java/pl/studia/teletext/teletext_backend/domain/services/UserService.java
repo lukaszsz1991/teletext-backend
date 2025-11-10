@@ -40,6 +40,7 @@ public class UserService {
     var user = mapper.toUserEntity(request);
     user.setPassword(passwordEncoder.encode(request.password()));
     user = userRepository.save(user);
+    //TODO: add mailing service to send account creation email
     return mapper.toUserResponse(user);
   }
 
@@ -54,6 +55,7 @@ public class UserService {
   public void changePassword(Long id, ChangeUserPasswordRequest request) {
     var user = getUserEntityById(id);
     user.setPassword(passwordEncoder.encode(request.password()));
+    //TODO: add mailing service to send account password change notification
     userRepository.save(user);
   }
 
@@ -61,6 +63,7 @@ public class UserService {
     // TODO: prevent deleting own account
     var user = getUserEntityById(id);
     user.setDeletedAt(Timestamp.from(Instant.now()));
+    //TODO: add mailing service to send account deletion notification
     userRepository.save(user);
   }
 
@@ -68,6 +71,7 @@ public class UserService {
     var user = getDeletedUserEntityById(id);
     user.setDeletedAt(null);
     userRepository.save(user);
+    //TODO: add mailing service to send account restoration notification
   }
 
   private User getUserEntityById(Long id) {
