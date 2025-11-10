@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import pl.studia.teletext.teletext_backend.exceptions.JwtValidatingException;
 import pl.studia.teletext.teletext_backend.exceptions.NotFoundException;
+import pl.studia.teletext.teletext_backend.exceptions.ExternalApiException;
 
 @Log4j2
 @ControllerAdvice
@@ -91,6 +93,16 @@ public class GlobalExceptionHandler {
     }
     var problemDetail = ProblemDetail.forStatusAndDetail(status, message);
     return ResponseEntity.status(status).body(problemDetail);
+  }
+
+  @ExceptionHandler(ExternalApiException.class)
+  public ResponseEntity<ProblemDetail> handleExternalApiException(ExternalApiException ex) {
+    var problemDetail = ProblemDetail.forStatusAndDetail(
+      HttpStatusCode.valueOf(ex.getStatus()),
+      "External API Error: " + ex.getMessage()
+    );
+    problemDetail.setTitle("API Error");
+    return ResponseEntity.status(ex.getStatus()).body(problemDetail);
   }
 
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
