@@ -6,5 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public record WebClientProperties(
   int responseTimeoutMs,
   int connectionTimeoutMs,
-  String nbpBaseUrl
+  String nbpBaseUrl,
+  String openMeteoBaseUrl
 ) { }

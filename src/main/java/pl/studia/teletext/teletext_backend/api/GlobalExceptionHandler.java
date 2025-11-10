@@ -1,6 +1,7 @@
 package pl.studia.teletext.teletext_backend.api;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.ValidationException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -30,9 +31,10 @@ public class GlobalExceptionHandler {
     var problemDetail = ProblemDetail.forStatus(status);
     problemDetail.setDetail(ex.getMessage());
     switch (ex.getClass().getSimpleName()) {
-      case "UserNotFoundException" -> problemDetail.setTitle("User Not Found");
-      case "PageNotFoundException" -> problemDetail.setTitle("Page Not Found");
-      default -> problemDetail.setTitle("Resource Not Found");
+    case "UserNotFoundException" -> problemDetail.setTitle("User Not Found");
+    case "PageNotFoundException" -> problemDetail.setTitle("Page Not Found");
+    case "CityNotFoundException" -> problemDetail.setTitle("City Not Found");
+    default -> problemDetail.setTitle("Resource Not Found");
     }
     return ResponseEntity.status(status).body(problemDetail);
   }
@@ -41,33 +43,34 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(JwtValidatingException.class)
   public ResponseEntity<ProblemDetail> handleJwtValidatingException(JwtValidatingException ex) {
     var status = HttpStatus.UNAUTHORIZED;
-    var problemDetail = ProblemDetail.forStatusAndDetail(status,
-      "JWT Validation Error: " + ex.getMessage()
-    );
+    var problemDetail = ProblemDetail.forStatusAndDetail(status, "JWT Validation Error: " + ex.getMessage());
     problemDetail.setTitle("Unauthorized");
     return ResponseEntity.status(status).body(problemDetail);
   }
 
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
-  @ExceptionHandler({ UsernameNotFoundException.class, AuthenticationException.class})
-  public ResponseEntity<ProblemDetail> handleUsernameNotFoundException(RuntimeException e) {
+  @ExceptionHandler({ UsernameNotFoundException.class, AuthenticationException.class })
+  public ResponseEntity<ProblemDetail> handleUsernameNotFoundException(AuthenticationException e) {
     var status = HttpStatus.UNAUTHORIZED;
-    var problemDetail =  ProblemDetail.forStatusAndDetail(status,
-      e.getMessage()
-    );
+    var problemDetail = ProblemDetail.forStatusAndDetail(status, e.getMessage());
     problemDetail.setTitle("Authentication Failed");
     return ResponseEntity.status(status).body(problemDetail);
   }
 
+  @ExceptionHandler({MethodArgumentNotValidException.class, ValidationException.class})
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<ProblemDetail> handleValidationException(MethodArgumentNotValidException e) {
-    var status = HttpStatus.BAD_REQUEST;
-    String errorMessage = e.getBindingResult().getAllErrors().getFirst().getDefaultMessage();
-    var problemDetail = ProblemDetail.forStatusAndDetail(status, errorMessage);
+  public ResponseEntity<ProblemDetail> handleValidationErrors(Exception e) {
+    String errorMessage;
+    if (e instanceof MethodArgumentNotValidException manve) {
+      errorMessage = manve.getBindingResult().getAllErrors().getFirst().getDefaultMessage();
+    } else {
+      errorMessage = e.getMessage();
+    }
+    var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, errorMessage);
     problemDetail.setTitle("Validation Error");
-    return ResponseEntity.status(status).body(problemDetail);
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
   }
+
 
   @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
@@ -97,10 +100,8 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(ExternalApiException.class)
   public ResponseEntity<ProblemDetail> handleExternalApiException(ExternalApiException ex) {
-    var problemDetail = ProblemDetail.forStatusAndDetail(
-      HttpStatusCode.valueOf(ex.getStatus()),
-      "External API Error: " + ex.getMessage()
-    );
+    var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(ex.getStatus()),
+      "External API Error: " + ex.getMessage());
     problemDetail.setTitle("API Error");
     return ResponseEntity.status(ex.getStatus()).body(problemDetail);
   }
@@ -110,10 +111,7 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ProblemDetail> handleAllExceptions(Exception ex) {
     log.error("Unhandled exception occurred", ex);
     var status = HttpStatus.INTERNAL_SERVER_ERROR;
-    var problemDetail = ProblemDetail.forStatusAndDetail(
-      status,
-      "An unexpected error occurred: " + ex.getMessage()
-    );
+    var problemDetail = ProblemDetail.forStatusAndDetail(status, "An unexpected error occurred: " + ex.getMessage());
     problemDetail.setTitle("Unexpected Error");
     return ResponseEntity.status(status).body(problemDetail);
   }
