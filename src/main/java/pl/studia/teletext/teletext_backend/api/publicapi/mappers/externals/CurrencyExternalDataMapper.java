@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.stereotype.Component;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.ExternalDataResponse;
-import pl.studia.teletext.teletext_backend.api.publicapi.dtos.WeatherResponse;
 import pl.studia.teletext.teletext_backend.clients.nbp.NbpRateResponse;
 
 @Component

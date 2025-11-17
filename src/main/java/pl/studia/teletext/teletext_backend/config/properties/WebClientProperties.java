@@ -9,5 +9,7 @@ public record WebClientProperties(
   String nbpBaseUrl,
   String openMeteoBaseUrl,
   String lottoBaseUrl,
-  String lottoSecret
+  String lottoSecret,
+  String newsDataBaseUrl,
+  String newsDataSecret
 ) { }

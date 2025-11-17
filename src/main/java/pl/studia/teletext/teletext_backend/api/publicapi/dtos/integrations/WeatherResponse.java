@@ -1,4 +1,4 @@
-package pl.studia.teletext.teletext_backend.api.publicapi.dtos;
+package pl.studia.teletext.teletext_backend.api.publicapi.dtos.integrations;
 
 public record WeatherResponse(
   String cityName,

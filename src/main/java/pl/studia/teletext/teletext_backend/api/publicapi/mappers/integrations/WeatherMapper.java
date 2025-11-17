@@ -1,8 +1,8 @@
-package pl.studia.teletext.teletext_backend.api.publicapi.mappers;
+package pl.studia.teletext.teletext_backend.api.publicapi.mappers.integrations;
 
 import java.util.stream.IntStream;
 import org.mapstruct.Mapper;
-import pl.studia.teletext.teletext_backend.api.publicapi.dtos.WeatherResponse;
+import pl.studia.teletext.teletext_backend.api.publicapi.dtos.integrations.WeatherResponse;
 import pl.studia.teletext.teletext_backend.clients.weather.DailyData;
 import pl.studia.teletext.teletext_backend.clients.weather.OpenMeteoResponse;
 

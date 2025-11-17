@@ -1,10 +1,10 @@
-package pl.studia.teletext.teletext_backend.api.publicapi.mappers;
+package pl.studia.teletext.teletext_backend.api.publicapi.mappers.integrations;
 
 import org.flywaydb.core.internal.util.CollectionsUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import pl.studia.teletext.teletext_backend.api.publicapi.dtos.LotteryResponse;
+import pl.studia.teletext.teletext_backend.api.publicapi.dtos.integrations.LotteryResponse;
 import pl.studia.teletext.teletext_backend.clients.lotto.LottoInfoResponse;
 import pl.studia.teletext.teletext_backend.clients.lotto.LottoResultResponse;
 

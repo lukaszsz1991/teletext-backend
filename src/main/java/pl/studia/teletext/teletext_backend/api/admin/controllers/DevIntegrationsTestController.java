@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.externals.CurrencyExternalDataMapper;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.externals.LottoExternalDataMapper;
+import pl.studia.teletext.teletext_backend.api.publicapi.mappers.externals.NewsExternalDataMapper;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.externals.WeatherExternalDataMapper;
+import pl.studia.teletext.teletext_backend.clients.news.NewsCategory;
 import pl.studia.teletext.teletext_backend.domain.services.integrations.CurrencyService;
 import pl.studia.teletext.teletext_backend.domain.services.integrations.LotteryService;
+import pl.studia.teletext.teletext_backend.domain.services.integrations.NewsService;
 import pl.studia.teletext.teletext_backend.domain.services.integrations.WeatherService;
 
 @RestController
@@ -24,9 +27,11 @@ public class DevIntegrationsTestController {
   private final LottoExternalDataMapper lottoExternalDataMapper;
   private final WeatherExternalDataMapper weatherExternalDataMapper;
   private final CurrencyExternalDataMapper currencyExternalDataMapper;
+  private final NewsExternalDataMapper newsExternalDataMapper;
   private final CurrencyService currencyService;
   private final WeatherService weatherService;
   private final LotteryService lotteryService;
+  private final NewsService newsService;
 
   @GetMapping("/currencies")
   public ResponseEntity<?> getCurrencies(
@@ -51,16 +56,20 @@ public class DevIntegrationsTestController {
   }
 
   @GetMapping("/lotto")
-  public ResponseEntity<?> getLotto() {
+  public ResponseEntity<?> getLottoData() {
     var result = lotteryService.getLottoResponse()
+      .map(lottoExternalDataMapper::toExternalDataResponse)
       .block();
     return ResponseEntity.ok(result);
   }
 
-  @GetMapping("/lotto/ext")
-  public ResponseEntity<?> getLottoExternalData() {
-    var result = lotteryService.getLottoResponse()
-      .map(lottoExternalDataMapper::toExternalDataResponse)
+  @GetMapping("/news")
+  public ResponseEntity<?> getNewsExternalData(
+    @RequestParam String category,
+    @RequestParam(defaultValue = "true") boolean isPolish
+    ) {
+    var result = newsService.getLatestNews(isPolish, NewsCategory.valueOf(category.toUpperCase()))
+      .map(newsExternalDataMapper::toExternalDataResponse)
       .block();
     return ResponseEntity.ok(result);
   }
