@@ -7,5 +7,7 @@ public record WebClientProperties(
   int responseTimeoutMs,
   int connectionTimeoutMs,
   String nbpBaseUrl,
-  String openMeteoBaseUrl
+  String openMeteoBaseUrl,
+  String lottoBaseUrl,
+  String lottoSecret
 ) { }

@@ -2,7 +2,6 @@ package pl.studia.teletext.teletext_backend.api.publicapi.mappers;
 
 import java.util.stream.IntStream;
 import org.mapstruct.Mapper;
-import pl.studia.teletext.teletext_backend.api.publicapi.dtos.DailyWeather;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.WeatherResponse;
 import pl.studia.teletext.teletext_backend.clients.weather.DailyData;
 import pl.studia.teletext.teletext_backend.clients.weather.OpenMeteoResponse;
@@ -10,15 +9,15 @@ import pl.studia.teletext.teletext_backend.clients.weather.OpenMeteoResponse;
 @Mapper(componentModel = "spring")
 public interface WeatherMapper {
   default WeatherResponse toWeatherResponse(OpenMeteoResponse response, String cityName) {
-    DailyWeather[] dailyWeathers = mapDaily(response).toArray(DailyWeather[]::new);
+    WeatherResponse.DailyWeather[] dailyWeathers = mapDaily(response).toArray(WeatherResponse.DailyWeather[]::new);
     return new WeatherResponse(cityName, dailyWeathers);
   }
 
-  default java.util.stream.Stream<DailyWeather> mapDaily(OpenMeteoResponse response) {
+  default java.util.stream.Stream<WeatherResponse.DailyWeather> mapDaily(OpenMeteoResponse response) {
     DailyData daily = response.daily();
     var units = response.daily_units();
     return IntStream.range(0, daily.time().size())
-      .mapToObj(i -> new DailyWeather(
+      .mapToObj(i -> new WeatherResponse.DailyWeather(
         daily.time().get(i),
         daily.temperatureMax().get(i),
         units.get("temperature_2m_max"),

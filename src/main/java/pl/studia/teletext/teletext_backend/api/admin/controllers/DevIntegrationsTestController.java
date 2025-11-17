@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.studia.teletext.teletext_backend.domain.services.integrations.CurrencyService;
+import pl.studia.teletext.teletext_backend.domain.services.integrations.LotteryService;
 import pl.studia.teletext.teletext_backend.domain.services.integrations.WeatherService;
 
 @RestController
@@ -19,6 +20,7 @@ public class DevIntegrationsTestController {
 
   private final CurrencyService currencyService;
   private final WeatherService weatherService;
+  private final LotteryService lotteryService;
 
   @GetMapping("/currencies")
   public ResponseEntity<?> getCurrencies(
@@ -44,6 +46,13 @@ public class DevIntegrationsTestController {
     @PathVariable String city
   ) {
     var result = weatherService.getWeeklyWeatherForCity(city)
+      .block();
+    return ResponseEntity.ok(result);
+  }
+
+  @GetMapping("/lotto")
+  public ResponseEntity<?> getLotto() {
+    var result = lotteryService.getLottoResponse()
       .block();
     return ResponseEntity.ok(result);
   }
