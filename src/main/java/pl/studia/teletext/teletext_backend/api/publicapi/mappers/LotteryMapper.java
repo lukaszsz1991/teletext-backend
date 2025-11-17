@@ -1,6 +1,5 @@
 package pl.studia.teletext.teletext_backend.api.publicapi.mappers;
 
-import java.util.Collections;
 import org.flywaydb.core.internal.util.CollectionsUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
