@@ -11,5 +11,7 @@ public record WebClientProperties(
   String lottoBaseUrl,
   String lottoSecret,
   String newsDataBaseUrl,
-  String newsDataSecret
+  String newsDataSecret,
+  String joobleBaseUrl,
+  String joobleSecret
 ) { }

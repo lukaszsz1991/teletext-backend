@@ -5,15 +5,19 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.externals.CurrencyExternalDataMapper;
+import pl.studia.teletext.teletext_backend.api.publicapi.mappers.externals.JobsExternalDataMapper;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.externals.LottoExternalDataMapper;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.externals.NewsExternalDataMapper;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.externals.WeatherExternalDataMapper;
+import pl.studia.teletext.teletext_backend.clients.jooble.JoobleRequest;
 import pl.studia.teletext.teletext_backend.clients.news.NewsCategory;
 import pl.studia.teletext.teletext_backend.domain.services.integrations.CurrencyService;
+import pl.studia.teletext.teletext_backend.domain.services.integrations.JobsService;
 import pl.studia.teletext.teletext_backend.domain.services.integrations.LotteryService;
 import pl.studia.teletext.teletext_backend.domain.services.integrations.NewsService;
 import pl.studia.teletext.teletext_backend.domain.services.integrations.WeatherService;
@@ -28,10 +32,12 @@ public class DevIntegrationsTestController {
   private final WeatherExternalDataMapper weatherExternalDataMapper;
   private final CurrencyExternalDataMapper currencyExternalDataMapper;
   private final NewsExternalDataMapper newsExternalDataMapper;
+  private final JobsExternalDataMapper jobsExternalDataMapper;
   private final CurrencyService currencyService;
   private final WeatherService weatherService;
   private final LotteryService lotteryService;
   private final NewsService newsService;
+  private final JobsService jobsService;
 
   @GetMapping("/currencies")
   public ResponseEntity<?> getCurrencies(
@@ -67,9 +73,22 @@ public class DevIntegrationsTestController {
   public ResponseEntity<?> getNewsExternalData(
     @RequestParam String category,
     @RequestParam(defaultValue = "true") boolean isPolish
-    ) {
+  ) {
     var result = newsService.getLatestNews(isPolish, NewsCategory.valueOf(category.toUpperCase()))
       .map(newsExternalDataMapper::toExternalDataResponse)
+      .block();
+    return ResponseEntity.ok(result);
+  }
+
+  @GetMapping("/jobs/{addedOrder}")
+  public ResponseEntity<?> getJobByAddingOrder(
+    @PathVariable int addedOrder,
+    @RequestParam String keyword,
+    @RequestParam String location
+  ){
+    var body = new JoobleRequest(keyword, location);
+    var result = jobsService.getJobByAddingOrder(body, addedOrder)
+      .map(jobsExternalDataMapper::toExternalDataResponse)
       .block();
     return ResponseEntity.ok(result);
   }
