@@ -14,5 +14,7 @@ public record WebClientProperties(
   String newsDataSecret,
   String joobleBaseUrl,
   String joobleSecret,
-  String horoscopeBaseUrl
+  String horoscopeBaseUrl,
+  String highlightlyBaseUrl,
+  String highlightlySecret
 ) { }
