@@ -12,7 +12,7 @@ public class HoroscopeExternalMapper implements ExternalDataMapper<TeletextHoros
   @Override
   public ExternalDataResponse toExternalDataResponse(TeletextHoroscopeResponse source) {
     return new ExternalDataResponse(
-      "Horoskop",
+      "horoscope",
       source.title() + " - " + source.day(),
       source.prediction(),
       toAdditionalData(source)

@@ -11,7 +11,7 @@ public class CurrencyExternalDataMapper implements ExternalDataMapper<NbpRateRes
   @Override
   public ExternalDataResponse toExternalDataResponse(NbpRateResponse source) {
     return new ExternalDataResponse(
-      "Kursy walut",
+      "exchange-rate",
       "Kursy dla: " + source.currency(),
       "Kursy walut z Narodowego Banku Polskiego",
       toAdditionalData(source)

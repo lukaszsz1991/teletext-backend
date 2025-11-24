@@ -13,7 +13,7 @@ public class JobsExternalDataMapper implements ExternalDataMapper<JobResponse> {
   @Override
   public ExternalDataResponse toExternalDataResponse(JobResponse source) {
     return new ExternalDataResponse(
-      "Ofery Pracy",
+      "job-offers",
       source.title(),
       source.snippet(),
       toAdditionalData(source)

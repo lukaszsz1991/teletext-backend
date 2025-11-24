@@ -11,7 +11,7 @@ public class LottoExternalDataMapper implements ExternalDataMapper<LotteryRespon
   @Override
   public ExternalDataResponse toExternalDataResponse(LotteryResponse source) {
     return new ExternalDataResponse(
-      "Lotto",
+      "lottery",
       "Informacje o grze Lotto",
       "Aktualne informacje oraz wyniki ostatniego losowania gry Lotto",
       toAdditionalData(source)

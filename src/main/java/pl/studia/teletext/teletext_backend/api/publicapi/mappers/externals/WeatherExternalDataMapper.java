@@ -11,7 +11,7 @@ public class WeatherExternalDataMapper implements ExternalDataMapper<WeatherResp
   @Override
   public ExternalDataResponse toExternalDataResponse(WeatherResponse source) {
     return new ExternalDataResponse(
-      "Pogoda",
+      "weather",
       source.cityName(),
       "Tygodniowa prognoza pogody",
       toAdditionalData(source)

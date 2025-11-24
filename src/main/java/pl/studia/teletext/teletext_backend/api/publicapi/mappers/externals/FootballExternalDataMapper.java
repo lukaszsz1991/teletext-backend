@@ -32,7 +32,7 @@ public class FootballExternalDataMapper implements ExternalDataMapper<FootballRe
 
   private ExternalDataResponse toFootballTableExternalDataResponse(FootballTableResponse source) {
     return new ExternalDataResponse(
-      "sport",
+      "sport-table",
       source.getLeague() + " - sezon " + source.getSeason(),
       "Tabela ligowa - stan na dzień " + LocalDate.now(),
       toAdditionalData(source)
@@ -47,7 +47,7 @@ public class FootballExternalDataMapper implements ExternalDataMapper<FootballRe
 
   private ExternalDataResponse toFootballMatchesExternalDataResponse(FootballMatchesResponse source) {
     return new ExternalDataResponse(
-      "sport",
+      "sport-matches",
       source.getLeague() + " - sezon " + source.getSeason(),
       "Mecze w tygodniu " + source.getData().getWeek(),
       toAdditionalData(source)
