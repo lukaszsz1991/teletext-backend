@@ -59,7 +59,7 @@ public class HighlightlyClient {
       .retrieve()
       .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(),
         clientResponse -> clientResponse.bodyToMono(String.class).flatMap(errorBody -> {
-          log.error("Error fetching data from Lotto/Matches: {}", errorBody);
+          log.error("Error fetching data from Highlightly/Matches: {}", errorBody);
           return Mono.error(new ExternalApiException("Error fetching data from Highlightly", clientResponse.statusCode().value()));
         }))
       .bodyToMono(HighlightlyMatchesInfo.class);
