@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import pl.studia.teletext.teletext_backend.config.properties.WebClientProperties;
+import pl.studia.teletext.teletext_backend.exceptions.ExternalApiException;
 import reactor.core.publisher.Mono;
 
 @Log4j2
@@ -26,6 +27,11 @@ public class JoobleClient {
       .uri(uri -> uri.path(BASE_PREFIX + webClientProperties.joobleSecret()).build())
       .bodyValue(request)
       .retrieve()
+      .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(),
+        clientResponse -> clientResponse.bodyToMono(String.class).flatMap(errorBody -> {
+          log.error("Error fetching data from Jooble: {}", errorBody);
+          return Mono.error(new ExternalApiException("Error fetching data from Jooble", clientResponse.statusCode().value()));
+        }))
       .bodyToMono(JoobleResponse.class);
   }
 }

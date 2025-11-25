@@ -4,9 +4,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import pl.studia.teletext.teletext_backend.clients.lotto.LottoInfoResponse;
 import pl.studia.teletext.teletext_backend.exceptions.ExternalApiException;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Component

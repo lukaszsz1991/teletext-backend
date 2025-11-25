@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -49,7 +48,7 @@ public class GlobalExceptionHandler {
   }
 
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
-  @ExceptionHandler({ UsernameNotFoundException.class, AuthenticationException.class })
+  @ExceptionHandler({ AuthenticationException.class })
   public ResponseEntity<ProblemDetail> handleUsernameNotFoundException(AuthenticationException e) {
     var status = HttpStatus.UNAUTHORIZED;
     var problemDetail = ProblemDetail.forStatusAndDetail(status, e.getMessage());
