@@ -61,6 +61,25 @@ Nowe konta administratorów tworzone są przez istniejących adminsitratorów.
 
 > :exclamation: Przy pierwszym uruchomieniu aplikacji należy zmienić domyślne hasło administratora (domyślnie `admin`).
 
+## Integracje z zewnętrznymi serwisami
+
+Aplikacja integruje się z siedmioma zewnętrznymi API dostarczającymi dane do wyświetlenia w telegazecie:
+- [Narodowy Bank Polski](https://api.nbp.pl/) - kursy walut
+- [OpenMeteo](https://api.open-meteo.com/) - dane pogodowe
+- [Lotto](https://developers.lotto.pl/) - dane losowań lotto
+- [News Data](https://newsdata.io/) - wiadomości
+- [Jooble](https://jooble.org/) - oferty pracy
+- [Mój codzienny horoskop](https://www.moj-codzienny-horoskop.com/) - horoskop
+- [Highlightly](https://sports.highlightly.net/) - dane piłkarskie
+
+Klienci webowi i DTO znajdują się w folderze `src/main/java/pl/studia/teletext/teletext_backend/clients`.
+
+Wszystkie dane połączeniowe są zdefiniowane w pliku `application.properties`, secrety (api keys) przekazywane są przez zmienne środowiskowe.
+
+Dane z integracji są odpowiednio mapowane na DTO `ExternalDataResponse`, dzięki czemu frontend może w łatwy sposób wyświetlić je na stronach telegazety.
+
+Szczegółowe informacje na temat integracji znajdują się w dokumentacji integracji: [Dokumentacja](https://github.com/collegiumwitelona/2025-inf-wdzpd-lab-all-telegazeta/new/main/zaliczenie/docs/integrations/README.md)
+
 ---
 
 ## Autorzy
