@@ -1,6 +1,5 @@
 package pl.studia.teletext.teletext_backend.clients.jooble;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public record JoobleResponse(
@@ -16,7 +15,7 @@ public record JoobleResponse(
     String type,
     String link,
     String company,
-    LocalDateTime updated,
+    String updated,
     long id
   ) {}
 }
