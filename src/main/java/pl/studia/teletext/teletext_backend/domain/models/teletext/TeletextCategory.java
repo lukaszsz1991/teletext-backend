@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum TeletextCategory {
-  NEWS("Wiadomości", "Informacje z kraju i świata", 101),
+  NEWS("Wiadomości", "Informacje z kraju i świata", 100),
   SPORTS("Sport", "Wyniki i aktualności sportowe", 200),
   LOTTERY("Gry losowe", "Wyniki lotto i innych gier", 300),
   WEATHER("Pogoda", "Prognozy i warunki pogodowe", 500),
