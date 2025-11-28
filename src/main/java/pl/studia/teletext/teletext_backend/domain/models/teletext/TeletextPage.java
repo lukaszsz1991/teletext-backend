@@ -9,12 +9,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.sql.Timestamp;
 import java.util.List;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import pl.studia.teletext.teletext_backend.exceptions.IllegalPageNumberException;
 
 @Entity
 @Table(name = "pages")
@@ -48,4 +51,13 @@ public class TeletextPage {
   private Timestamp updatedAt;
 
   private Timestamp deletedAt;
+
+  @PrePersist
+  @PreUpdate
+  private void validate() {
+    int mainPage = this.category.getMainPage();
+    if (this.pageNumber < mainPage + 1 || this.pageNumber > mainPage + 99) {
+      throw new IllegalPageNumberException("Numer strony " + this.pageNumber + " jest poza zakresem dla kategorii " + this.category.getTitle());
+    }
+  }
 }
