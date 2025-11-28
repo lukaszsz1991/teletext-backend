@@ -15,6 +15,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import pl.studia.teletext.teletext_backend.exceptions.IllegalPageNumberException;
 import pl.studia.teletext.teletext_backend.exceptions.JwtValidatingException;
 import pl.studia.teletext.teletext_backend.exceptions.NotFoundException;
 import pl.studia.teletext.teletext_backend.exceptions.ExternalApiException;
@@ -44,6 +45,15 @@ public class GlobalExceptionHandler {
     var status = HttpStatus.UNAUTHORIZED;
     var problemDetail = ProblemDetail.forStatusAndDetail(status, "JWT Validation Error: " + ex.getMessage());
     problemDetail.setTitle("Unauthorized");
+    return ResponseEntity.status(status).body(problemDetail);
+  }
+
+  @ResponseStatus(HttpStatus.CONFLICT)
+  @ExceptionHandler(IllegalPageNumberException.class)
+  public ResponseEntity<ProblemDetail> handleIllegalPageNumberException(IllegalPageNumberException ex) {
+    var status = HttpStatus.CONFLICT;
+    var problemDetail = ProblemDetail.forStatusAndDetail(status, "Page number exception: " + ex.getMessage());
+    problemDetail.setTitle("Page number conflict");
     return ResponseEntity.status(status).body(problemDetail);
   }
 

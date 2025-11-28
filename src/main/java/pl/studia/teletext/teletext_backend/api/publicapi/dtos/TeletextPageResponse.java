@@ -6,7 +6,7 @@ public record TeletextPageResponse (
     Long id,
     Integer pageNumber,
     String title,
-    String category,
+    TeletextCategoryResponse category,
     List<TeletextPageContentResponse> content,
     String createdAt,
     String updatedAt

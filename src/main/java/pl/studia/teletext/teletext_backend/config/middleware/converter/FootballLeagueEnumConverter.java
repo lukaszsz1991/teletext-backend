@@ -1,4 +1,4 @@
-package pl.studia.teletext.teletext_backend.config.middleware;
+package pl.studia.teletext.teletext_backend.config.middleware.converter;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
