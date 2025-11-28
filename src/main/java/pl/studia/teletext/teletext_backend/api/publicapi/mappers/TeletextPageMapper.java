@@ -21,4 +21,8 @@ public interface TeletextPageMapper {
   @Mapping(target = "category", source = "category.title")
   TeletextCategoryResponse toCategoryResponse(TeletextCategory category, int nextFreePage);
 
+  @Mapping(target = "originalName", expression = "java(category.name())")
+  @Mapping(target = "category", source = "title")
+  @Mapping(target = "nextFreePage", ignore = true)
+  TeletextCategoryResponse toCategoryResponse(TeletextCategory category);
 }

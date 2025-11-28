@@ -1,7 +1,9 @@
 package pl.studia.teletext.teletext_backend.domain.services;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.TeletextCategoryResponse;
@@ -32,7 +34,7 @@ public class TeletextCategoryService {
   }
 
   /**
-   * Zwraca następny dostępny numer strony w danej kategorii teletekstu.
+   * Zwraca następny dostępny numer strony w danej kategorii teletekstu. Set wewnątrz pętli użyty w celu poprawy wydajności.
    *
    * @param category Kategoria teletekstu
    * @return Następny dostępny numer strony
@@ -46,8 +48,9 @@ public class TeletextCategoryService {
       .map(TeletextPageResponse::pageNumber)
       .sorted()
       .toList();
+    Set<Integer> usedSet = new HashSet<>(used);
     for (int page = start; page <= end; page++) {
-      if (!used.contains(page)) {
+      if (!usedSet.contains(page)) {
         return page;
       }
     }

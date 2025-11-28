@@ -32,8 +32,7 @@ public class TeletextPageService {
   }
 
   public List<TeletextPageResponse> getPagesByCategory(TeletextCategory category) {
-    return teletextPageRepository.findAllWithContent().stream()
-      .filter(p -> p.getCategory().equals(category))
+    return teletextPageRepository.findByCategoryWithContent(category).stream()
       .map(mapper::toPageResponse)
       .sorted(Comparator.comparing(TeletextPageResponse::pageNumber))
       .toList();
