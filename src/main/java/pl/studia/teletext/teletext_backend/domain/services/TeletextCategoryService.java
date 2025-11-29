@@ -33,6 +33,13 @@ public class TeletextCategoryService {
     return teletextPageMapper.toCategoryResponse(category, nextFreePage);
   }
 
+  public TeletextCategory getCategoryByExternalDataSource(String source) {
+    return Arrays.stream(TeletextCategory.values())
+      .filter(cat -> Arrays.stream(cat.getMappedSources()).anyMatch(s -> s.equalsIgnoreCase(source)))
+      .findFirst()
+      .orElse(TeletextCategory.MISC);
+  }
+
   /**
    * Zwraca następny dostępny numer strony w danej kategorii teletekstu. Set wewnątrz pętli użyty w celu poprawy wydajności.
    *

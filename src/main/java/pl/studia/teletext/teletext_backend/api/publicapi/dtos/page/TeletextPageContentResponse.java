@@ -1,8 +1,10 @@
 package pl.studia.teletext.teletext_backend.api.publicapi.dtos.page;
 
+import java.time.LocalDateTime;
+
 public record TeletextPageContentResponse (
     String title,
     String description,
-    String createdAt,
-    String updatedAt
+    LocalDateTime createdAt,
+    LocalDateTime updatedAt
 ) { }
