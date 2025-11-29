@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.studia.teletext.teletext_backend.api.publicapi.dtos.TeletextDetailedPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.TeletextPageResponse;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPage;
@@ -18,17 +19,10 @@ public class TeletextPageService {
   private final TeletextPageRepository teletextPageRepository;
   private final TeletextPageMapper mapper;
 
-  public List<TeletextPageResponse> getAllPagesWithContent() {
-    var pages = teletextPageRepository.findAllWithContent();
-    return pages.stream()
-      .map(mapper::toPageResponse)
-      .toList();
-  }
-
-  public TeletextPageResponse getPageWithContent(Integer pageNumber) {
+  public TeletextDetailedPageResponse getPageWithContent(Integer pageNumber) {
     var page = teletextPageRepository.findByPageNumberWithContent(pageNumber)
       .orElseThrow(() -> new PageNotFoundException("Page with number " + pageNumber + " not found"));
-    return mapper.toPageResponse(page);
+    return mapper.toDetailedPageResponse(page);
   }
 
   public List<TeletextPageResponse> getPagesByCategory(TeletextCategory category) {

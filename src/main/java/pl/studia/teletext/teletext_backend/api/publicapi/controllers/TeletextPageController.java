@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.TeletextCategoryResponse;
+import pl.studia.teletext.teletext_backend.api.publicapi.dtos.TeletextDetailedPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.TeletextPageResponse;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
 import pl.studia.teletext.teletext_backend.domain.services.TeletextCategoryService;
@@ -28,15 +29,13 @@ public class TeletextPageController {
   public ResponseEntity<List<TeletextPageResponse>> getAllPagesByCategory(
     @RequestParam TeletextCategory category
   ) {
-    //TODO(swagger): change '?' to correct DTO
-    //TODO: change to TeletextSimplePageResponse (without content)
     //TODO: add pagination and filtering (filter by: pagenumber [between?], title and category)
     //TODO: sort by page number asc (or add sorting as an option)
     return ResponseEntity.ok(teletextPageService.getPagesByCategory(category));
   }
 
   @GetMapping("{pageNumber}")
-  public ResponseEntity<?> getPageByNumber(
+  public ResponseEntity<TeletextDetailedPageResponse> getPageByNumber(
     @PathVariable Integer pageNumber
   ) {
     var page = teletextPageService.getPageWithContent(pageNumber);
