@@ -1,4 +1,4 @@
-package pl.studia.teletext.teletext_backend.api.publicapi.dtos;
+package pl.studia.teletext.teletext_backend.api.publicapi.dtos.page;
 
 public record TeletextCategoryResponse(
   String originalName,
