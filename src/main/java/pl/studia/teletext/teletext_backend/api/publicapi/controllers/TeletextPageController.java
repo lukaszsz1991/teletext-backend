@@ -35,18 +35,6 @@ public class TeletextPageController {
     return ResponseEntity.ok(teletextPageService.getPagesByCategory(category));
   }
 
-  @GetMapping("/categories")
-  public ResponseEntity<TeletextCategoryResponse[]> getCategories() {
-    return ResponseEntity.ok(teletextCategoryService.getAllCategories());
-  }
-
-  @GetMapping("/categories/{category}")
-  public ResponseEntity<TeletextCategoryResponse> getCategoryByName(
-    @PathVariable TeletextCategory category
-  ) {
-    return ResponseEntity.ok(teletextCategoryService.getCategoryByName(category));
-  }
-
   @GetMapping("{pageNumber}")
   public ResponseEntity<?> getPageByNumber(
     @PathVariable Integer pageNumber
