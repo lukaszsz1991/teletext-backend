@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.TeletextDetailedPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.TeletextPageResponse;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
-import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPage;
 import pl.studia.teletext.teletext_backend.exceptions.PageNotFoundException;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.TeletextPageMapper;
 import pl.studia.teletext.teletext_backend.domain.repositories.TeletextPageRepository;

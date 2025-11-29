@@ -13,9 +13,9 @@ import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPageCo
 @Mapper(componentModel = "spring")
 public interface TeletextPageMapper {
 
+  @Mapping(target = "title", source = "content.title")
   TeletextPageResponse toPageResponse(TeletextPage page);
 
-  @Mapping(target = "content", source = "content")
   TeletextDetailedPageResponse toDetailedPageResponse(TeletextPage page);
 
   TeletextPageContentResponse toContentResponse(TeletextPageContent content);
