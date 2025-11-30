@@ -82,6 +82,28 @@ Szczegółowe informacje na temat integracji znajdują się w dokumentacji integ
 
 ---
 
+## Informacje dla współtwórców
+
+### Formatowanie kodu
+
+Projekt korzysta z narzędzia `Spotless` do automatycznego formatowania kodu źródłowego. Przed zatwierdzeniem zmian do systemu kontroli wersji, należy uruchomić polecenie Maven:
+
+```bash
+mvn spotless:apply
+```
+
+dzięki któremu wszystkie pliki zostaną sformatowane zgodnie z ustalonym stylem kodowania.
+
+Aby utrzymać jednolity format plików w repozytorium, przyjęty został styl kodowania oparty na [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html).
+
+Jeśli chcesz jedynie sprawdzić format kodu bez automatycznego formatowania, możesz użyć polecenia:
+
+```bash
+mvn spotless:check
+```
+
+---
+
 ## Autorzy
 - [Sebastian Górski](https://github.com/sgorski00/)
 - [Jakub Grzymisławski](https://github.com/jgrzymislawski/)
