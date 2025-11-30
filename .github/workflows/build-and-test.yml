@@ -21,6 +21,9 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
+      - name:  Grant exec permission
+        run: chmod +x ./mvnw
+
       - name: Build and test
         env:
           TELETEXT_JWT_SECRET: ${{ secrets.TELETEXT_JWT_SECRET }}
