@@ -20,15 +20,17 @@ public class WeatherService {
   public Flux<WeatherResponse> getWeeklyWeatherForAllCities() {
     var cities = cityService.getAllCities();
     return Flux.fromIterable(cities)
-      .flatMap(city -> openMeteoClient.getWeeklyWeather(city.latitude(), city.longitude())
-        .map(response -> weatherMapper.toWeatherResponse(response, city.name()))
-      );
+        .flatMap(
+            city ->
+                openMeteoClient
+                    .getWeeklyWeather(city.latitude(), city.longitude())
+                    .map(response -> weatherMapper.toWeatherResponse(response, city.name())));
   }
 
   public Mono<WeatherResponse> getWeeklyWeatherForCity(String cityName) {
     var city = cityService.getCityByName(cityName);
-    return openMeteoClient.getWeeklyWeather(city.latitude(), city.longitude())
-      .map(response -> weatherMapper.toWeatherResponse(response, city.name()));
+    return openMeteoClient
+        .getWeeklyWeather(city.latitude(), city.longitude())
+        .map(response -> weatherMapper.toWeatherResponse(response, city.name()));
   }
-
 }

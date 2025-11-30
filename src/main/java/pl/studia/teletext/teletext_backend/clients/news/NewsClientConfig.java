@@ -14,8 +14,8 @@ public class NewsClientConfig {
   @Bean("newsWebClient")
   public WebClient newsWebClient(WebClient.Builder webClientBuilder) {
     return webClientBuilder
-      .baseUrl(webClientProperties.newsDataBaseUrl())
-      .defaultHeader("X-Access-Key", webClientProperties.newsDataSecret())
-      .build();
+        .baseUrl(webClientProperties.newsDataBaseUrl())
+        .defaultHeader("X-Access-Key", webClientProperties.newsDataSecret())
+        .build();
   }
 }

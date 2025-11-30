@@ -18,25 +18,20 @@ import pl.studia.teletext.teletext_backend.domain.services.security.AuthService;
 @RequestMapping("/api/admin/auth")
 @RequiredArgsConstructor
 @Tag(
-  name = "Admin Authentication",
-  description = "Endpoints for admin authentication and JWT token generation."
-)
+    name = "Admin Authentication",
+    description = "Endpoints for admin authentication and JWT token generation.")
 public class AuthController {
 
   private final AuthService authService;
 
   @Operation(
-    summary = "Authenticate user",
-    description = "Validates credentials and returns a JWT token used for authorized access."
-  )
+      summary = "Authenticate user",
+      description = "Validates credentials and returns a JWT token used for authorized access.")
   @ApiResponse(
-    responseCode = "200",
-    description = "Successfully authenticated — token info returned."
-  )
+      responseCode = "200",
+      description = "Successfully authenticated — token info returned.")
   @PostMapping("/login")
-  public ResponseEntity<LoginResponse> login(
-    @Valid @RequestBody LoginRequest loginRequest
-  ) {
+  public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
     var response = authService.authenticate(loginRequest);
     return ResponseEntity.ok(response);
   }

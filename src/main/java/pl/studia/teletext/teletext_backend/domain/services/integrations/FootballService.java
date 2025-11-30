@@ -21,25 +21,29 @@ public class FootballService {
   private final FootballMapper footballMapper;
 
   public Mono<FootballTableResponse> getTableForLeague(FootballLeague league) {
-    return highlightlyClient.getStandingsInfo(league, getCurrentSeasonYear())
-      .map(footballMapper::toFootballTableResponse);
+    return highlightlyClient
+        .getStandingsInfo(league, getCurrentSeasonYear())
+        .map(footballMapper::toFootballTableResponse);
   }
 
   public Mono<FootballMatchesResponse> getMatchesForLeague(FootballLeague league, int week) {
-    return highlightlyClient.getMatchesInfo(league, getCurrentSeasonYear())
-      .filter(m -> m.date().get(WeekFields.of(DayOfWeek.MONDAY, 4).weekOfWeekBasedYear()) == week)
-      .collectList()
-      .map(result -> footballMapper.toFootballMatchesResponse(result, week))
-      .onErrorResume(e -> {
-        log.error("Error fetching football matches for league {}: {}", league, e.getMessage());
-        var data = new FootballMatchesResponse.FootballMatchesData();
-        data.setWeek(week);
-        var emptyResponse = new FootballMatchesResponse();
-        emptyResponse.setData(data);
-        emptyResponse.setLeague(league.name());
-        emptyResponse.setSeason(getCurrentSeasonYear());
-        return Mono.just(emptyResponse);
-      });
+    return highlightlyClient
+        .getMatchesInfo(league, getCurrentSeasonYear())
+        .filter(m -> m.date().get(WeekFields.of(DayOfWeek.MONDAY, 4).weekOfWeekBasedYear()) == week)
+        .collectList()
+        .map(result -> footballMapper.toFootballMatchesResponse(result, week))
+        .onErrorResume(
+            e -> {
+              log.error(
+                  "Error fetching football matches for league {}: {}", league, e.getMessage());
+              var data = new FootballMatchesResponse.FootballMatchesData();
+              data.setWeek(week);
+              var emptyResponse = new FootballMatchesResponse();
+              emptyResponse.setData(data);
+              emptyResponse.setLeague(league.name());
+              emptyResponse.setSeason(getCurrentSeasonYear());
+              return Mono.just(emptyResponse);
+            });
   }
 
   private int getCurrentSeasonYear() {

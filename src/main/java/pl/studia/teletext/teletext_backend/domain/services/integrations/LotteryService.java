@@ -15,11 +15,13 @@ public class LotteryService {
   private final LotteryMapper lotteryMapper;
 
   public Mono<LotteryResponse> getLottoResponse() {
-    return lottoClient.getLottoInfo()
-      .zipWith(lottoClient.getLastLottoResult()
-        .filter(res -> "Lotto".equalsIgnoreCase(res.gameType()))
-        .next()
-      )
-      .map(tuple -> lotteryMapper.toResponse(tuple.getT1(), tuple.getT2()));
+    return lottoClient
+        .getLottoInfo()
+        .zipWith(
+            lottoClient
+                .getLastLottoResult()
+                .filter(res -> "Lotto".equalsIgnoreCase(res.gameType()))
+                .next())
+        .map(tuple -> lotteryMapper.toResponse(tuple.getT1(), tuple.getT2()));
   }
 }

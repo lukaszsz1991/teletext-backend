@@ -21,14 +21,14 @@ public class WebClientConfig {
   @Bean
   public WebClient.Builder webClientBuilder() {
     return WebClient.builder()
-      .clientConnector(
-        new ReactorClientHttpConnector(
-          HttpClient.create()
-            .responseTimeout(Duration.ofMillis(webClientProperties.responseTimeoutMs()))
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, webClientProperties.connectionTimeoutMs())
-        )
-      )
-      .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-      .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+        .clientConnector(
+            new ReactorClientHttpConnector(
+                HttpClient.create()
+                    .responseTimeout(Duration.ofMillis(webClientProperties.responseTimeoutMs()))
+                    .option(
+                        ChannelOption.CONNECT_TIMEOUT_MILLIS,
+                        webClientProperties.connectionTimeoutMs())))
+        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+        .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
   }
 }

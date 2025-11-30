@@ -14,8 +14,6 @@ public class OpenMeteoClientConfig {
 
   @Bean("weatherWebClient")
   public WebClient weatherWebClient(WebClient.Builder webClientBuilder) {
-    return webClientBuilder
-      .baseUrl(webClientProperties.openMeteoBaseUrl())
-      .build();
+    return webClientBuilder.baseUrl(webClientProperties.openMeteoBaseUrl()).build();
   }
 }

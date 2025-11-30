@@ -8,9 +8,11 @@ import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPageSt
 
 public interface TeletextPageStatsRepository extends JpaRepository<TeletextPageStats, Long> {
 
-  @Query("SELECT s FROM TeletextPageStats s LEFT JOIN FETCH s.page p WHERE p.pageNumber = :pageNumber")
+  @Query(
+      "SELECT s FROM TeletextPageStats s LEFT JOIN FETCH s.page p WHERE p.pageNumber = :pageNumber")
   List<TeletextPageStats> findAllByPageNumber(Integer pageNumber);
 
-  @Query("SELECT s FROM TeletextPageStats s LEFT JOIN FETCH s.page p WHERE s.openedAt >= :fromDate AND s.openedAt <= :toDate")
+  @Query(
+      "SELECT s FROM TeletextPageStats s LEFT JOIN FETCH s.page p WHERE s.openedAt >= :fromDate AND s.openedAt <= :toDate")
   List<TeletextPageStats> findAllStatsBetween(LocalDateTime fromDate, LocalDateTime toDate);
 }

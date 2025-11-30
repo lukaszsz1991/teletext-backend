@@ -44,11 +44,9 @@ public class TeletextPage {
   @OneToMany(mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<TeletextPageStats> stats;
 
-  @CreationTimestamp
-  private Timestamp createdAt;
+  @CreationTimestamp private Timestamp createdAt;
 
-  @UpdateTimestamp
-  private Timestamp updatedAt;
+  @UpdateTimestamp private Timestamp updatedAt;
 
   private Timestamp deletedAt;
 
@@ -57,7 +55,11 @@ public class TeletextPage {
   private void validate() {
     int mainPage = this.category.getMainPage();
     if (this.pageNumber < mainPage + 1 || this.pageNumber > mainPage + 99) {
-      throw new IllegalPageNumberException("Numer strony " + this.pageNumber + " jest poza zakresem dla kategorii " + this.category.getTitle());
+      throw new IllegalPageNumberException(
+          "Numer strony "
+              + this.pageNumber
+              + " jest poza zakresem dla kategorii "
+              + this.category.getTitle());
     }
   }
 }

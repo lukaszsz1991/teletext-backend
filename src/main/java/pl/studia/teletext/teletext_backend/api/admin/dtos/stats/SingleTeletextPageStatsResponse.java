@@ -1,6 +1,3 @@
 package pl.studia.teletext.teletext_backend.api.admin.dtos.stats;
 
-public record SingleTeletextPageStatsResponse(
-    Long id,
-    String openedAt
-) { }
+public record SingleTeletextPageStatsResponse(Long id, String openedAt) {}

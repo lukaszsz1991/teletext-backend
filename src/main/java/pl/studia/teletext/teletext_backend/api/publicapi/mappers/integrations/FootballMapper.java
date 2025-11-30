@@ -23,19 +23,24 @@ public interface FootballMapper {
   @Mapping(target = "loses", source = "total.loses")
   @Mapping(target = "scoredGoals", source = "total.scoredGoals")
   @Mapping(target = "receivedGoals", source = "total.receivedGoals")
-  FootballTableResponse.FootballStandingDetails standingToDetails(HighlightlyStandingsInfo.HighlightlyGroup.HighlightlyStanding standing);
+  FootballTableResponse.FootballStandingDetails standingToDetails(
+      HighlightlyStandingsInfo.HighlightlyGroup.HighlightlyStanding standing);
 
-  FootballTableResponse.FootballStandingDetails[] mapStandingArray(HighlightlyStandingsInfo.HighlightlyGroup.HighlightlyStanding[] standings);
+  FootballTableResponse.FootballStandingDetails[] mapStandingArray(
+      HighlightlyStandingsInfo.HighlightlyGroup.HighlightlyStanding[] standings);
 
-  default FootballTableResponse.FootballStandingDetails[] mapGroups(HighlightlyStandingsInfo.HighlightlyGroup[] groups) {
-    if (groups == null || groups.length == 0) return new FootballTableResponse.FootballStandingDetails[0];
+  default FootballTableResponse.FootballStandingDetails[] mapGroups(
+      HighlightlyStandingsInfo.HighlightlyGroup[] groups) {
+    if (groups == null || groups.length == 0)
+      return new FootballTableResponse.FootballStandingDetails[0];
     return mapStandingArray(groups[0].standings());
   }
 
   // Matches mappings
-  default FootballMatchesResponse toFootballMatchesResponse(List<HighlightlyMatchesInfo.HighlightlyMatchInfo> source, int week) {
+  default FootballMatchesResponse toFootballMatchesResponse(
+      List<HighlightlyMatchesInfo.HighlightlyMatchInfo> source, int week) {
     var response = new FootballMatchesResponse();
-    if(source != null && !source.isEmpty()) {
+    if (source != null && !source.isEmpty()) {
       var league = source.getFirst().league();
       response.setLeague(league.name());
       response.setSeason(league.season());
@@ -47,18 +52,21 @@ public interface FootballMapper {
     return response;
   }
 
-  default FootballMatchesResponse.FootballMatchDetails[] matchListToDetailsArray(List<HighlightlyMatchesInfo.HighlightlyMatchInfo> matches) {
+  default FootballMatchesResponse.FootballMatchDetails[] matchListToDetailsArray(
+      List<HighlightlyMatchesInfo.HighlightlyMatchInfo> matches) {
     if (matches == null) return new FootballMatchesResponse.FootballMatchDetails[0];
     return matches.stream()
-      .map(this::matchToDetails)
-      .toArray(FootballMatchesResponse.FootballMatchDetails[]::new);
+        .map(this::matchToDetails)
+        .toArray(FootballMatchesResponse.FootballMatchDetails[]::new);
   }
 
   @Mapping(target = "homeTeam", source = "homeTeam.name")
   @Mapping(target = "awayTeam", source = "awayTeam.name")
-  FootballMatchesResponse.FootballMatchDetails matchToDetails(HighlightlyMatchesInfo.HighlightlyMatchInfo match);
+  FootballMatchesResponse.FootballMatchDetails matchToDetails(
+      HighlightlyMatchesInfo.HighlightlyMatchInfo match);
 
   @Mapping(target = "currentScore", source = "score.current")
   @Mapping(target = "penaltiesScore", source = "score.penalties")
-  FootballMatchesResponse.FootballMatchDetails.FootballMatchState matchStateToState(HighlightlyMatchesInfo.HighlightlyMatchInfo.HighlightlyMatchState state);
+  FootballMatchesResponse.FootballMatchDetails.FootballMatchState matchStateToState(
+      HighlightlyMatchesInfo.HighlightlyMatchInfo.HighlightlyMatchState state);
 }

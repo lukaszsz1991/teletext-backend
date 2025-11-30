@@ -14,8 +14,6 @@ public class HoroscopeClientConfig {
 
   @Bean("horoscopeWebClient")
   public WebClient horoscopeWebClient(WebClient.Builder webClientBuilder) {
-    return webClientBuilder
-      .baseUrl(webClientProperties.horoscopeBaseUrl())
-      .build();
+    return webClientBuilder.baseUrl(webClientProperties.horoscopeBaseUrl()).build();
   }
 }

@@ -31,10 +31,10 @@ public class JwtService {
   public void validateToken(String token) {
     try {
       Claims claims = extractAllClaims(token);
-      if(!jwtProperties.issuer().equals(claims.getIssuer())) {
+      if (!jwtProperties.issuer().equals(claims.getIssuer())) {
         throw new JwtValidatingException("Invalid JWT issuer");
       }
-      if(!claims.getAudience().contains(jwtProperties.audience())) {
+      if (!claims.getAudience().contains(jwtProperties.audience())) {
         throw new JwtValidatingException("Invalid JWT audience");
       }
     } catch (Exception e) {
@@ -45,7 +45,7 @@ public class JwtService {
 
   public String extractUsername(String token) {
     return extractClaim(token, Claims::getSubject)
-      .orElseThrow(() -> new JwtValidatingException("Unable to extract username from JWT"));
+        .orElseThrow(() -> new JwtValidatingException("Unable to extract username from JWT"));
   }
 
   public Long getExpirationMs() {
@@ -55,25 +55,25 @@ public class JwtService {
   private String buildToken(UserDetails userDetails, long expiration) {
     log.debug("Building new jwt token for user: {}", userDetails.getUsername());
     return Jwts.builder()
-      .issuer(jwtProperties.issuer())
-      .audience()
-      .add(jwtProperties.audience())
-      .and()
-      .subject(userDetails.getUsername())
-      .issuedAt(new Date(System.currentTimeMillis()))
-      .expiration(new Date(System.currentTimeMillis() + expiration))
-      .signWith(getSigningKey())
-      .compact();
+        .issuer(jwtProperties.issuer())
+        .audience()
+        .add(jwtProperties.audience())
+        .and()
+        .subject(userDetails.getUsername())
+        .issuedAt(new Date(System.currentTimeMillis()))
+        .expiration(new Date(System.currentTimeMillis() + expiration))
+        .signWith(getSigningKey())
+        .compact();
   }
 
   private Claims extractAllClaims(String token) throws ExpiredJwtException {
     log.debug("Extracting all claims from token and verifying signature");
     try {
       return Jwts.parser()
-        .verifyWith(getSigningKey())
-        .build()
-        .parseSignedClaims(token)
-        .getPayload();
+          .verifyWith(getSigningKey())
+          .build()
+          .parseSignedClaims(token)
+          .getPayload();
     } catch (ExpiredJwtException ex) {
       throw new JwtValidatingException("JWT token has expired", ex);
     }

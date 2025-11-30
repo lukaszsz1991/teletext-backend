@@ -8,6 +8,4 @@ import java.util.List;
 public record TeletextPageStatsResponse(
     int pageNumber,
     long views,
-    @JsonInclude(NON_EMPTY)
-    List<SingleTeletextPageStatsResponse> details
-) { }
+    @JsonInclude(NON_EMPTY) List<SingleTeletextPageStatsResponse> details) {}
