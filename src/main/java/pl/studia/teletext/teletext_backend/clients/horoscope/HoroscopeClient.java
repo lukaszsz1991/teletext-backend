@@ -22,30 +22,44 @@ public class HoroscopeClient {
   }
 
   public Mono<HoroscopeResponse> getTodayHoroscope() {
-    return horoscopeWebClient.get()
-      .uri(uri -> uri.path(BASE_PREFIX)
-        .queryParam("type", TODAY_PARAM_TYPE)
-        .build())
-      .retrieve()
-      .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(),
-        clientResponse -> clientResponse.bodyToMono(String.class).flatMap(errorBody -> {
-          log.error("Error fetching data from Horoscope/Today: {}", errorBody);
-          return Mono.error(new ExternalApiException("Error fetching data from Horoscope/Today", clientResponse.statusCode().value()));
-        }))
-      .bodyToMono(HoroscopeResponse.class);
+    return horoscopeWebClient
+        .get()
+        .uri(uri -> uri.path(BASE_PREFIX).queryParam("type", TODAY_PARAM_TYPE).build())
+        .retrieve()
+        .onStatus(
+            status -> status.is4xxClientError() || status.is5xxServerError(),
+            clientResponse ->
+                clientResponse
+                    .bodyToMono(String.class)
+                    .flatMap(
+                        errorBody -> {
+                          log.error("Error fetching data from Horoscope/Today: {}", errorBody);
+                          return Mono.error(
+                              new ExternalApiException(
+                                  "Error fetching data from Horoscope/Today",
+                                  clientResponse.statusCode().value()));
+                        }))
+        .bodyToMono(HoroscopeResponse.class);
   }
 
   public Mono<HoroscopeResponse> getTomorrowHoroscope() {
-    return horoscopeWebClient.get()
-      .uri(uri -> uri.path(BASE_PREFIX)
-        .queryParam("type", TOMORROW_PARAM_TYPE)
-        .build())
-      .retrieve()
-      .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(),
-        clientResponse -> clientResponse.bodyToMono(String.class).flatMap(errorBody -> {
-          log.error("Error fetching data from Horoscope/Tomorrow: {}", errorBody);
-          return Mono.error(new ExternalApiException("Error fetching data from Horoscope/Tomorrow", clientResponse.statusCode().value()));
-        }))
-      .bodyToMono(HoroscopeResponse.class);
+    return horoscopeWebClient
+        .get()
+        .uri(uri -> uri.path(BASE_PREFIX).queryParam("type", TOMORROW_PARAM_TYPE).build())
+        .retrieve()
+        .onStatus(
+            status -> status.is4xxClientError() || status.is5xxServerError(),
+            clientResponse ->
+                clientResponse
+                    .bodyToMono(String.class)
+                    .flatMap(
+                        errorBody -> {
+                          log.error("Error fetching data from Horoscope/Tomorrow: {}", errorBody);
+                          return Mono.error(
+                              new ExternalApiException(
+                                  "Error fetching data from Horoscope/Tomorrow",
+                                  clientResponse.statusCode().value()));
+                        }))
+        .bodyToMono(HoroscopeResponse.class);
   }
 }

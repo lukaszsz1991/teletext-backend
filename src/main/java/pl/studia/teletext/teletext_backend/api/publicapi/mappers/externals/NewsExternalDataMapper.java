@@ -11,11 +11,7 @@ public class NewsExternalDataMapper implements ExternalDataMapper<NewsResponse> 
   @Override
   public ExternalDataResponse toExternalDataResponse(NewsResponse source) {
     return new ExternalDataResponse(
-      "news",
-      source.title(),
-      source.description(),
-      toAdditionalData(source)
-    );
+        "news", source.title(), source.description(), toAdditionalData(source));
   }
 
   @Override

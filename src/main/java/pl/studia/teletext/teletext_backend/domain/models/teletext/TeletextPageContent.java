@@ -22,18 +22,16 @@ public class TeletextPageContent {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  //TODO: change content to something more complex
+  // TODO: change content to something more complex
   private String content;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "page_id", nullable = false)
   private TeletextPage page;
 
-  @CreationTimestamp
-  private Timestamp createdAt;
+  @CreationTimestamp private Timestamp createdAt;
 
-  @UpdateTimestamp
-  private Timestamp updatedAt;
+  @UpdateTimestamp private Timestamp updatedAt;
 
   private Timestamp deletedAt;
 }

@@ -5,7 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class FootballTableResponse extends FootballResponse<FootballTableResponse.FootballTableData> {
+public class FootballTableResponse
+    extends FootballResponse<FootballTableResponse.FootballTableData> {
 
   @Getter
   @Setter
@@ -14,13 +15,12 @@ public class FootballTableResponse extends FootballResponse<FootballTableRespons
   }
 
   public record FootballStandingDetails(
-    String team,
-    int position,
-    int points,
-    int wins,
-    int draws,
-    int loses,
-    int scoredGoals,
-    int receivedGoals
-  ) {}
+      String team,
+      int position,
+      int points,
+      int wins,
+      int draws,
+      int loses,
+      int scoredGoals,
+      int receivedGoals) {}
 }

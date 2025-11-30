@@ -14,8 +14,6 @@ public class JoobleClientConfig {
 
   @Bean("joobleWebClient")
   public WebClient joobleWebClient(WebClient.Builder webClientBuilder) {
-    return webClientBuilder
-      .baseUrl(webClientProperties.joobleBaseUrl())
-      .build();
+    return webClientBuilder.baseUrl(webClientProperties.joobleBaseUrl()).build();
   }
 }

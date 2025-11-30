@@ -13,7 +13,6 @@ public class CurrencyService {
   private final NbpClient nbpClient;
 
   public Flux<NbpRateResponse> getLastCurrencyRates(String[] currencyCodes, int lastCount) {
-    return Flux.fromArray(currencyCodes)
-      .flatMap(code -> nbpClient.getLastRates(code, lastCount));
+    return Flux.fromArray(currencyCodes).flatMap(code -> nbpClient.getLastRates(code, lastCount));
   }
 }

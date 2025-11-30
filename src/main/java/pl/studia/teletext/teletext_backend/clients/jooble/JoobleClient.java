@@ -17,21 +17,32 @@ public class JoobleClient {
   private final WebClient joobleWebClient;
   private final WebClientProperties webClientProperties;
 
-  public JoobleClient(@Qualifier("joobleWebClient") WebClient joobleWebClient, WebClientProperties webClientProperties) {
+  public JoobleClient(
+      @Qualifier("joobleWebClient") WebClient joobleWebClient,
+      WebClientProperties webClientProperties) {
     this.joobleWebClient = joobleWebClient;
     this.webClientProperties = webClientProperties;
   }
 
   public Mono<JoobleResponse> getJobs(JoobleRequest request) {
-    return joobleWebClient.post()
-      .uri(uri -> uri.path(BASE_PREFIX + webClientProperties.joobleSecret()).build())
-      .bodyValue(request)
-      .retrieve()
-      .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(),
-        clientResponse -> clientResponse.bodyToMono(String.class).flatMap(errorBody -> {
-          log.error("Error fetching data from Jooble: {}", errorBody);
-          return Mono.error(new ExternalApiException("Error fetching data from Jooble", clientResponse.statusCode().value()));
-        }))
-      .bodyToMono(JoobleResponse.class);
+    return joobleWebClient
+        .post()
+        .uri(uri -> uri.path(BASE_PREFIX + webClientProperties.joobleSecret()).build())
+        .bodyValue(request)
+        .retrieve()
+        .onStatus(
+            status -> status.is4xxClientError() || status.is5xxServerError(),
+            clientResponse ->
+                clientResponse
+                    .bodyToMono(String.class)
+                    .flatMap(
+                        errorBody -> {
+                          log.error("Error fetching data from Jooble: {}", errorBody);
+                          return Mono.error(
+                              new ExternalApiException(
+                                  "Error fetching data from Jooble",
+                                  clientResponse.statusCode().value()));
+                        }))
+        .bodyToMono(JoobleResponse.class);
   }
 }

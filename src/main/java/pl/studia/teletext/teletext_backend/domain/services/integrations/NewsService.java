@@ -16,12 +16,14 @@ public class NewsService {
   private final NewsMapper newsMapper;
 
   public Mono<NewsResponse> getLatestNews(boolean isPolish, NewsCategory category) {
-    return newsClient.getLatestNews(isPolish, category)
-      .flatMap(dataResponse -> {
-        var results = dataResponse.results();
-        if(results == null || results.length == 0) return Mono.empty();
-        var latest = results[0];
-        return Mono.just(newsMapper.toResponse(latest));
-      });
+    return newsClient
+        .getLatestNews(isPolish, category)
+        .flatMap(
+            dataResponse -> {
+              var results = dataResponse.results();
+              if (results == null || results.length == 0) return Mono.empty();
+              var latest = results[0];
+              return Mono.just(newsMapper.toResponse(latest));
+            });
   }
 }

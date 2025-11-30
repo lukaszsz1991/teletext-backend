@@ -13,6 +13,8 @@ import pl.studia.teletext.teletext_backend.domain.annotations.validators.Passwor
 @Constraint(validatedBy = PasswordMatchValidator.class)
 public @interface PasswordsMatch {
   String message() default "Passwords do not match";
+
   Class<?>[] groups() default {};
+
   Class<? extends Payload>[] payload() default {};
 }

@@ -23,21 +23,26 @@ public class CityService {
   public City getCityByName(String name) {
     var normalizedInputName = normalizeCityName(name);
     return cityRepository.getAllCities().stream()
-      .filter(c -> {
-        var normalizedName = normalizeCityName(c.name());
-        log.debug("Comparing with city: {} (normalized: {}, normalized input: {})", c.name(), normalizedName, normalizedInputName);
-        return normalizedInputName.equals(normalizedName);
-      })
-      .findFirst()
-      .orElseThrow(() -> new CityNotFoundException("City with name " + name + " not found"));
+        .filter(
+            c -> {
+              var normalizedName = normalizeCityName(c.name());
+              log.debug(
+                  "Comparing with city: {} (normalized: {}, normalized input: {})",
+                  c.name(),
+                  normalizedName,
+                  normalizedInputName);
+              return normalizedInputName.equals(normalizedName);
+            })
+        .findFirst()
+        .orElseThrow(() -> new CityNotFoundException("City with name " + name + " not found"));
   }
 
   private String normalizeCityName(String name) {
     return Normalizer.normalize(name, Normalizer.Form.NFD)
-      .trim()
-      .toLowerCase()
-      .replaceAll("\\p{M}", "")
-      .replaceAll(" ", "-")
-      .replaceAll("ł", "l");
+        .trim()
+        .toLowerCase()
+        .replaceAll("\\p{M}", "")
+        .replaceAll(" ", "-")
+        .replaceAll("ł", "l");
   }
 }

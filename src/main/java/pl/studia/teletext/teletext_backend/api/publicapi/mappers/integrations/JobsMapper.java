@@ -13,11 +13,7 @@ public interface JobsMapper {
 
   @Mapping(target = "updatedAt", source = "job.updated", qualifiedByName = "mapStringToDate")
   JobResponse toResponse(
-      JoobleResponse.Job job,
-      int totalResults,
-      String searchKeywords,
-      String searchLocation
-  );
+      JoobleResponse.Job job, int totalResults, String searchKeywords, String searchLocation);
 
   @Named("mapStringToDate")
   default LocalDateTime mapStringToDate(String date) {

@@ -18,12 +18,14 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
   private final ObjectMapper objectMapper;
 
   @Override
-  public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
-    throws IOException {
-    var problemDetail = ProblemDetail.forStatusAndDetail(
-      HttpStatus.UNAUTHORIZED,
-      "Unauthorized: " + authException.getMessage()
-    );
+  public void commence(
+      HttpServletRequest request,
+      HttpServletResponse response,
+      AuthenticationException authException)
+      throws IOException {
+    var problemDetail =
+        ProblemDetail.forStatusAndDetail(
+            HttpStatus.UNAUTHORIZED, "Unauthorized: " + authException.getMessage());
     problemDetail.setTitle("Unauthorized");
     problemDetail.setDetail("Invalid or missing JWT token");
 

@@ -19,20 +19,21 @@ public class OpenApiConfiguration {
   @Bean
   public OpenAPI teletextOpenAPI() {
     return new OpenAPI()
-      .info(new Info()
-        .title("Teletext Backend API")
-        .description("API documentation for the Teletext Backend application.")
-        .version(appVersion)
-        .contact(new Contact()
-          .name("Teletext Dev Team")
-          .email("teletext@example.com"))
-        )
-      .components(new Components().addSecuritySchemes("bearerAuth",
-        new SecurityScheme()
-          .type(SecurityScheme.Type.HTTP)
-          .scheme("bearer")
-          .bearerFormat("JWT")
-          .name("Authorization")))
-      .addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
+        .info(
+            new Info()
+                .title("Teletext Backend API")
+                .description("API documentation for the Teletext Backend application.")
+                .version(appVersion)
+                .contact(new Contact().name("Teletext Dev Team").email("teletext@example.com")))
+        .components(
+            new Components()
+                .addSecuritySchemes(
+                    "bearerAuth",
+                    new SecurityScheme()
+                        .type(SecurityScheme.Type.HTTP)
+                        .scheme("bearer")
+                        .bearerFormat("JWT")
+                        .name("Authorization")))
+        .addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
   }
 }

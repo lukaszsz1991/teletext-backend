@@ -12,20 +12,21 @@ import java.util.List;
 
 public class FlexibleDateParser {
 
-  private static final List<DateTimeFormatter> FORMATTERS = List.of(
-    DateTimeFormatter.ISO_OFFSET_DATE_TIME,
-    DateTimeFormatter.ISO_LOCAL_DATE_TIME,
-    DateTimeFormatter.ISO_LOCAL_DATE
-  );
+  private static final List<DateTimeFormatter> FORMATTERS =
+      List.of(
+          DateTimeFormatter.ISO_OFFSET_DATE_TIME,
+          DateTimeFormatter.ISO_LOCAL_DATE_TIME,
+          DateTimeFormatter.ISO_LOCAL_DATE);
 
   /**
    * Parse a date/time string into a {@link java.time.LocalDateTime}.
    *
-   * <p>Supported input formats (tried in order):</p>
+   * <p>Supported input formats (tried in order):
+   *
    * <ul>
-   *   <li>ISO offset date-time (e.g. 2025-01-01T12:00:00+01:00)</li>
-   *   <li>ISO local date-time (e.g. 2025-01-01T12:00:00)</li>
-   *   <li>ISO local date (e.g. 2025-01-01) — returns start of day</li>
+   *   <li>ISO offset date-time (e.g. 2025-01-01T12:00:00+01:00)
+   *   <li>ISO local date-time (e.g. 2025-01-01T12:00:00)
+   *   <li>ISO local date (e.g. 2025-01-01) — returns start of day
    * </ul>
    *
    * @param date the date/time string to parse
@@ -36,7 +37,8 @@ public class FlexibleDateParser {
     for (DateTimeFormatter f : FORMATTERS) {
       try {
         TemporalAccessor ta = f.parse(date);
-        if (ta.query(TemporalQueries.offset()) != null) return OffsetDateTime.from(ta).toLocalDateTime();
+        if (ta.query(TemporalQueries.offset()) != null)
+          return OffsetDateTime.from(ta).toLocalDateTime();
 
         if (ta.query(TemporalQueries.localDate()) != null) {
           LocalDateTime ldt;
@@ -47,7 +49,8 @@ public class FlexibleDateParser {
           }
           return ldt;
         }
-      } catch (DateTimeParseException ignored) {}
+      } catch (DateTimeParseException ignored) {
+      }
     }
     throw new DateTimeParseException("Cannot parse date: " + date, date, -1);
   }

@@ -16,15 +16,17 @@ public class HoroscopeService {
   private final HoroscopeClient horoscopeClient;
   private final TeletextHoroscopeMapper horoscopeMapper;
 
-  public Mono<TeletextHoroscopeResponse> getSingleSignHoroscope(HoroscopeSign sign, boolean forTomorrow) {
-    Mono<HoroscopeResponse> source = forTomorrow ?
-      horoscopeClient.getTomorrowHoroscope() :
-      horoscopeClient.getTodayHoroscope();
+  public Mono<TeletextHoroscopeResponse> getSingleSignHoroscope(
+      HoroscopeSign sign, boolean forTomorrow) {
+    Mono<HoroscopeResponse> source =
+        forTomorrow ? horoscopeClient.getTomorrowHoroscope() : horoscopeClient.getTodayHoroscope();
 
     return source.flatMap(
-      resp -> Mono.justOrEmpty(resp.signs().stream()
-          .filter(s -> s.title().equalsIgnoreCase(sign.name()))
-          .findFirst())
-        .map(h -> horoscopeMapper.toResponse(h, resp.day())));
+        resp ->
+            Mono.justOrEmpty(
+                    resp.signs().stream()
+                        .filter(s -> s.title().equalsIgnoreCase(sign.name()))
+                        .findFirst())
+                .map(h -> horoscopeMapper.toResponse(h, resp.day())));
   }
 }

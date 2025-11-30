@@ -26,9 +26,9 @@ public class UserService {
   public List<UserResponse> getAllUsers(boolean includeDeleted) {
     var users = userRepository.findAll();
     return users.stream()
-      .filter(u -> u.getDeletedAt() == null || includeDeleted)
-      .map(mapper::toUserResponse)
-      .toList();
+        .filter(u -> u.getDeletedAt() == null || includeDeleted)
+        .map(mapper::toUserResponse)
+        .toList();
   }
 
   public UserResponse getUserById(Long id) {
@@ -40,7 +40,7 @@ public class UserService {
     var user = mapper.toUserEntity(request);
     user.setPassword(passwordEncoder.encode(request.password()));
     user = userRepository.save(user);
-    //TODO: add mailing service to send account creation email
+    // TODO: add mailing service to send account creation email
     return mapper.toUserResponse(user);
   }
 
@@ -55,7 +55,7 @@ public class UserService {
   public void changePassword(Long id, ChangeUserPasswordRequest request) {
     var user = getUserEntityById(id);
     user.setPassword(passwordEncoder.encode(request.password()));
-    //TODO: add mailing service to send account password change notification
+    // TODO: add mailing service to send account password change notification
     userRepository.save(user);
   }
 
@@ -63,7 +63,7 @@ public class UserService {
     // TODO: prevent deleting own account
     var user = getUserEntityById(id);
     user.setDeletedAt(Timestamp.from(Instant.now()));
-    //TODO: add mailing service to send account deletion notification
+    // TODO: add mailing service to send account deletion notification
     userRepository.save(user);
   }
 
@@ -71,18 +71,21 @@ public class UserService {
     var user = getDeletedUserEntityById(id);
     user.setDeletedAt(null);
     userRepository.save(user);
-    //TODO: add mailing service to send account restoration notification
+    // TODO: add mailing service to send account restoration notification
   }
 
   private User getUserEntityById(Long id) {
-    return userRepository.findById(id)
-      .filter(u -> u.getDeletedAt() == null)
-      .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+    return userRepository
+        .findById(id)
+        .filter(u -> u.getDeletedAt() == null)
+        .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
   }
 
   private User getDeletedUserEntityById(Long id) {
-    return userRepository.findById(id)
-      .filter(u -> u.getDeletedAt() != null)
-      .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found or not deleted"));
+    return userRepository
+        .findById(id)
+        .filter(u -> u.getDeletedAt() != null)
+        .orElseThrow(
+            () -> new UserNotFoundException("User with id " + id + " not found or not deleted"));
   }
 }

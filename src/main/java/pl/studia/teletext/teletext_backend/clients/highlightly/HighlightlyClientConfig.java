@@ -15,8 +15,8 @@ public class HighlightlyClientConfig {
   @Bean("highlightlyWebClient")
   public WebClient highlightlyWebClient(WebClient.Builder webClientBuilder) {
     return webClientBuilder
-      .baseUrl(webClientProperties.highlightlyBaseUrl())
-      .defaultHeader("x-rapidapi-key", webClientProperties.highlightlySecret())
-      .build();
+        .baseUrl(webClientProperties.highlightlyBaseUrl())
+        .defaultHeader("x-rapidapi-key", webClientProperties.highlightlySecret())
+        .build();
   }
 }

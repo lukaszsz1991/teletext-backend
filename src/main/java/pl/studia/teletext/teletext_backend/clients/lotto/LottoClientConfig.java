@@ -15,8 +15,8 @@ public class LottoClientConfig {
   @Bean("lottoWebClient")
   public WebClient lottoWebClient(WebClient.Builder webClientBuilder) {
     return webClientBuilder
-      .baseUrl(webClientProperties.lottoBaseUrl())
-      .defaultHeader("secret", webClientProperties.lottoSecret())
-      .build();
+        .baseUrl(webClientProperties.lottoBaseUrl())
+        .defaultHeader("secret", webClientProperties.lottoSecret())
+        .build();
   }
 }

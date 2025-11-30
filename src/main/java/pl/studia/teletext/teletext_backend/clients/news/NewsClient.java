@@ -18,18 +18,29 @@ public class NewsClient {
   }
 
   public Mono<NewsDataResponse> getLatestNews(boolean isPolish, NewsCategory category) {
-    return newsWebClient.get()
-      .uri(uri -> uri.path("api/1/latest")
-        .queryParam("language", "pl")
-        .queryParam(isPolish ? "country" : "excludeCountry", "pl")
-        .queryParam("category", category.toString().toLowerCase())
-        .build())
-      .retrieve()
-      .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(),
-        clientResponse -> clientResponse.bodyToMono(String.class).flatMap(errorBody -> {
-          log.error("Error fetching data from News Data: {}", errorBody);
-          return Mono.error(new ExternalApiException("Error fetching data from News Data", clientResponse.statusCode().value()));
-        }))
-      .bodyToMono(NewsDataResponse.class);
+    return newsWebClient
+        .get()
+        .uri(
+            uri ->
+                uri.path("api/1/latest")
+                    .queryParam("language", "pl")
+                    .queryParam(isPolish ? "country" : "excludeCountry", "pl")
+                    .queryParam("category", category.toString().toLowerCase())
+                    .build())
+        .retrieve()
+        .onStatus(
+            status -> status.is4xxClientError() || status.is5xxServerError(),
+            clientResponse ->
+                clientResponse
+                    .bodyToMono(String.class)
+                    .flatMap(
+                        errorBody -> {
+                          log.error("Error fetching data from News Data: {}", errorBody);
+                          return Mono.error(
+                              new ExternalApiException(
+                                  "Error fetching data from News Data",
+                                  clientResponse.statusCode().value()));
+                        }))
+        .bodyToMono(NewsDataResponse.class);
   }
 }

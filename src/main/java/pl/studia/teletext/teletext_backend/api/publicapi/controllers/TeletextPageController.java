@@ -26,12 +26,11 @@ public class TeletextPageController {
 
   @GetMapping
   public ResponseEntity<List<TeletextPageResponse>> getAllPagesByCategory(
-    @RequestParam TeletextCategory category
-  ) {
-    //TODO(swagger): change '?' to correct DTO
-    //TODO: change to TeletextSimplePageResponse (without content)
-    //TODO: add pagination and filtering (filter by: pagenumber [between?], title and category)
-    //TODO: sort by page number asc (or add sorting as an option)
+      @RequestParam TeletextCategory category) {
+    // TODO(swagger): change '?' to correct DTO
+    // TODO: change to TeletextSimplePageResponse (without content)
+    // TODO: add pagination and filtering (filter by: pagenumber [between?], title and category)
+    // TODO: sort by page number asc (or add sorting as an option)
     return ResponseEntity.ok(teletextPageService.getPagesByCategory(category));
   }
 
@@ -42,15 +41,12 @@ public class TeletextPageController {
 
   @GetMapping("/categories/{category}")
   public ResponseEntity<TeletextCategoryResponse> getCategoryByName(
-    @PathVariable TeletextCategory category
-  ) {
+      @PathVariable TeletextCategory category) {
     return ResponseEntity.ok(teletextCategoryService.getCategoryByName(category));
   }
 
   @GetMapping("{pageNumber}")
-  public ResponseEntity<?> getPageByNumber(
-    @PathVariable Integer pageNumber
-  ) {
+  public ResponseEntity<?> getPageByNumber(@PathVariable Integer pageNumber) {
     var page = teletextPageService.getPageWithContent(pageNumber);
     teletextPageStatsService.recordPageVisit(page.id()); // TODO: move it to the middleware
     return ResponseEntity.ok(page);

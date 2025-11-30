@@ -16,20 +16,18 @@ import pl.studia.teletext.teletext_backend.domain.repositories.CityRepository;
 @RequiredArgsConstructor
 public class CityRepositoryImpl implements CityRepository {
 
-  private final static String CITIES_FILE_PATH = "/data/cities.csv";
+  private static final String CITIES_FILE_PATH = "/data/cities.csv";
 
   private final Validator validator;
 
   @Override
   public List<City> getAllCities() {
-    return readCsvFile().stream()
-      .map(this::mapToCity)
-      .toList();
+    return readCsvFile().stream().map(this::mapToCity).toList();
   }
 
   public void validateCity(City city) {
     var violations = validator.validate(city);
-    if(!violations.isEmpty()) {
+    if (!violations.isEmpty()) {
       var firstMsg = violations.stream().findFirst().get().getMessage();
       throw new ValidationException("City validation failed: " + firstMsg + "; City: " + city);
     }
@@ -37,14 +35,15 @@ public class CityRepositoryImpl implements CityRepository {
 
   private List<String> readCsvFile() {
     return Optional.ofNullable(getClass().getResourceAsStream(CITIES_FILE_PATH))
-      .map(is -> {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
-          return reader.lines().toList();
-        } catch (IOException ex) {
-          throw new RuntimeException("Error reading cities file", ex);
-        }
-      })
-      .orElseThrow(() -> new RuntimeException("Cities file not found: " + CITIES_FILE_PATH));
+        .map(
+            is -> {
+              try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+                return reader.lines().toList();
+              } catch (IOException ex) {
+                throw new RuntimeException("Error reading cities file", ex);
+              }
+            })
+        .orElseThrow(() -> new RuntimeException("Cities file not found: " + CITIES_FILE_PATH));
   }
 
   private City mapToCity(String csvLine) {
@@ -58,12 +57,11 @@ public class CityRepositoryImpl implements CityRepository {
   }
 
   private double parseCoordinate(String value) {
-    if(value.isBlank()) throw new ValidationException("City coordinate value is blank");
+    if (value.isBlank()) throw new ValidationException("City coordinate value is blank");
     try {
       return Double.parseDouble(value);
     } catch (NumberFormatException ex) {
       throw new ValidationException("Invalid city coordinate value: " + value, ex);
     }
   }
-
 }

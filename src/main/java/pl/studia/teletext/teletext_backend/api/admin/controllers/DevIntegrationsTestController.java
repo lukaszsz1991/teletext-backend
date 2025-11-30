@@ -50,87 +50,89 @@ public class DevIntegrationsTestController {
 
   @GetMapping("/currencies")
   public ResponseEntity<?> getCurrencies(
-    @RequestParam(defaultValue = "usd,eur") String[] codes,
-    @RequestParam(defaultValue = "5") int lastCount
-  ) {
-    var result = currencyService.getLastCurrencyRates(codes, lastCount)
-      .map(currencyExternalDataMapper::toExternalDataResponse)
-      .collectList()
-      .block();
+      @RequestParam(defaultValue = "usd,eur") String[] codes,
+      @RequestParam(defaultValue = "5") int lastCount) {
+    var result =
+        currencyService
+            .getLastCurrencyRates(codes, lastCount)
+            .map(currencyExternalDataMapper::toExternalDataResponse)
+            .collectList()
+            .block();
     return ResponseEntity.ok(result);
   }
 
   @GetMapping("/weather/{city}")
-  public ResponseEntity<?> getWeatherByCity(
-    @PathVariable String city
-  ) {
-    var result = weatherService.getWeeklyWeatherForCity(city)
-      .map(weatherExternalDataMapper::toExternalDataResponse)
-      .block();
+  public ResponseEntity<?> getWeatherByCity(@PathVariable String city) {
+    var result =
+        weatherService
+            .getWeeklyWeatherForCity(city)
+            .map(weatherExternalDataMapper::toExternalDataResponse)
+            .block();
     return ResponseEntity.ok(result);
   }
 
   @GetMapping("/lotto")
   public ResponseEntity<?> getLottoData() {
-    var result = lotteryService.getLottoResponse()
-      .map(lottoExternalDataMapper::toExternalDataResponse)
-      .block();
+    var result =
+        lotteryService
+            .getLottoResponse()
+            .map(lottoExternalDataMapper::toExternalDataResponse)
+            .block();
     return ResponseEntity.ok(result);
   }
 
   @GetMapping("/news")
   public ResponseEntity<?> getNewsExternalData(
-    @RequestParam String category,
-    @RequestParam(defaultValue = "true") boolean isPolish
-  ) {
-    var result = newsService.getLatestNews(isPolish, NewsCategory.valueOf(category.toUpperCase()))
-      .map(newsExternalDataMapper::toExternalDataResponse)
-      .block();
+      @RequestParam String category, @RequestParam(defaultValue = "true") boolean isPolish) {
+    var result =
+        newsService
+            .getLatestNews(isPolish, NewsCategory.valueOf(category.toUpperCase()))
+            .map(newsExternalDataMapper::toExternalDataResponse)
+            .block();
     return ResponseEntity.ok(result);
   }
 
   @GetMapping("/jobs/{addedOrder}")
   public ResponseEntity<?> getJobByAddingOrder(
-    @PathVariable int addedOrder,
-    @RequestParam String keyword,
-    @RequestParam String location
-  ){
+      @PathVariable int addedOrder, @RequestParam String keyword, @RequestParam String location) {
     var body = new JoobleRequest(keyword, location);
-    var result = jobsService.getJobByAddingOrder(body, addedOrder)
-      .map(jobsExternalDataMapper::toExternalDataResponse)
-      .block();
+    var result =
+        jobsService
+            .getJobByAddingOrder(body, addedOrder)
+            .map(jobsExternalDataMapper::toExternalDataResponse)
+            .block();
     return ResponseEntity.ok(result);
   }
 
   @GetMapping("/horoscope/{sign}")
   public ResponseEntity<?> getJobByAddingOrder(
-    @PathVariable HoroscopeSign sign,
-    @RequestParam(defaultValue = "false") boolean forTomorrow
-  ){
-    var result = horoscopeService.getSingleSignHoroscope(sign, forTomorrow)
-      .map(horoscopeExternalMapper::toExternalDataResponse)
-      .block();
+      @PathVariable HoroscopeSign sign, @RequestParam(defaultValue = "false") boolean forTomorrow) {
+    var result =
+        horoscopeService
+            .getSingleSignHoroscope(sign, forTomorrow)
+            .map(horoscopeExternalMapper::toExternalDataResponse)
+            .block();
     return ResponseEntity.ok(result);
   }
 
   @GetMapping("/football/{league}/table")
-  public ResponseEntity<?> getLeagueTable(
-    @PathVariable FootballLeague league
-  ){
-    var result = footballService.getTableForLeague(league)
-      .map(footballExternalMapper::toExternalDataResponse)
-      .block();
+  public ResponseEntity<?> getLeagueTable(@PathVariable FootballLeague league) {
+    var result =
+        footballService
+            .getTableForLeague(league)
+            .map(footballExternalMapper::toExternalDataResponse)
+            .block();
     return ResponseEntity.ok(result);
   }
 
   @GetMapping("/football/{league}/matches/{week}")
   public ResponseEntity<?> getMatchesForWeek(
-    @PathVariable FootballLeague league,
-    @PathVariable Integer week
-  ){
-    var result = footballService.getMatchesForLeague(league, week)
-      .map(footballExternalMapper::toExternalDataResponse)
-      .block();
+      @PathVariable FootballLeague league, @PathVariable Integer week) {
+    var result =
+        footballService
+            .getMatchesForLeague(league, week)
+            .map(footballExternalMapper::toExternalDataResponse)
+            .block();
     return ResponseEntity.ok(result);
   }
 }

@@ -5,11 +5,10 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.TeletextPageResponse;
-import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
-import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPage;
-import pl.studia.teletext.teletext_backend.exceptions.PageNotFoundException;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.TeletextPageMapper;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
 import pl.studia.teletext.teletext_backend.domain.repositories.TeletextPageRepository;
+import pl.studia.teletext.teletext_backend.exceptions.PageNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -20,21 +19,22 @@ public class TeletextPageService {
 
   public List<TeletextPageResponse> getAllPagesWithContent() {
     var pages = teletextPageRepository.findAllWithContent();
-    return pages.stream()
-      .map(mapper::toPageResponse)
-      .toList();
+    return pages.stream().map(mapper::toPageResponse).toList();
   }
 
   public TeletextPageResponse getPageWithContent(Integer pageNumber) {
-    var page = teletextPageRepository.findByPageNumberWithContent(pageNumber)
-      .orElseThrow(() -> new PageNotFoundException("Page with number " + pageNumber + " not found"));
+    var page =
+        teletextPageRepository
+            .findByPageNumberWithContent(pageNumber)
+            .orElseThrow(
+                () -> new PageNotFoundException("Page with number " + pageNumber + " not found"));
     return mapper.toPageResponse(page);
   }
 
   public List<TeletextPageResponse> getPagesByCategory(TeletextCategory category) {
     return teletextPageRepository.findByCategoryWithContent(category).stream()
-      .map(mapper::toPageResponse)
-      .sorted(Comparator.comparing(TeletextPageResponse::pageNumber))
-      .toList();
+        .map(mapper::toPageResponse)
+        .sorted(Comparator.comparing(TeletextPageResponse::pageNumber))
+        .toList();
   }
 }
