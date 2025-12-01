@@ -26,31 +26,35 @@ public class SecurityConfiguration {
 
   @Bean
   SecurityFilterChain filterChain(
-    HttpSecurity http,
-    JwtAuthFilter jwtAuthFilter,
-    AuthenticationEntryPoint authEntryPoint,
-    AccessDeniedHandler accessDeniedHandler
-  ) throws Exception {
-    return http
-      .authorizeHttpRequests(request -> request
-        .requestMatchers("/api/public/**", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-        .requestMatchers("/api/admin/auth/login").permitAll()
-        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-        .anyRequest().denyAll()
-      )
-      .exceptionHandling(e -> e
-        .authenticationEntryPoint(authEntryPoint)
-        .accessDeniedHandler(accessDeniedHandler)
-      )
-      .csrf(AbstractHttpConfigurer::disable)
-      .sessionManagement(ses -> ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-      .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-      .build();
+      HttpSecurity http,
+      JwtAuthFilter jwtAuthFilter,
+      AuthenticationEntryPoint authEntryPoint,
+      AccessDeniedHandler accessDeniedHandler)
+      throws Exception {
+    return http.authorizeHttpRequests(
+            request ->
+                request
+                    .requestMatchers(
+                        "/api/public/**", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**")
+                    .permitAll()
+                    .requestMatchers("/api/admin/auth/login")
+                    .permitAll()
+                    .requestMatchers("/api/admin/**")
+                    .hasRole("ADMIN")
+                    .anyRequest()
+                    .denyAll())
+        .exceptionHandling(
+            e ->
+                e.authenticationEntryPoint(authEntryPoint).accessDeniedHandler(accessDeniedHandler))
+        .csrf(AbstractHttpConfigurer::disable)
+        .sessionManagement(ses -> ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+        .build();
   }
 
   @Bean
   PasswordEncoder passwordEncoder() {
-    return new Argon2PasswordEncoder(16,16,1,65536,4);
+    return new Argon2PasswordEncoder(16, 16, 1, 65536, 4);
   }
 
   @Bean

@@ -14,29 +14,30 @@ public class FootballExternalDataMapper implements ExternalDataMapper<FootballRe
 
   @Override
   public ExternalDataResponse toExternalDataResponse(FootballResponse<?> source) {
-    return switch(source) {
+    return switch (source) {
       case FootballTableResponse table -> toFootballTableExternalDataResponse(table);
       case FootballMatchesResponse matches -> toFootballMatchesExternalDataResponse(matches);
-      default -> throw new IllegalArgumentException("Unsupported football response type: " + source.getClass());
+      default -> throw new IllegalArgumentException(
+          "Unsupported football response type: " + source.getClass());
     };
   }
 
   @Override
   public Map<String, Object> toAdditionalData(FootballResponse<?> source) {
-    return switch(source) {
+    return switch (source) {
       case FootballTableResponse table -> toFootballTableAdditionalData(table);
       case FootballMatchesResponse matches -> toFootballMatchesAdditionalData(matches);
-      default -> throw new IllegalArgumentException("Unsupported football response type: " + source.getClass());
+      default -> throw new IllegalArgumentException(
+          "Unsupported football response type: " + source.getClass());
     };
   }
 
   private ExternalDataResponse toFootballTableExternalDataResponse(FootballTableResponse source) {
     return new ExternalDataResponse(
-      "sport-table",
-      source.getLeague() + " - sezon " + source.getSeason(),
-      "Tabela ligowa - stan na dzień " + LocalDate.now(),
-      toAdditionalData(source)
-    );
+        "sport-table",
+        source.getLeague() + " - sezon " + source.getSeason(),
+        "Tabela ligowa - stan na dzień " + LocalDate.now(),
+        toAdditionalData(source));
   }
 
   private Map<String, Object> toFootballTableAdditionalData(FootballTableResponse source) {
@@ -45,13 +46,13 @@ public class FootballExternalDataMapper implements ExternalDataMapper<FootballRe
     return info;
   }
 
-  private ExternalDataResponse toFootballMatchesExternalDataResponse(FootballMatchesResponse source) {
+  private ExternalDataResponse toFootballMatchesExternalDataResponse(
+      FootballMatchesResponse source) {
     return new ExternalDataResponse(
-      "sport-matches",
-      source.getLeague() + " - sezon " + source.getSeason(),
-      "Mecze w tygodniu " + source.getData().getWeek(),
-      toAdditionalData(source)
-    );
+        "sport-matches",
+        source.getLeague() + " - sezon " + source.getSeason(),
+        "Mecze w tygodniu " + source.getData().getWeek(),
+        toAdditionalData(source));
   }
 
   private Map<String, Object> toFootballMatchesAdditionalData(FootballMatchesResponse source) {

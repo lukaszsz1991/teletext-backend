@@ -1,0 +1,27 @@
+name: Check Code Style
+
+on:
+  pull_request:
+    branches: [ "main"]
+  push:
+    branches: [ "main"]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Grant execute permission for mvnw
+        run: chmod +x ./mvnw
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Spotless check (Google Java Format)
+        run: ./mvnw spotless:check

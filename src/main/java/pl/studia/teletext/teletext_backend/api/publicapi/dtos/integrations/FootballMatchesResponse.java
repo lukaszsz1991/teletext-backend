@@ -6,7 +6,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class FootballMatchesResponse extends FootballResponse<FootballMatchesResponse.FootballMatchesData> {
+public class FootballMatchesResponse
+    extends FootballResponse<FootballMatchesResponse.FootballMatchesData> {
   @Getter
   @Setter
   public static class FootballMatchesData {
@@ -15,17 +16,12 @@ public class FootballMatchesResponse extends FootballResponse<FootballMatchesRes
   }
 
   public record FootballMatchDetails(
-    String round,
-    LocalDateTime date,
-    FootballMatchState state,
-    String homeTeam,
-    String awayTeam
-  ) {
+      String round,
+      LocalDateTime date,
+      FootballMatchState state,
+      String homeTeam,
+      String awayTeam) {
     public record FootballMatchState(
-      Integer clock,
-      String currentScore,
-      String penaltiesScore,
-      String description
-    ) {}
+        Integer clock, String currentScore, String penaltiesScore, String description) {}
   }
 }

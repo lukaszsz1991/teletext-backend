@@ -25,19 +25,22 @@ public class User implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   @Column(unique = true, nullable = false, length = 50)
   private String username;
+
   @Column(unique = true)
   private String email;
+
   @Column(nullable = false)
   private String password;
+
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 50)
   private Role role = Role.ADMIN;
-  @CreationTimestamp
-  private Timestamp createdAt;
-  @UpdateTimestamp
-  private Timestamp updatedAt;
+
+  @CreationTimestamp private Timestamp createdAt;
+  @UpdateTimestamp private Timestamp updatedAt;
   private Timestamp deletedAt;
 
   @Override

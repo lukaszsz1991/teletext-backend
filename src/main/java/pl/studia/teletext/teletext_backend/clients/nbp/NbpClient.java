@@ -17,14 +17,20 @@ public class NbpClient {
 
   public Mono<NbpRateResponse> getLastRates(String currencyCode, int lastCount) {
     return nbpWebClient
-      .get()
-      .uri(uriBuilder -> uriBuilder
-        .path("/api/exchangerates/rates/C/{currencyCode}/last/{lastCount}/")
-        .queryParam("format", "json")
-        .build(currencyCode, lastCount))
-      .retrieve()
-      .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(),
-        clientResponse -> Mono.error(new ExternalApiException("Error fetching data from NBP", clientResponse.statusCode().value())))
-      .bodyToMono(NbpRateResponse.class);
+        .get()
+        .uri(
+            uriBuilder ->
+                uriBuilder
+                    .path("/api/exchangerates/rates/C/{currencyCode}/last/{lastCount}/")
+                    .queryParam("format", "json")
+                    .build(currencyCode, lastCount))
+        .retrieve()
+        .onStatus(
+            status -> status.is4xxClientError() || status.is5xxServerError(),
+            clientResponse ->
+                Mono.error(
+                    new ExternalApiException(
+                        "Error fetching data from NBP", clientResponse.statusCode().value())))
+        .bodyToMono(NbpRateResponse.class);
   }
 }

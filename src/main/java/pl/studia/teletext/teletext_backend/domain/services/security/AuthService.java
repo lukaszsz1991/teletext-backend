@@ -20,10 +20,7 @@ public class AuthService {
 
   public LoginResponse authenticate(LoginRequest request) {
     log.debug("Authenticating user: {}", request.username());
-    var authToken = new UsernamePasswordAuthenticationToken(
-      request.username(),
-      request.password()
-    );
+    var authToken = new UsernamePasswordAuthenticationToken(request.username(), request.password());
     authenticationManager.authenticate(authToken);
     var userDetails = userDetailsService.loadUserByUsername(request.username());
     var jwtToken = jwtService.generateToken(userDetails);

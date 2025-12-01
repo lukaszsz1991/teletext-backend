@@ -14,8 +14,6 @@ public class NbpClientConfig {
 
   @Bean("nbpWebClient")
   public WebClient nbpWebClient(WebClient.Builder webClientBuilder) {
-    return webClientBuilder
-      .baseUrl(webClientProperties.nbpBaseUrl())
-      .build();
+    return webClientBuilder.baseUrl(webClientProperties.nbpBaseUrl()).build();
   }
 }

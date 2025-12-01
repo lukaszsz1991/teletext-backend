@@ -18,12 +18,14 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
   private final ObjectMapper objectMapper;
 
   @Override
-  public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException)
-    throws IOException {
-    var problemDetail = ProblemDetail.forStatusAndDetail(
-      HttpStatus.FORBIDDEN,
-      "Forbidden: " + accessDeniedException.getMessage()
-    );
+  public void handle(
+      HttpServletRequest request,
+      HttpServletResponse response,
+      AccessDeniedException accessDeniedException)
+      throws IOException {
+    var problemDetail =
+        ProblemDetail.forStatusAndDetail(
+            HttpStatus.FORBIDDEN, "Forbidden: " + accessDeniedException.getMessage());
     problemDetail.setTitle("Forbidden");
     problemDetail.setDetail("You do not have permission to access this resource");
 

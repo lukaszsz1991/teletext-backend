@@ -1,0 +1,30 @@
+name: Backend Build and Test
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name:  Grant exec permission
+        run: chmod +x ./mvnw
+
+      - name: Build and test
+        env:
+          TELETEXT_JWT_SECRET: ${{ secrets.TELETEXT_JWT_SECRET }}
+        run: ./mvnw -B clean verify -Plocal-dev

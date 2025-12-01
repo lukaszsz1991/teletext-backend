@@ -10,8 +10,7 @@ import pl.studia.teletext.teletext_backend.config.properties.WebClientProperties
 @EnableConfigurationProperties({JwtProperties.class, WebClientProperties.class})
 public class TeletextWebAppBackendApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TeletextWebAppBackendApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(TeletextWebAppBackendApplication.class, args);
+  }
 }

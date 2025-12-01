@@ -21,26 +21,48 @@ public class LottoClient {
   }
 
   public Mono<LottoInfoResponse> getLottoInfo() {
-    return lottoWebClient.get()
-      .uri(uri -> uri.path(BASE_PREFIX + "info").queryParam("gameType", "Lotto").build())
-      .retrieve()
-      .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(),
-        clientResponse -> clientResponse.bodyToMono(String.class).flatMap(errorBody -> {
-          log.error("Error fetching data from Lotto/Info: {}", errorBody);
-          return Mono.error(new ExternalApiException("Error fetching data from Lotto", clientResponse.statusCode().value()));
-        }))
-      .bodyToMono(LottoInfoResponse.class);
+    return lottoWebClient
+        .get()
+        .uri(uri -> uri.path(BASE_PREFIX + "info").queryParam("gameType", "Lotto").build())
+        .retrieve()
+        .onStatus(
+            status -> status.is4xxClientError() || status.is5xxServerError(),
+            clientResponse ->
+                clientResponse
+                    .bodyToMono(String.class)
+                    .flatMap(
+                        errorBody -> {
+                          log.error("Error fetching data from Lotto/Info: {}", errorBody);
+                          return Mono.error(
+                              new ExternalApiException(
+                                  "Error fetching data from Lotto",
+                                  clientResponse.statusCode().value()));
+                        }))
+        .bodyToMono(LottoInfoResponse.class);
   }
 
   public Flux<LottoResultResponse> getLastLottoResult() {
-    return lottoWebClient.get()
-      .uri(uri -> uri.path(BASE_PREFIX + "draw-results/last-results-per-game").queryParam("gameType", "Lotto").build())
-      .retrieve()
-      .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(),
-        clientResponse -> clientResponse.bodyToMono(String.class).flatMap(errorBody -> {
-          log.error("Error fetching data from Lotto/Results: {}", errorBody);
-          return Mono.error(new ExternalApiException("Error fetching data from Lotto", clientResponse.statusCode().value()));
-        }))
-      .bodyToFlux(LottoResultResponse.class);
+    return lottoWebClient
+        .get()
+        .uri(
+            uri ->
+                uri.path(BASE_PREFIX + "draw-results/last-results-per-game")
+                    .queryParam("gameType", "Lotto")
+                    .build())
+        .retrieve()
+        .onStatus(
+            status -> status.is4xxClientError() || status.is5xxServerError(),
+            clientResponse ->
+                clientResponse
+                    .bodyToMono(String.class)
+                    .flatMap(
+                        errorBody -> {
+                          log.error("Error fetching data from Lotto/Results: {}", errorBody);
+                          return Mono.error(
+                              new ExternalApiException(
+                                  "Error fetching data from Lotto",
+                                  clientResponse.statusCode().value()));
+                        }))
+        .bodyToFlux(LottoResultResponse.class);
   }
 }
