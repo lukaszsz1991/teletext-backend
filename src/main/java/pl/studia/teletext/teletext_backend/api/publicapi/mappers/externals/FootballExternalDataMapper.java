@@ -17,8 +17,9 @@ public class FootballExternalDataMapper implements ExternalDataMapper<FootballRe
     return switch (source) {
       case FootballTableResponse table -> toFootballTableExternalDataResponse(table);
       case FootballMatchesResponse matches -> toFootballMatchesExternalDataResponse(matches);
-      default -> throw new IllegalArgumentException(
-          "Unsupported football response type: " + source.getClass());
+      default ->
+          throw new IllegalArgumentException(
+              "Unsupported football response type: " + source.getClass());
     };
   }
 
@@ -27,8 +28,9 @@ public class FootballExternalDataMapper implements ExternalDataMapper<FootballRe
     return switch (source) {
       case FootballTableResponse table -> toFootballTableAdditionalData(table);
       case FootballMatchesResponse matches -> toFootballMatchesAdditionalData(matches);
-      default -> throw new IllegalArgumentException(
-          "Unsupported football response type: " + source.getClass());
+      default ->
+          throw new IllegalArgumentException(
+              "Unsupported football response type: " + source.getClass());
     };
   }
 
