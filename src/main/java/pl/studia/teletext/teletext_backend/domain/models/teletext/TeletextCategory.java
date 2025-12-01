@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum TeletextCategory {
   NEWS("Wiadomości", "Informacje z kraju i świata", 100, new String[] {"news"}),
   SPORTS(
-      "Sport", "Wyniki i aktualności sportowe", 200, new String[] {"sport-matches", "sport-news"}),
+      "Sport", "Wyniki i aktualności sportowe", 200, new String[] {"sport-matches", "sport-table"}),
   LOTTERY("Gry losowe", "Wyniki lotto i innych gier", 300, new String[] {"lottery"}),
   TV("Program TV", "Program telewizyjny", 400, new String[] {"tv-program"}),
   WEATHER("Pogoda", "Prognozy i warunki pogodowe", 500, new String[] {"weather"}),

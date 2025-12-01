@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextDetailedPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextPageResponse;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
-import pl.studia.teletext.teletext_backend.domain.services.TeletextPageService;
-import pl.studia.teletext.teletext_backend.domain.services.TeletextPageStatsService;
+import pl.studia.teletext.teletext_backend.domain.services.pages.TeletextPageService;
+import pl.studia.teletext.teletext_backend.domain.services.pages.TeletextPageStatsService;
 
 @RestController
 @RequestMapping("/api/public/pages")

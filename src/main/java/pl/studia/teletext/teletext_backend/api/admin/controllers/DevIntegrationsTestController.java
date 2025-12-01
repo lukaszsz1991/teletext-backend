@@ -50,13 +50,12 @@ public class DevIntegrationsTestController {
 
   @GetMapping("/currencies")
   public ResponseEntity<?> getCurrencies(
-      @RequestParam(defaultValue = "usd,eur") String[] codes,
+      @RequestParam(defaultValue = "usd") String code,
       @RequestParam(defaultValue = "5") int lastCount) {
     var result =
         currencyService
-            .getLastCurrencyRates(codes, lastCount)
+            .getLastCurrencyRates(code, lastCount)
             .map(currencyExternalDataMapper::toExternalDataResponse)
-            .collectList()
             .block();
     return ResponseEntity.ok(result);
   }

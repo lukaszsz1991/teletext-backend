@@ -1,13 +1,16 @@
-package pl.studia.teletext.teletext_backend.domain.services;
+package pl.studia.teletext.teletext_backend.domain.services.pages;
 
+import jakarta.transaction.Transactional;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextDetailedPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.TeletextPageMapper;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPage;
 import pl.studia.teletext.teletext_backend.domain.repositories.TeletextPageRepository;
 import pl.studia.teletext.teletext_backend.exceptions.PageNotFoundException;
 
@@ -15,6 +18,7 @@ import pl.studia.teletext.teletext_backend.exceptions.PageNotFoundException;
 @RequiredArgsConstructor
 public class TeletextPageService {
 
+  private final TeletextPageGeneratorService pageGeneratorService;
   private final TeletextPageRepository teletextPageRepository;
   private final TeletextPageMapper mapper;
 
@@ -23,8 +27,14 @@ public class TeletextPageService {
         teletextPageRepository
             .findByPageNumberWithContent(pageNumber)
             .orElseThrow(
-                () -> new PageNotFoundException("Page with number " + pageNumber + " not found"));
-    return mapper.toDetailedPageResponse(page);
+                () -> new PageNotFoundException("Nie odnaleziono strony o numerze " + pageNumber));
+
+    var result =
+        page.getTemplate() != null
+            ? pageGeneratorService.generatePageFromTemplate(page).block()
+            : page;
+
+    return mapper.toDetailedPageResponse(result);
   }
 
   public List<TeletextPageResponse> getPagesByCategory(TeletextCategory category) {
@@ -32,5 +42,20 @@ public class TeletextPageService {
         .map(mapper::toPageResponse)
         .sorted(Comparator.comparing(TeletextPageResponse::pageNumber))
         .toList();
+  }
+
+  public List<TeletextPageResponse> getAllPages(TeletextCategory category) {
+    return Optional.ofNullable(category)
+        .map(teletextPageRepository::findAllByCategory)
+        .orElseGet(teletextPageRepository::findAll)
+        .stream()
+        .map(mapper::toPageResponse)
+        .toList();
+  }
+
+  // TODO: should use CreateTeletextPageRequest dto instead of entity
+  @Transactional
+  public TeletextPage save(TeletextPage page) {
+    return teletextPageRepository.save(page);
   }
 }

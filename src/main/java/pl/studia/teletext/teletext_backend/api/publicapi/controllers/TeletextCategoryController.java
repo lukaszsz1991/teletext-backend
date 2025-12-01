@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextCategoryResponse;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
-import pl.studia.teletext.teletext_backend.domain.services.TeletextCategoryService;
+import pl.studia.teletext.teletext_backend.domain.services.pages.TeletextCategoryService;
 
 @RestController
 @RequestMapping("/api/public/categories")

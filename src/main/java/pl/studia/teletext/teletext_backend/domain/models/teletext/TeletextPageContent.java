@@ -10,9 +10,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.sql.Timestamp;
+import java.util.Map;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "page_contents")
@@ -28,6 +31,13 @@ public class TeletextPageContent {
 
   @Column(columnDefinition = "TEXT", nullable = false)
   private String description;
+
+  @Column(nullable = false)
+  private String source = "manual";
+
+  @JdbcTypeCode(SqlTypes.JSON)
+  @Column(columnDefinition = "jsonb")
+  private Map<String, Object> additionalData;
 
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "page_id", nullable = false)

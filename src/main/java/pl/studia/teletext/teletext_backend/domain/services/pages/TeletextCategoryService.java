@@ -1,4 +1,4 @@
-package pl.studia.teletext.teletext_backend.domain.services;
+package pl.studia.teletext.teletext_backend.domain.services.pages;
 
 import java.util.Arrays;
 import java.util.HashSet;
