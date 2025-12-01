@@ -8,9 +8,10 @@ public enum TeletextCategory {
   SPORTS(
       "Sport", "Wyniki i aktualności sportowe", 200, new String[] {"sport-matches", "sport-news"}),
   LOTTERY("Gry losowe", "Wyniki lotto i innych gier", 300, new String[] {"lottery"}),
+  TV("Program TV", "Program telewizyjny", 400, new String[] {"tv-program"}),
   WEATHER("Pogoda", "Prognozy i warunki pogodowe", 500, new String[] {"weather"}),
   JOBS("Oferty pracy", "Aktualne oferty zatrudnienia", 600, new String[] {"job-offers"}),
-  HOROSCOPE("Horoskop", "Dzienne i tygodniowe horoskopy", 700, new String[] {"hooroscope"}),
+  HOROSCOPE("Horoskop", "Dzienne i tygodniowe horoskopy", 700, new String[] {"horoscope"}),
   FINANCE("Finanse", "Kursy, giełda i ekonomia", 800, new String[] {"exchange-rate"}),
   MISC("Różne", "Pozostałe informacje", 900, new String[] {"manual"});
 
