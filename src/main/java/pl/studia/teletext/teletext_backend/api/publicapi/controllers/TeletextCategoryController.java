@@ -24,8 +24,7 @@ public class TeletextCategoryController {
 
   @GetMapping("{category}")
   public ResponseEntity<TeletextCategoryResponse> getCategoryByName(
-    @PathVariable TeletextCategory category
-  ) {
+      @PathVariable TeletextCategory category) {
     return ResponseEntity.ok(teletextCategoryService.getCategoryByName(category));
   }
 }

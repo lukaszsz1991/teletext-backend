@@ -24,17 +24,15 @@ public class TeletextPageController {
 
   @GetMapping
   public ResponseEntity<List<TeletextPageResponse>> getAllPagesByCategory(
-    @RequestParam TeletextCategory category
-  ) {
-    //TODO: add pagination and filtering (filter by: pagenumber [between?], title and category)
-    //TODO: sort by page number asc (or add sorting as an option)
+      @RequestParam TeletextCategory category) {
+    // TODO: add pagination and filtering (filter by: pagenumber [between?], title and category)
+    // TODO: sort by page number asc (or add sorting as an option)
     return ResponseEntity.ok(teletextPageService.getPagesByCategory(category));
   }
 
   @GetMapping("{pageNumber}")
   public ResponseEntity<TeletextDetailedPageResponse> getPageByNumber(
-    @PathVariable Integer pageNumber
-  ) {
+      @PathVariable Integer pageNumber) {
     var page = teletextPageService.getPageWithContent(pageNumber);
     teletextPageStatsService.recordPageVisit(page.id()); // TODO: move it to the middleware
     return ResponseEntity.ok(page);

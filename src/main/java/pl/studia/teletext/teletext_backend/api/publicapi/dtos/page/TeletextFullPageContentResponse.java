@@ -4,10 +4,9 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 public record TeletextFullPageContentResponse(
-  String source,
-  String title,
-  String description,
-  Map<String, Object> additionalData,
-  LocalDateTime createdAt,
-  LocalDateTime updatedAt
-) { }
+    String source,
+    String title,
+    String description,
+    Map<String, Object> additionalData,
+    LocalDateTime createdAt,
+    LocalDateTime updatedAt) {}

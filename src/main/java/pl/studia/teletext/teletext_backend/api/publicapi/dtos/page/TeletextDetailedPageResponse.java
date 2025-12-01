@@ -8,5 +8,4 @@ public record TeletextDetailedPageResponse(
     TeletextCategoryResponse category,
     TeletextFullPageContentResponse content,
     LocalDateTime createdAt,
-    LocalDateTime updatedAt
-){}
+    LocalDateTime updatedAt) {}

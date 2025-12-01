@@ -33,11 +33,9 @@ public class TeletextPageContent {
   @JoinColumn(name = "page_id", nullable = false)
   private TeletextPage page;
 
-  @CreationTimestamp
-  private Timestamp createdAt;
+  @CreationTimestamp private Timestamp createdAt;
 
-  @UpdateTimestamp
-  private Timestamp updatedAt;
+  @UpdateTimestamp private Timestamp updatedAt;
 
   private Timestamp deletedAt;
 }

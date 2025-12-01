@@ -36,9 +36,10 @@ public class TeletextCategoryService {
 
   public TeletextCategory getCategoryByExternalDataSource(String source) {
     return Arrays.stream(TeletextCategory.values())
-      .filter(cat -> Arrays.stream(cat.getMappedSources()).anyMatch(s -> s.equalsIgnoreCase(source)))
-      .findFirst()
-      .orElse(TeletextCategory.MISC);
+        .filter(
+            cat -> Arrays.stream(cat.getMappedSources()).anyMatch(s -> s.equalsIgnoreCase(source)))
+        .findFirst()
+        .orElse(TeletextCategory.MISC);
   }
 
   /**
