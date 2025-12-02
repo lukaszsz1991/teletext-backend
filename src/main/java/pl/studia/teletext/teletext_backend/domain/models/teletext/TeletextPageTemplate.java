@@ -3,7 +3,6 @@ package pl.studia.teletext.teletext_backend.domain.models.teletext;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.Map;
-
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
