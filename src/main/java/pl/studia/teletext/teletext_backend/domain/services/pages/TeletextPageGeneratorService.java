@@ -1,7 +1,5 @@
 package pl.studia.teletext.teletext_backend.domain.services.pages;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Map;
@@ -46,13 +44,13 @@ public class TeletextPageGeneratorService {
                     new IllegalArgumentException(
                         "Do generatora stron z szablonu przekazano stronę bez template_id. Strona: "
                             + page.getPageNumber()));
-    var config = parseJson(template.getConfigJson());
 
     if (template.getSource() == null) {
       return Mono.error(
           new IllegalArgumentException("Brak źródła w szablonie strony: " + template.getName()));
     }
 
+    var config = template.getConfigJson();
     Mono<ExternalDataResponse> responseMono =
         switch (template.getSource()) {
           case "exchange-rate" -> getNbpData(config);
@@ -153,14 +151,5 @@ public class TeletextPageGeneratorService {
     return horoscopeService
         .getSingleSignHoroscope(sign, forTomorrow)
         .map(horoscopeExternalMapper::toExternalDataResponse);
-  }
-
-  private Map<String, Object> parseJson(String json) {
-    if (json.isBlank()) return Map.of();
-    try {
-      return new ObjectMapper().readValue(json, new TypeReference<>() {});
-    } catch (Exception e) {
-      throw new RuntimeException("Niepoprawna wartość JSON w szablonie strony!", e);
-    }
   }
 }

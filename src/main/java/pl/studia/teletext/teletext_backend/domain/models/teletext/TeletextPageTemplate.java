@@ -2,9 +2,13 @@ package pl.studia.teletext.teletext_backend.domain.models.teletext;
 
 import jakarta.persistence.*;
 import java.sql.Timestamp;
+import java.util.Map;
+
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "page_templates")
@@ -25,7 +29,8 @@ public class TeletextPageTemplate {
   @Column(nullable = false)
   private TeletextCategory category;
 
-  private String configJson;
+  @JdbcTypeCode(SqlTypes.JSON)
+  private Map<String, Object> configJson;
 
   @CreationTimestamp private Timestamp createdAt;
 
