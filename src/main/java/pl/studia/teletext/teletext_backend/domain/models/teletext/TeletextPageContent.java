@@ -36,7 +36,6 @@ public class TeletextPageContent {
   private String source = "manual";
 
   @JdbcTypeCode(SqlTypes.JSON)
-  @Column(columnDefinition = "jsonb")
   private Map<String, Object> additionalData;
 
   @OneToOne(fetch = FetchType.LAZY)

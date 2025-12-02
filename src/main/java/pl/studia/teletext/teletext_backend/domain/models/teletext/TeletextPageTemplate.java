@@ -25,7 +25,6 @@ public class TeletextPageTemplate {
   @Column(nullable = false)
   private TeletextCategory category;
 
-  @Column(columnDefinition = "jsonb")
   private String configJson;
 
   @CreationTimestamp private Timestamp createdAt;
