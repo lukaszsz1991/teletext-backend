@@ -55,7 +55,7 @@ public class TeletextCategoryService {
     int start = mainPageNum + 1;
     int end = mainPageNum + 99;
     List<Integer> used =
-        teletextPageService.getPagesByCategory(category).stream()
+        teletextPageService.getPagesByCategory(category, null).stream()
             .map(TeletextPageResponse::pageNumber)
             .sorted()
             .toList();

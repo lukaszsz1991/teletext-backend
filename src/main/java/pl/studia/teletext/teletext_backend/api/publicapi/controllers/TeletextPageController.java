@@ -23,11 +23,10 @@ public class TeletextPageController {
   private final TeletextPageStatsService teletextPageStatsService;
 
   @GetMapping
-  public ResponseEntity<List<TeletextPageResponse>> getAllPagesByCategory(
-      @RequestParam TeletextCategory category) {
-    // TODO: add pagination and filtering (filter by: pagenumber [between?], title and category)
-    // TODO: sort by page number asc (or add sorting as an option)
-    return ResponseEntity.ok(teletextPageService.getPagesByCategory(category));
+  public ResponseEntity<List<TeletextPageResponse>> getAllPages(
+      @RequestParam TeletextCategory category,
+      @RequestParam(required = false) String title) {
+    return ResponseEntity.ok(teletextPageService.getPagesByCategory(category, title));
   }
 
   @GetMapping("{pageNumber}")
