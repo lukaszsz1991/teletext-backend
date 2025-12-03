@@ -1,17 +1,6 @@
 package pl.studia.teletext.teletext_backend.domain.models.teletext;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
 import lombok.Data;
@@ -31,18 +20,19 @@ public class TeletextPage {
   @Column(unique = true, nullable = false)
   private Integer pageNumber;
 
-  @Column(nullable = false)
-  private String title;
-
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private TeletextCategory category;
 
-  @OneToMany(mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<TeletextPageContent> content;
+  @OneToOne(mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true)
+  private TeletextPageContent content;
 
   @OneToMany(mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<TeletextPageStats> stats;
+
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "template_id")
+  private TeletextPageTemplate template;
 
   @CreationTimestamp private Timestamp createdAt;
 
