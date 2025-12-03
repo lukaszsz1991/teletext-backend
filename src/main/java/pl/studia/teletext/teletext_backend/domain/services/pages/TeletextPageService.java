@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextDetailedPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.TeletextPageMapper;
@@ -58,7 +57,7 @@ public class TeletextPageService {
   public List<TeletextPageResponse> getAllPages(TeletextCategory category) {
     return Optional.ofNullable(category)
         .map(teletextPageRepository::findAllByCategory)
-        .orElseGet(teletextPageRepository::findAll)
+        .orElseGet(teletextPageRepository::findAllActive)
         .stream()
         .map(mapper::toPageResponse)
         .toList();

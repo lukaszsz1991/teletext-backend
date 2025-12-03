@@ -33,7 +33,8 @@ public class TeletextPageContent {
   private String description;
 
   @Column(nullable = false)
-  private String source = "manual";
+  private String
+      source; // przy tworzeniu nowej storny powinno być manual. Przemyśleć dodanie enuma.
 
   @JdbcTypeCode(SqlTypes.JSON)
   private Map<String, Object> additionalData;

@@ -1,7 +1,6 @@
 CREATE TABLE IF NOT EXISTS pages (
     id BIGSERIAL PRIMARY KEY,
     page_number INT NOT NULL UNIQUE,
-    title VARCHAR(255) NOT NULL,
     category VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -10,21 +9,24 @@ CREATE TABLE IF NOT EXISTS pages (
 
 CREATE TABLE IF NOT EXISTS page_contents (
     id BIGSERIAL PRIMARY KEY,
-    content TEXT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
     page_id BIGINT NOT NULL REFERENCES pages(id) ON DELETE CASCADE,
+    source VARCHAR(255),
+    additional_data JSON,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP
 );
 
-INSERT INTO pages (page_number, title, category)
-VALUES
-    (100, 'Wiadomości lokalne', 'NEWS'),
-    (200, 'Prognoza pogody', 'WEATHER');
+ALTER TABLE page_contents ADD CONSTRAINT uq_page_contents_page_id UNIQUE (page_id);
 
-INSERT INTO page_contents (content, page_id)
+INSERT INTO pages (page_number, category)
 VALUES
-    ('Dziś w mieście odbędzie się festiwal muzyki.', 1),
-    ('Nowy projekt rewitalizacji parku miejskiego.', 1),
-    ('Temperatura w Warszawie: 18°C, słonecznie.', 2),
-    ('Prognoza na jutro: przelotne opady deszczu.', 2);
+    (101, 'NEWS'),
+    (901, 'MISC');
+
+INSERT INTO page_contents (title, description, page_id)
+VALUES
+    ('Wiadomość lokalna','Dziś w mieście odbędzie się festiwal muzyki.', 1),
+    ('Dodatkowa informacja wprowadzona przez administratora','Temperatura w Warszawie: 18°C, słonecznie.', 2);

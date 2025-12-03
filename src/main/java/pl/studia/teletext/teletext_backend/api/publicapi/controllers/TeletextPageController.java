@@ -24,8 +24,7 @@ public class TeletextPageController {
 
   @GetMapping
   public ResponseEntity<List<TeletextPageResponse>> getAllPages(
-      @RequestParam TeletextCategory category,
-      @RequestParam(required = false) String title) {
+      @RequestParam TeletextCategory category, @RequestParam(required = false) String title) {
     return ResponseEntity.ok(teletextPageService.getPagesByCategory(category, title));
   }
 

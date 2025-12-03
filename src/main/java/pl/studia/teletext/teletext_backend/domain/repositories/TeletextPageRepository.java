@@ -18,7 +18,7 @@ public interface TeletextPageRepository extends JpaRepository<TeletextPage, Long
   List<TeletextPage> findByCategoryWithContent(TeletextCategory category);
 
   @Query("SELECT p FROM TeletextPage p WHERE p.deletedAt IS NULL")
-  List<TeletextPage> findAll();
+  List<TeletextPage> findAllActive();
 
   @Query("SELECT p FROM TeletextPage p WHERE p.category = :category AND p.deletedAt IS NULL")
   List<TeletextPage> findAllByCategory(TeletextCategory category);

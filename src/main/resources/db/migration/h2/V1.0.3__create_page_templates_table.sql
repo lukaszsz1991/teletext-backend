@@ -11,8 +11,6 @@ CREATE TABLE page_templates
     CONSTRAINT pk_page_templates PRIMARY KEY (id)
 );
 
-ALTER TABLE page_contents ADD COLUMN additional_data JSON;
-
 INSERT INTO page_templates(name, source, category, config_json) VALUES
 ('Kursy Walut USD', 'exchange-rate', 'FINANCE', '{"currencyCode":"USD","lastCount":5}'),
 ('Kursy Walut EUR', 'exchange-rate', 'FINANCE', '{"currencyCode":"EUR","lastCount":5}'),
