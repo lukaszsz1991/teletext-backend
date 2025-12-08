@@ -5,13 +5,14 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.ExternalDataResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.integrations.NewsResponse;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextSource;
 
 @Component
 public class NewsExternalDataMapper implements ExternalDataMapper<NewsResponse> {
   @Override
   public ExternalDataResponse toExternalDataResponse(NewsResponse source) {
     return new ExternalDataResponse(
-        "news", source.title(), source.description(), toAdditionalData(source));
+        TeletextSource.NEWS, source.title(), source.description(), toAdditionalData(source));
   }
 
   @Override

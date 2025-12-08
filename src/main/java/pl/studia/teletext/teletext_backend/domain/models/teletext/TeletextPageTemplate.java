@@ -21,8 +21,9 @@ public class TeletextPageTemplate {
   @Column(nullable = false, unique = true)
   private String name;
 
+  @Enumerated(EnumType.STRING)
   @Column(nullable = false)
-  private String source; // must match the TeletextCategory source
+  private TeletextSource source; // must match the TeletextCategory source
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)

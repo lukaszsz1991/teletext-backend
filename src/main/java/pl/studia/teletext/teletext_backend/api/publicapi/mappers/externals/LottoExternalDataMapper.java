@@ -5,13 +5,14 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.ExternalDataResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.integrations.LotteryResponse;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextSource;
 
 @Component
 public class LottoExternalDataMapper implements ExternalDataMapper<LotteryResponse> {
   @Override
   public ExternalDataResponse toExternalDataResponse(LotteryResponse source) {
     return new ExternalDataResponse(
-        "lottery",
+        TeletextSource.LOTTERY,
         "Informacje o grze Lotto",
         "Aktualne informacje oraz wyniki ostatniego losowania gry Lotto",
         toAdditionalData(source));

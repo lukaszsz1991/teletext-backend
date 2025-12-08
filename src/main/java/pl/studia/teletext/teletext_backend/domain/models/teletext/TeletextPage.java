@@ -52,4 +52,10 @@ public class TeletextPage {
               + this.category.getTitle());
     }
   }
+
+  public String getTitle() {
+    if(this.content != null) return this.content.getTitle();
+    if(this.template != null) return this.template.getName();
+    throw new IllegalStateException("Brak tytułu strony o numerze " + this.pageNumber + ". Nieprawidłowy stan obiektu.");
+  }
 }
