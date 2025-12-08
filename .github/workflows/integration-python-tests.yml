@@ -27,7 +27,15 @@ jobs:
         run: |
           chmod +x ./mvnw
           ./mvnw -q spring-boot:run -Plocal-dev &
-          sleep 20
+          echo "Waiting for backend to start..."
+          for i in {1..30}; do
+            if curl -s http://localhost:8080/actuator/health | grep -q '"status":"UP"'; then
+              echo "Backend is up"
+              break
+            fi
+            echo "Waiting for backend to be ready ($i/30)..."
+            sleep 2
+          done
 
       - name: Set up Python
         uses: actions/setup-python@v4
