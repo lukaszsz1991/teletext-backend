@@ -12,7 +12,10 @@ public class WeatherExternalDataMapper implements ExternalDataMapper<WeatherResp
   @Override
   public ExternalDataResponse toExternalDataResponse(WeatherResponse source) {
     return new ExternalDataResponse(
-        TeletextSource.WEATHER, source.cityName(), "Tygodniowa prognoza pogody", toAdditionalData(source));
+        TeletextSource.WEATHER,
+        source.cityName(),
+        "Tygodniowa prognoza pogody",
+        toAdditionalData(source));
   }
 
   @Override
