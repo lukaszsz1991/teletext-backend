@@ -21,9 +21,11 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
+      - name: Generate JWT secret
+        id: generate_secret
+        run: echo "TELETEXT_JWT_SECRET=$(openssl rand -hex 32)" >> $GITHUB_ENV
+
       - name: Run backend
-        env:
-          TELETEXT_JWT_SECRET: ${{ secrets.TELETEXT_JWT_SECRET }}
         run: |
           chmod +x ./mvnw
           ./mvnw -q spring-boot:run -Plocal-dev &
