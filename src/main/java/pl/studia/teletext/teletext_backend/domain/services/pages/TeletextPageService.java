@@ -1,11 +1,11 @@
 package pl.studia.teletext.teletext_backend.domain.services.pages;
 
-import jakarta.transaction.Transactional;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextDetailedPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.TeletextPageMapper;

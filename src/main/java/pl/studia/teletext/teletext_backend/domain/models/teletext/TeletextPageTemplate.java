@@ -2,6 +2,7 @@ package pl.studia.teletext.teletext_backend.domain.models.teletext;
 
 import jakarta.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Map;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,6 +32,13 @@ public class TeletextPageTemplate {
 
   @JdbcTypeCode(SqlTypes.JSON)
   private Map<String, Object> configJson;
+
+  @OneToMany(
+      fetch = FetchType.EAGER,
+      mappedBy = "template",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<TeletextPage> pages;
 
   @CreationTimestamp private Timestamp createdAt;
 

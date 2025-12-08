@@ -31,10 +31,11 @@ public class GlobalExceptionHandler {
     var problemDetail = ProblemDetail.forStatus(status);
     problemDetail.setDetail(ex.getMessage());
     switch (ex.getClass().getSimpleName()) {
-      case "UserNotFoundException" -> problemDetail.setTitle("User Not Found");
-      case "PageNotFoundException" -> problemDetail.setTitle("Page Not Found");
-      case "CityNotFoundException" -> problemDetail.setTitle("City Not Found");
-      default -> problemDetail.setTitle("Resource Not Found");
+      case "UserNotFoundException" -> problemDetail.setTitle("Użytkownik nie znaleziony");
+      case "PageNotFoundException" -> problemDetail.setTitle("Strona telegazety nie znaleziona");
+      case "TemplateNotFoundException" -> problemDetail.setTitle("Szablon strony nie znaleziony");
+      case "CityNotFoundException" -> problemDetail.setTitle("Miasto nie znalezione");
+      default -> problemDetail.setTitle("Nie znaleziono zasobu");
     }
     return ResponseEntity.status(status).body(problemDetail);
   }
