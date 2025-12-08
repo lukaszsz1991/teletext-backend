@@ -10,6 +10,7 @@ import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextCateg
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.TeletextPageMapper;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextSource;
 import pl.studia.teletext.teletext_backend.exceptions.IllegalPageNumberException;
 
 @Service
@@ -34,10 +35,9 @@ public class TeletextCategoryService {
     return teletextPageMapper.toCategoryResponse(category, nextFreePage);
   }
 
-  public TeletextCategory getCategoryByExternalDataSource(String source) {
+  public TeletextCategory getCategoryByExternalDataSource(TeletextSource source) {
     return Arrays.stream(TeletextCategory.values())
-        .filter(
-            cat -> Arrays.stream(cat.getMappedSources()).anyMatch(s -> s.equalsIgnoreCase(source)))
+        .filter(cat -> Arrays.asList(cat.getMappedSources()).contains(source))
         .findFirst()
         .orElse(TeletextCategory.MISC);
   }

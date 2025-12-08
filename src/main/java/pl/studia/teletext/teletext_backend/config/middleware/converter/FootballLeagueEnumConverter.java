@@ -8,11 +8,15 @@ import pl.studia.teletext.teletext_backend.clients.highlightly.FootballLeague;
 public class FootballLeagueEnumConverter implements Converter<String, FootballLeague> {
   @Override
   public FootballLeague convert(String source) {
-    for (FootballLeague league : FootballLeague.values()) {
-      if (league.getParamName().equalsIgnoreCase(source)) {
-        return league;
+    try {
+      return FootballLeague.valueOf(source);
+    } catch (IllegalArgumentException ignored) {
+      for (FootballLeague league : FootballLeague.values()) {
+        if (league.getParamName().equalsIgnoreCase(source)) {
+          return league;
+        }
       }
     }
-    return null;
+    throw new IllegalArgumentException("Nie znaleziono ligi piłkarskiej o nazwie: " + source);
   }
 }

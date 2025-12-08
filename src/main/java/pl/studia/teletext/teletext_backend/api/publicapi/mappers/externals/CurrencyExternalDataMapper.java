@@ -5,13 +5,14 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.ExternalDataResponse;
 import pl.studia.teletext.teletext_backend.clients.nbp.NbpRateResponse;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextSource;
 
 @Component
 public class CurrencyExternalDataMapper implements ExternalDataMapper<NbpRateResponse> {
   @Override
   public ExternalDataResponse toExternalDataResponse(NbpRateResponse source) {
     return new ExternalDataResponse(
-        "exchange-rate",
+        TeletextSource.EXCHANGE_RATE,
         "Kursy dla: " + source.currency(),
         "Kursy walut z Narodowego Banku Polskiego",
         toAdditionalData(source));

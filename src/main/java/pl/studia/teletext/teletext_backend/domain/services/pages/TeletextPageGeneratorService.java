@@ -53,14 +53,14 @@ public class TeletextPageGeneratorService {
     var config = template.getConfigJson();
     Mono<ExternalDataResponse> responseMono =
         switch (template.getSource()) {
-          case "exchange-rate" -> getNbpData(config);
-          case "sport-matches" -> getFootballMatchData(config);
-          case "sport-table" -> getFootballTableData(config);
-          case "news" -> getNewsData(config);
-          case "lottery" -> getLottoData();
-          case "job-offers" -> getJobOffersData(config);
-          case "weather" -> getWeatherData(config);
-          case "horoscope" -> getHoroscopeData(config);
+          case EXCHANGE_RATE -> getNbpData(config);
+          case SPORT_MATCHES -> getFootballMatchData(config);
+          case SPORT_TABLE -> getFootballTableData(config);
+          case NEWS -> getNewsData(config);
+          case LOTTERY -> getLottoData();
+          case JOB_OFFERS -> getJobOffersData(config);
+          case WEATHER -> getWeatherData(config);
+          case HOROSCOPE -> getHoroscopeData(config);
           default ->
               Mono.error(
                   new IllegalArgumentException(
