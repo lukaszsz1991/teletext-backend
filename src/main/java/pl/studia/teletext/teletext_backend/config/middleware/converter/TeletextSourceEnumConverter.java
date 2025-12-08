@@ -17,6 +17,6 @@ public class TeletextSourceEnumConverter implements Converter<String, TeletextSo
         }
       }
     }
-    return null;
+    throw new IllegalArgumentException("Nie znaleziono źródła telegazety o nazwie: " + source);
   }
 }

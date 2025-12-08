@@ -17,6 +17,6 @@ public class FootballLeagueEnumConverter implements Converter<String, FootballLe
         }
       }
     }
-    return null;
+    throw new IllegalArgumentException("Nie znaleziono ligi piłkarskiej o nazwie: " + source);
   }
 }
