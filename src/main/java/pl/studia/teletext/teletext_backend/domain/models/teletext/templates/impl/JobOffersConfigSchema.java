@@ -1,0 +1,48 @@
+package pl.studia.teletext.teletext_backend.domain.models.teletext.templates.impl;
+
+import java.util.List;
+import java.util.Map;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.templates.ConfigSchema;
+import pl.studia.teletext.teletext_backend.exceptions.InvalidJsonConfigException;
+
+public class JobOffersConfigSchema implements ConfigSchema {
+  @Override
+  public void validate(Map<String, Object> config) {
+    if(config == null || config.isEmpty()) {
+      throw new InvalidJsonConfigException("Konfiguracja nie może być pusta dla job-offers");
+    }
+
+    for(String field : requiredFields()) {
+      if(!config.containsKey(field)) {
+        throw new InvalidJsonConfigException("Brak wymaganego pola w konfiguracji job-offers: " + field);
+      }
+    }
+
+    if(!(config.get("keywords") instanceof String)) {
+      throw new InvalidJsonConfigException("Pole keywords musi być ciągiem znaków w konfiguracji job-offers");
+    }
+
+    if(!(config.get("location") instanceof String)) {
+      throw new InvalidJsonConfigException("Pole location musi być ciągiem znaków w konfiguracji job-offers");
+    }
+
+    if(!(config.get("lastCount") instanceof Integer)) {
+      throw new InvalidJsonConfigException("Pole lastCount musi być liczbą w konfiguracji job-offers");
+    }
+  }
+
+  @Override
+  public List<String> requiredFields() {
+    return List.of("keywords", "location");
+  }
+
+  @Override
+  public List<String> optionalFields() {
+    return List.of("addedOrder");
+  }
+
+  @Override
+  public Map<String, String> fieldTypes() {
+    return Map.of("keywords", "String (separated by ',')", "location", "String", "addedOrder", "Integer");
+  }
+}

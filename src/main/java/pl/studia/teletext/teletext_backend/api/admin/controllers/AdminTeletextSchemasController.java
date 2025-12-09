@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.ConfigSchemaResponse;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextSource;
-import pl.studia.teletext.teletext_backend.domain.services.pages.TeletextSourceService;
+import pl.studia.teletext.teletext_backend.domain.services.pages.TeletextSchemaService;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminTeletextSchemasController {
 
-  private final TeletextSourceService teletextSourceService;
+  private final TeletextSchemaService teletextSourceService;
 
   @GetMapping("{source}")
   public ResponseEntity<ConfigSchemaResponse> getSourceSchema(

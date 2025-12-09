@@ -7,11 +7,10 @@ import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextSource
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class TeletextSourceService {
+public class TeletextSchemaService {
 
   private final ConfigSchemaFactory configSchemaFactory;
 
