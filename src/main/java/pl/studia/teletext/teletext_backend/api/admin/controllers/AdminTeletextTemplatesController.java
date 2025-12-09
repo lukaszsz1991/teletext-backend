@@ -1,10 +1,14 @@
 package pl.studia.teletext.teletext_backend.api.admin.controllers;
 
+import java.net.URI;
 import java.util.List;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TeletextPageFullTemplateResponse;
+import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TeletextPageTemplateCreateRequest;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TeletextPageTemplateResponse;
 import pl.studia.teletext.teletext_backend.api.admin.mappers.TeletextPageTemplateMapper;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
@@ -36,9 +40,12 @@ public class AdminTeletextTemplatesController {
   }
 
   @PostMapping
-  public ResponseEntity<TeletextPageTemplateResponse> createTemplate() {
-    // TODO: implement
-    return ResponseEntity.status(201).build();
+  public ResponseEntity<TeletextPageTemplateResponse> createTemplate(
+      @RequestBody @Valid TeletextPageTemplateCreateRequest request) {
+    var template = pageTemplateService.createTemplate(request);
+    var response = pageTemplateMapper.toResponse(template);
+    var uri = URI.create("/api/admin/templates/" + response.id());
+    return ResponseEntity.created(uri).body(response);
   }
 
   @PutMapping

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
-import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPageTemplate;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.templates.TeletextPageTemplate;
 
 public interface TeletextPageTemplateRepository extends JpaRepository<TeletextPageTemplate, Long> {
 

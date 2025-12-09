@@ -1,4 +1,4 @@
-package pl.studia.teletext.teletext_backend.domain.models.teletext;
+package pl.studia.teletext.teletext_backend.domain.models.teletext.templates;
 
 import jakarta.persistence.*;
 import java.sql.Timestamp;
@@ -9,6 +9,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPage;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextSource;
 
 @Entity
 @Table(name = "page_templates")

@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.templates.TeletextPageTemplate;
 import pl.studia.teletext.teletext_backend.exceptions.IllegalPageNumberException;
 
 @Entity
