@@ -1,5 +1,6 @@
 package pl.studia.teletext.teletext_backend.domain.models.teletext;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 
 @Getter
@@ -60,6 +61,11 @@ public enum TeletextCategory {
     this.mainPage = mainPage;
     this.mappedSources = mappedSources;
   }
+
+  @JsonCreator
+  public static TeletextCategory fromString(String value) {
+    return TeletextCategory.valueOf(value.trim().toUpperCase());
+   }
 
   private static void validateMainPage(int mainPage) {
     if (mainPage < 100 || mainPage > 900)

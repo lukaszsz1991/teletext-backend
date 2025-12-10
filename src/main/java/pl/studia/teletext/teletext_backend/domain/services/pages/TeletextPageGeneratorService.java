@@ -88,14 +88,8 @@ public class TeletextPageGeneratorService {
     int defaultLastCount = 5;
     var currencyCode = (String) config.get("currencyCode");
     var lastCount = (int) config.getOrDefault("lastCount", defaultLastCount);
-    var currency =
-        Optional.ofNullable(currencyCode)
-            .orElseThrow(
-                () ->
-                    new IllegalArgumentException(
-                        "W konfiguracji szablonu NBP brakuje pola 'currencyCode'"));
     return currencyService
-        .getLastCurrencyRates(currency, lastCount)
+        .getLastCurrencyRates(currencyCode, lastCount)
         .map(currencyExternalDataMapper::toExternalDataResponse);
   }
 

@@ -1,5 +1,6 @@
 package pl.studia.teletext.teletext_backend.domain.models.teletext;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -18,4 +19,19 @@ public enum TeletextSource {
   WEATHER("weather");
 
   private final String name;
+
+  @JsonCreator
+  public static TeletextSource fromString(String value) {
+    value = value.trim().toUpperCase().replaceAll("-", "_");
+    try {
+      return TeletextSource.valueOf(value);
+    } catch (IllegalArgumentException ignored) {
+      for (TeletextSource ttSource : TeletextSource.values()) {
+        if (ttSource.getName().equals(value)) {
+          return ttSource;
+        }
+      }
+    }
+    throw new IllegalArgumentException("Nie znaleziono źródła telegazety o nazwie: " + value);
+  }
 }

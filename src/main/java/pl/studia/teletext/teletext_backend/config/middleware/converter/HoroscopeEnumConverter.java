@@ -8,6 +8,6 @@ import pl.studia.teletext.teletext_backend.clients.horoscope.HoroscopeSign;
 public class HoroscopeEnumConverter implements Converter<String, HoroscopeSign> {
   @Override
   public HoroscopeSign convert(String source) {
-    return HoroscopeSign.valueOf(source.toUpperCase());
+    return HoroscopeSign.fromString(source);
   }
 }
