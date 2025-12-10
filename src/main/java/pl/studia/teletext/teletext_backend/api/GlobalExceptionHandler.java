@@ -15,10 +15,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import pl.studia.teletext.teletext_backend.exceptions.ExternalApiException;
-import pl.studia.teletext.teletext_backend.exceptions.IllegalPageNumberException;
-import pl.studia.teletext.teletext_backend.exceptions.JwtValidatingException;
-import pl.studia.teletext.teletext_backend.exceptions.NotFoundException;
+import pl.studia.teletext.teletext_backend.exceptions.*;
 
 @Log4j2
 @ControllerAdvice
@@ -47,6 +44,16 @@ public class GlobalExceptionHandler {
     var problemDetail =
         ProblemDetail.forStatusAndDetail(status, "JWT Validation Error: " + ex.getMessage());
     problemDetail.setTitle("Unauthorized");
+    return ResponseEntity.status(status).body(problemDetail);
+  }
+
+  @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+  @ExceptionHandler(InvalidJsonConfigException.class)
+  public ResponseEntity<ProblemDetail> handleInvalidJsonConfigException(InvalidJsonConfigException ex) {
+    var status = HttpStatus.UNPROCESSABLE_ENTITY;
+    var problemDetail =
+      ProblemDetail.forStatusAndDetail(status, "Błąd walidacji konfiuracji szablonu: " + ex.getMessage());
+    problemDetail.setTitle("Błąd walidacji");
     return ResponseEntity.status(status).body(problemDetail);
   }
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TeletextPageFullTemplateResponse;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TeletextPageTemplateCreateRequest;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TeletextPageTemplateResponse;
+import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TeletextPageTemplateUpdateRequest;
 import pl.studia.teletext.teletext_backend.api.admin.mappers.TeletextPageTemplateMapper;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
 import pl.studia.teletext.teletext_backend.domain.services.pages.TeletextPageTemplateService;
@@ -48,10 +49,14 @@ public class AdminTeletextTemplatesController {
     return ResponseEntity.created(uri).body(response);
   }
 
-  @PutMapping
-  public ResponseEntity<TeletextPageTemplateResponse> updateTemplate() {
-    // TODO: implement
-    return ResponseEntity.ok().build();
+  @PutMapping("{id}")
+  public ResponseEntity<TeletextPageTemplateResponse> updateTemplate(
+    @PathVariable Long id,
+    @RequestBody @Valid TeletextPageTemplateUpdateRequest request
+  ) {
+    var updatedTemplate = pageTemplateService.updateTemplate(id, request);
+    var response = pageTemplateMapper.toResponse(updatedTemplate);
+    return ResponseEntity.ok(response);
   }
 
   @PatchMapping("/{id}/activate")

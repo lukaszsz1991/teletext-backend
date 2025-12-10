@@ -1,10 +1,10 @@
 package pl.studia.teletext.teletext_backend.api.admin.mappers;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TeletextPageFullTemplateResponse;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TeletextPageTemplateCreateRequest;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TeletextPageTemplateResponse;
+import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TeletextPageTemplateUpdateRequest;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.TeletextPageMapper;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.templates.TeletextPageTemplate;
 
@@ -18,4 +18,7 @@ public interface TeletextPageTemplateMapper {
   TeletextPageFullTemplateResponse toFullResponse(TeletextPageTemplate template);
 
   TeletextPageTemplate toTemplate(TeletextPageTemplateCreateRequest request);
+
+  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  void updateTemplateFromRequest(TeletextPageTemplateUpdateRequest request, @MappingTarget TeletextPageTemplate template);
 }
