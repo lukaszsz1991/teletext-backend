@@ -38,26 +38,28 @@ public class TeletextPageService {
   }
 
   public List<TeletextPageResponse> getPagesByCategory(TeletextCategory category, String title) {
-    String t = (title == null) ? "" : title.toLowerCase().trim();
+    String titleNormalized = (title == null) ? "" : title.toLowerCase().trim();
     return teletextPageRepository.findByCategoryWithContent(category).stream()
         .filter(
             page -> {
-              if (t.isBlank()) return true;
+              if (titleNormalized.isBlank()) return true;
               var contentTitle =
                   page.getContent() != null ? page.getContent().getTitle().toLowerCase() : "";
               var templateTitle =
                   page.getTemplate() != null ? page.getTemplate().getName().toLowerCase() : "";
-              return contentTitle.contains(t) || templateTitle.contains(t);
+              return contentTitle.contains(titleNormalized)
+                  || templateTitle.contains(titleNormalized);
             })
         .map(mapper::toPageResponse)
         .sorted(Comparator.comparing(TeletextPageResponse::pageNumber))
         .toList();
   }
 
-  public List<TeletextPageResponse> getAllPages(TeletextCategory category) {
+  public List<TeletextPageResponse> getAllPages(
+      TeletextCategory category, boolean includeInactive) {
     return Optional.ofNullable(category)
-        .map(teletextPageRepository::findAllByCategory)
-        .orElseGet(teletextPageRepository::findAllActive)
+        .map(c -> teletextPageRepository.findAllByCategoryAndDeleted(c, includeInactive))
+        .orElseGet(() -> teletextPageRepository.findAllByDeleted(includeInactive))
         .stream()
         .map(mapper::toPageResponse)
         .toList();

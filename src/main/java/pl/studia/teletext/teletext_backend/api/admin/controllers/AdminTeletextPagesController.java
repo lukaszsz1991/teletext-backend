@@ -20,8 +20,9 @@ public class AdminTeletextPagesController {
 
   @GetMapping
   public ResponseEntity<List<TeletextPageResponse>> getAllPages(
-      @RequestParam(required = false) TeletextCategory category) {
-    var results = pageService.getAllPages(category);
+      @RequestParam(required = false) TeletextCategory category,
+      @RequestParam(defaultValue = "false") boolean includeInactive) {
+    var results = pageService.getAllPages(category, includeInactive);
     return ResponseEntity.ok(results);
   }
 }
