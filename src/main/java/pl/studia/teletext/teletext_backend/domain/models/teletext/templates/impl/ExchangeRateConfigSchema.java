@@ -24,7 +24,7 @@ public class ExchangeRateConfigSchema implements ConfigSchema {
           "Pole currencyCode musi być ciągiem znaków w konfiguracji exchange-rate");
     }
 
-    if (!(config.get("lastCount") instanceof Integer)) {
+    if (!(config.getOrDefault("lastCount", 1) instanceof Integer)) {
       throw new InvalidJsonConfigException(
           "Pole lastCount musi być liczbą w konfiguracji exchange-rate");
     }
@@ -32,12 +32,12 @@ public class ExchangeRateConfigSchema implements ConfigSchema {
 
   @Override
   public List<String> requiredFields() {
-    return List.of("currencyCode", "lastCount");
+    return List.of("currencyCode");
   }
 
   @Override
   public List<String> optionalFields() {
-    return List.of();
+    return List.of("lastCount");
   }
 
   @Override

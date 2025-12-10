@@ -42,10 +42,9 @@ public class TeletextPageTemplateService {
   @Transactional
   public TeletextPageTemplate createTemplate(@Valid TeletextPageTemplateCreateRequest request) {
     var template = teletextPageTemplateMapper.toTemplate(request);
-    var saved = pageTemplateRepository.save(template);
-    var schema = configSchemaFactory.getSchema(request.source());
-    schema.validate(saved.getConfigJson());
-    return saved;
+    var schema = configSchemaFactory.getSchema(template.getSource());
+    schema.validate(template.getConfigJson());
+    return pageTemplateRepository.save(template);
   }
 
   @Transactional
@@ -59,11 +58,9 @@ public class TeletextPageTemplateService {
                     new TemplateNotFoundException("Szablon strony o ID: " + id + " nie istnieje"));
 
     teletextPageTemplateMapper.updateTemplateFromRequest(request, existingTemplate);
-    var saved = pageTemplateRepository.save(existingTemplate);
-
-    var schema = configSchemaFactory.getSchema(saved.getSource());
-    schema.validate(saved.getConfigJson());
-    return saved;
+    var schema = configSchemaFactory.getSchema(existingTemplate.getSource());
+    schema.validate(existingTemplate.getConfigJson());
+    return pageTemplateRepository.save(existingTemplate);
   }
 
   @Transactional

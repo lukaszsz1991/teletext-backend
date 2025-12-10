@@ -97,7 +97,7 @@ public class AdminTeletextTemplatesController {
       summary = "Deletes teletext page template",
       description = "Marks a teletext page template as inactive (soft-delete) by its ID.")
   @ApiResponse(responseCode = "204", description = "Template successfully soft-deleted.")
-  public ResponseEntity<?> deleteTemplate(@PathVariable Long id) {
+  public ResponseEntity<Void> deleteTemplate(@PathVariable Long id) {
     pageTemplateService.deactivateTemplate(id);
     return ResponseEntity.noContent().build();
   }

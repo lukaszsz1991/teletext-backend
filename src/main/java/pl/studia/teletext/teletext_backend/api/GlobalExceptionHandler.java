@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
     var status = HttpStatus.UNPROCESSABLE_ENTITY;
     var problemDetail =
         ProblemDetail.forStatusAndDetail(
-            status, "Błąd walidacji konfiuracji szablonu: " + ex.getMessage());
+            status, "Błąd walidacji konfiguracji szablonu: " + ex.getMessage());
     problemDetail.setTitle("Błąd walidacji");
     return ResponseEntity.status(status).body(problemDetail);
   }

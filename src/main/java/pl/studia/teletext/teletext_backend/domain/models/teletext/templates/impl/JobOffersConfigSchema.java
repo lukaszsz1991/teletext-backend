@@ -29,9 +29,9 @@ public class JobOffersConfigSchema implements ConfigSchema {
           "Pole location musi być ciągiem znaków w konfiguracji job-offers");
     }
 
-    if (!(config.get("lastCount") instanceof Integer)) {
+    if (!(config.getOrDefault("addedOrder", 1) instanceof Integer)) {
       throw new InvalidJsonConfigException(
-          "Pole lastCount musi być liczbą w konfiguracji job-offers");
+          "Pole addedOrder musi być liczbą w konfiguracji job-offers");
     }
   }
 

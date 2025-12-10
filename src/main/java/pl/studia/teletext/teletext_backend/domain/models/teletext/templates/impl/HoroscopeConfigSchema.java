@@ -16,7 +16,7 @@ public class HoroscopeConfigSchema implements ConfigSchema {
     for (String field : requiredFields()) {
       if (!config.containsKey(field)) {
         throw new InvalidJsonConfigException(
-            "Brak wymaganego pola w konfiguracji horoscope " + field);
+            "Brak wymaganego pola w konfiguracji horoscope: " + field);
       }
     }
 
@@ -32,7 +32,7 @@ public class HoroscopeConfigSchema implements ConfigSchema {
           "Pole sign musi być ciągiem znaków w konfiguracji horoscope");
     }
 
-    if (!(config.get("forTomorrow") instanceof Integer)) {
+    if (!(config.getOrDefault("forTomorrow", false) instanceof Boolean)) {
       throw new InvalidJsonConfigException(
           "Pole forTomorrow musi być wartością Boolean w konfiguracji horoscope");
     }
