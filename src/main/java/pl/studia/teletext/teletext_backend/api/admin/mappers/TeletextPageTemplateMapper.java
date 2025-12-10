@@ -6,7 +6,6 @@ import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TeletextPageFullT
 import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TeletextPageTemplateCreateRequest;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TeletextPageTemplateResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.TeletextPageMapper;
-import pl.studia.teletext.teletext_backend.domain.models.teletext.templates.ConfigSchema;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.templates.TeletextPageTemplate;
 
 @Mapper(componentModel = "spring", uses = TeletextPageMapper.class)

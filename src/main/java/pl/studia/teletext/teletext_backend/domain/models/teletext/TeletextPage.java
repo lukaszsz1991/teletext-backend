@@ -52,6 +52,18 @@ public class TeletextPage {
               + " jest poza zakresem dla kategorii "
               + this.category.getTitle());
     }
+
+    if(this.template != null) {
+      if(!this.category.equals(this.template.getCategory())) {
+        throw new IllegalStateException(
+            "Szablon strony należy do innej kategorii niż sama strona. Strona: "
+                + this.pageNumber
+                + ", kategoria strony: "
+                + this.category
+                + ", kategoria szablonu: "
+                + this.template.getCategory());
+      }
+    }
   }
 
   public String getTitle() {

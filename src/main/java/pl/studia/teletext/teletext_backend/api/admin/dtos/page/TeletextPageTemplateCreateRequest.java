@@ -10,5 +10,5 @@ import java.util.Map;
 public record TeletextPageTemplateCreateRequest(
     @NotBlank(message = "Nazwa nie może być pusta") String name,
     @NotNull(message = "Pole source nie może być puste") TeletextSource source,
-    @NotNull(message = "Kategoria nie może być pusta")TeletextCategory category,
+    @NotNull(message = "Kategoria nie może być pusta") TeletextCategory category,
     Map<String, Object> configJson) {}

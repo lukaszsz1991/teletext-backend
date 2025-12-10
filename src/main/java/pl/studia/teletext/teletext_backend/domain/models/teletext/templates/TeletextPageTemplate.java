@@ -48,4 +48,10 @@ public class TeletextPageTemplate {
   @UpdateTimestamp private Timestamp updatedAt;
 
   private Timestamp deletedAt;
+
+  @PreUpdate
+  @PrePersist
+  private void validate() {
+    this.category.validateSource(this.source);
+  }
 }

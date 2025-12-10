@@ -65,12 +65,20 @@ public enum TeletextCategory {
   @JsonCreator
   public static TeletextCategory fromString(String value) {
     return TeletextCategory.valueOf(value.trim().toUpperCase());
-   }
+  }
 
   private static void validateMainPage(int mainPage) {
     if (mainPage < 100 || mainPage > 900)
       throw new IllegalArgumentException("Strona kategorii musi być między 100 a 900");
     if (mainPage % 100 != 0)
       throw new IllegalArgumentException("Strona kategorii musi być wielokrotnością 100");
+  }
+
+  public void validateSource(TeletextSource source) {
+    for (TeletextSource mappedSource : mappedSources) {
+      if (mappedSource == source) return;
+    }
+    throw new IllegalArgumentException(
+        "Źródło " + source.getName() + " nie jest powiązane z kategorią " + this.title);
   }
 }
