@@ -25,9 +25,10 @@ public class AdminTeletextTemplatesController {
 
   @GetMapping
   public ResponseEntity<List<TeletextPageTemplateResponse>> getTemplates(
-      @RequestParam(required = false) TeletextCategory category) {
+      @RequestParam(required = false) TeletextCategory category,
+      @RequestParam(defaultValue = "false") boolean includeInactive) {
     var results =
-        pageTemplateService.getAllTemplates(category).stream()
+        pageTemplateService.getAllTemplates(category, includeInactive).stream()
             .map(pageTemplateMapper::toResponse)
             .toList();
     return ResponseEntity.ok(results);
@@ -61,13 +62,14 @@ public class AdminTeletextTemplatesController {
 
   @PatchMapping("/{id}/activate")
   public ResponseEntity<Void> activateTemplate(@PathVariable Long id) {
-    // TODO: implement
+    pageTemplateService.activateTemplate(id);
     return ResponseEntity.noContent().build();
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteTemplate(@PathVariable Long id) {
-    // TODO: implement
+    // mark it in the docs as soft-delete - can be reactivated by PATCH: /api/admin/templates/{id}/activate
+    pageTemplateService.deactivateTemplate(id);
     return ResponseEntity.noContent().build();
   }
 }
