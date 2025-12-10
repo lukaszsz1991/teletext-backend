@@ -8,15 +8,6 @@ import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextSource
 public class TeletextSourceEnumConverter implements Converter<String, TeletextSource> {
   @Override
   public TeletextSource convert(String source) {
-    try {
-      return TeletextSource.valueOf(source);
-    } catch (IllegalArgumentException ignored) {
-      for (TeletextSource ttSource : TeletextSource.values()) {
-        if (ttSource.getName().equalsIgnoreCase(source)) {
-          return ttSource;
-        }
-      }
-    }
-    throw new IllegalArgumentException("Nie znaleziono źródła telegazety o nazwie: " + source);
+    return TeletextSource.fromString(source);
   }
 }

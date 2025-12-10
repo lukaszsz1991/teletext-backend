@@ -1,6 +1,5 @@
 package pl.studia.teletext.teletext_backend.domain.services.pages;
 
-import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Comparator;
@@ -9,6 +8,7 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.stats.TeletextPageStatsResponse;
 import pl.studia.teletext.teletext_backend.api.admin.mappers.TeletextPageStatsMapper;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPageStats;

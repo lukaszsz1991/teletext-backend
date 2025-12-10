@@ -15,10 +15,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import pl.studia.teletext.teletext_backend.exceptions.ExternalApiException;
-import pl.studia.teletext.teletext_backend.exceptions.IllegalPageNumberException;
-import pl.studia.teletext.teletext_backend.exceptions.JwtValidatingException;
-import pl.studia.teletext.teletext_backend.exceptions.NotFoundException;
+import pl.studia.teletext.teletext_backend.exceptions.*;
 
 @Log4j2
 @ControllerAdvice
@@ -31,10 +28,11 @@ public class GlobalExceptionHandler {
     var problemDetail = ProblemDetail.forStatus(status);
     problemDetail.setDetail(ex.getMessage());
     switch (ex.getClass().getSimpleName()) {
-      case "UserNotFoundException" -> problemDetail.setTitle("User Not Found");
-      case "PageNotFoundException" -> problemDetail.setTitle("Page Not Found");
-      case "CityNotFoundException" -> problemDetail.setTitle("City Not Found");
-      default -> problemDetail.setTitle("Resource Not Found");
+      case "UserNotFoundException" -> problemDetail.setTitle("Użytkownik nie znaleziony");
+      case "PageNotFoundException" -> problemDetail.setTitle("Strona telegazety nie znaleziona");
+      case "TemplateNotFoundException" -> problemDetail.setTitle("Szablon strony nie znaleziony");
+      case "CityNotFoundException" -> problemDetail.setTitle("Miasto nie znalezione");
+      default -> problemDetail.setTitle("Nie znaleziono zasobu");
     }
     return ResponseEntity.status(status).body(problemDetail);
   }
@@ -46,6 +44,18 @@ public class GlobalExceptionHandler {
     var problemDetail =
         ProblemDetail.forStatusAndDetail(status, "JWT Validation Error: " + ex.getMessage());
     problemDetail.setTitle("Unauthorized");
+    return ResponseEntity.status(status).body(problemDetail);
+  }
+
+  @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+  @ExceptionHandler(InvalidJsonConfigException.class)
+  public ResponseEntity<ProblemDetail> handleInvalidJsonConfigException(
+      InvalidJsonConfigException ex) {
+    var status = HttpStatus.UNPROCESSABLE_ENTITY;
+    var problemDetail =
+        ProblemDetail.forStatusAndDetail(
+            status, "Błąd walidacji konfiguracji szablonu: " + ex.getMessage());
+    problemDetail.setTitle("Błąd walidacji");
     return ResponseEntity.status(status).body(problemDetail);
   }
 

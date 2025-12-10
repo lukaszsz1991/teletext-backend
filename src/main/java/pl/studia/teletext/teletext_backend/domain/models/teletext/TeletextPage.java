@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.templates.TeletextPageTemplate;
 import pl.studia.teletext.teletext_backend.exceptions.IllegalPageNumberException;
 
 @Entity
@@ -50,6 +51,18 @@ public class TeletextPage {
               + this.pageNumber
               + " jest poza zakresem dla kategorii "
               + this.category.getTitle());
+    }
+
+    if (this.template != null) {
+      if (!this.category.equals(this.template.getCategory())) {
+        throw new IllegalStateException(
+            "Szablon strony należy do innej kategorii niż sama strona. Strona: "
+                + this.pageNumber
+                + ", kategoria strony: "
+                + this.category
+                + ", kategoria szablonu: "
+                + this.template.getCategory());
+      }
     }
   }
 

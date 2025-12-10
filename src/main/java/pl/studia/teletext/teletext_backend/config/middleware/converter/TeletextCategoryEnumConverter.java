@@ -8,6 +8,6 @@ import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCatego
 public class TeletextCategoryEnumConverter implements Converter<String, TeletextCategory> {
   @Override
   public TeletextCategory convert(String source) {
-    return TeletextCategory.valueOf(source.toUpperCase());
+    return TeletextCategory.fromString(source);
   }
 }
