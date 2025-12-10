@@ -1,4 +1,4 @@
-package pl.studia.teletext.teletext_backend.api.admin.dtos.page;
+package pl.studia.teletext.teletext_backend.api.admin.dtos.page_template;
 
 import java.util.List;
 import java.util.Map;

@@ -6,11 +6,13 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.studia.teletext.teletext_backend.api.admin.dtos.page.ManualPageCreateRequest;
+import pl.studia.teletext.teletext_backend.api.admin.dtos.page.PageCreateRequest;
+import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TemplatePageCreateRequest;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextDetailedPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.TeletextPageMapper;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
-import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPage;
 import pl.studia.teletext.teletext_backend.domain.repositories.TeletextPageRepository;
 import pl.studia.teletext.teletext_backend.exceptions.PageNotFoundException;
 
@@ -18,6 +20,7 @@ import pl.studia.teletext.teletext_backend.exceptions.PageNotFoundException;
 @RequiredArgsConstructor
 public class TeletextPageService {
 
+  private final TeletextPageTemplateService templateService;
   private final TeletextPageGeneratorService pageGeneratorService;
   private final TeletextPageRepository teletextPageRepository;
   private final TeletextPageMapper mapper;
@@ -65,9 +68,22 @@ public class TeletextPageService {
         .toList();
   }
 
-  // TODO: should use CreateTeletextPageRequest dto instead of entity
   @Transactional
-  public TeletextPage save(TeletextPage page) {
-    return teletextPageRepository.save(page);
+  public TeletextDetailedPageResponse createPage(PageCreateRequest request) {
+    return request.handle(this);
+  }
+
+  public TeletextDetailedPageResponse createManualPage(ManualPageCreateRequest request) {
+    var page = mapper.toPage(request);
+    var saved = teletextPageRepository.save(page);
+    return mapper.toDetailedPageResponse(saved);
+  }
+
+  public TeletextDetailedPageResponse createTemplatePage(TemplatePageCreateRequest request) {
+    var page = mapper.toPage(request);
+    var template = templateService.getTemplateById(request.templateId());
+    page.setTemplate(template);
+    var saved = teletextPageRepository.save(page);
+    return mapper.toDetailedPageResponse(saved);
   }
 }
