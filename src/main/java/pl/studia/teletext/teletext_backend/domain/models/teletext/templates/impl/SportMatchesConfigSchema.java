@@ -2,7 +2,6 @@ package pl.studia.teletext.teletext_backend.domain.models.teletext.templates.imp
 
 import java.util.List;
 import java.util.Map;
-
 import pl.studia.teletext.teletext_backend.clients.highlightly.FootballLeague;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.templates.ConfigSchema;
 import pl.studia.teletext.teletext_backend.exceptions.InvalidJsonConfigException;
