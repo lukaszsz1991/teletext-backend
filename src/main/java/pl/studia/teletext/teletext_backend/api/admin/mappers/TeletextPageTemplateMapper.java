@@ -20,5 +20,6 @@ public interface TeletextPageTemplateMapper {
   TeletextPageTemplate toTemplate(TeletextPageTemplateCreateRequest request);
 
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-  void updateTemplateFromRequest(TeletextPageTemplateUpdateRequest request, @MappingTarget TeletextPageTemplate template);
+  void updateTemplateFromRequest(
+      TeletextPageTemplateUpdateRequest request, @MappingTarget TeletextPageTemplate template);
 }

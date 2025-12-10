@@ -53,8 +53,8 @@ public class TeletextPage {
               + this.category.getTitle());
     }
 
-    if(this.template != null) {
-      if(!this.category.equals(this.template.getCategory())) {
+    if (this.template != null) {
+      if (!this.category.equals(this.template.getCategory())) {
         throw new IllegalStateException(
             "Szablon strony należy do innej kategorii niż sama strona. Strona: "
                 + this.pageNumber

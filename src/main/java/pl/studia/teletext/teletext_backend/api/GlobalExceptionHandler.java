@@ -49,10 +49,12 @@ public class GlobalExceptionHandler {
 
   @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
   @ExceptionHandler(InvalidJsonConfigException.class)
-  public ResponseEntity<ProblemDetail> handleInvalidJsonConfigException(InvalidJsonConfigException ex) {
+  public ResponseEntity<ProblemDetail> handleInvalidJsonConfigException(
+      InvalidJsonConfigException ex) {
     var status = HttpStatus.UNPROCESSABLE_ENTITY;
     var problemDetail =
-      ProblemDetail.forStatusAndDetail(status, "Błąd walidacji konfiuracji szablonu: " + ex.getMessage());
+        ProblemDetail.forStatusAndDetail(
+            status, "Błąd walidacji konfiuracji szablonu: " + ex.getMessage());
     problemDetail.setTitle("Błąd walidacji");
     return ResponseEntity.status(status).body(problemDetail);
   }

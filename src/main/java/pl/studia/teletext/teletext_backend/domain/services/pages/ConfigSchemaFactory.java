@@ -1,12 +1,11 @@
 package pl.studia.teletext.teletext_backend.domain.services.pages;
 
+import java.util.EnumMap;
+import java.util.Map;
 import org.springframework.stereotype.Component;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextSource;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.templates.ConfigSchema;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.templates.impl.*;
-
-import java.util.EnumMap;
-import java.util.Map;
 
 @Component
 public class ConfigSchemaFactory {

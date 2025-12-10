@@ -1,9 +1,8 @@
 package pl.studia.teletext.teletext_backend.api.admin.controllers;
 
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
-
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,9 +51,7 @@ public class AdminTeletextTemplatesController {
 
   @PutMapping("{id}")
   public ResponseEntity<TeletextPageTemplateResponse> updateTemplate(
-    @PathVariable Long id,
-    @RequestBody @Valid TeletextPageTemplateUpdateRequest request
-  ) {
+      @PathVariable Long id, @RequestBody @Valid TeletextPageTemplateUpdateRequest request) {
     var updatedTemplate = pageTemplateService.updateTemplate(id, request);
     var response = pageTemplateMapper.toResponse(updatedTemplate);
     return ResponseEntity.ok(response);
@@ -68,7 +65,8 @@ public class AdminTeletextTemplatesController {
 
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteTemplate(@PathVariable Long id) {
-    // mark it in the docs as soft-delete - can be reactivated by PATCH: /api/admin/templates/{id}/activate
+    // mark it in the docs as soft-delete - can be reactivated by PATCH:
+    // /api/admin/templates/{id}/activate
     pageTemplateService.deactivateTemplate(id);
     return ResponseEntity.noContent().build();
   }

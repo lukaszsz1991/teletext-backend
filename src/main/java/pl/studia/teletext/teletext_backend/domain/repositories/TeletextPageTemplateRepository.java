@@ -10,12 +10,14 @@ import pl.studia.teletext.teletext_backend.domain.models.teletext.templates.Tele
 
 public interface TeletextPageTemplateRepository extends JpaRepository<TeletextPageTemplate, Long> {
 
-  @Query("SELECT pt FROM TeletextPageTemplate pt WHERE :includeInactive = true OR pt.deletedAt IS NULL")
+  @Query(
+      "SELECT pt FROM TeletextPageTemplate pt WHERE :includeInactive = true OR pt.deletedAt IS NULL")
   List<TeletextPageTemplate> findAllByDeleted(boolean includeInactive);
 
   @Query(
       "SELECT pt FROM TeletextPageTemplate pt WHERE pt.category = :category AND (:includeInactive = true OR pt.deletedAt IS NULL)")
-  List<TeletextPageTemplate> findAllByCategoryAndDeleted(TeletextCategory category, boolean includeInactive);
+  List<TeletextPageTemplate> findAllByCategoryAndDeleted(
+      TeletextCategory category, boolean includeInactive);
 
   @Query(
       "SELECT pt FROM TeletextPageTemplate pt LEFT JOIN FETCH pt.pages WHERE pt.id = :id AND pt.deletedAt IS NULL")

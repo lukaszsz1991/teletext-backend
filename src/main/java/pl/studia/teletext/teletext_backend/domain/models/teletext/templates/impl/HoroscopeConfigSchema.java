@@ -2,7 +2,6 @@ package pl.studia.teletext.teletext_backend.domain.models.teletext.templates.imp
 
 import java.util.List;
 import java.util.Map;
-
 import pl.studia.teletext.teletext_backend.clients.horoscope.HoroscopeSign;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.templates.ConfigSchema;
 import pl.studia.teletext.teletext_backend.exceptions.InvalidJsonConfigException;
@@ -10,28 +9,32 @@ import pl.studia.teletext.teletext_backend.exceptions.InvalidJsonConfigException
 public class HoroscopeConfigSchema implements ConfigSchema {
   @Override
   public void validate(Map<String, Object> config) {
-    if(config == null || config.isEmpty()) {
+    if (config == null || config.isEmpty()) {
       throw new InvalidJsonConfigException("Konfiguracja nie może być pusta dla horoscope");
     }
 
-    for(String field : requiredFields()) {
-      if(!config.containsKey(field)) {
-        throw new InvalidJsonConfigException("Brak wymaganego pola w konfiguracji horoscope " + field);
+    for (String field : requiredFields()) {
+      if (!config.containsKey(field)) {
+        throw new InvalidJsonConfigException(
+            "Brak wymaganego pola w konfiguracji horoscope " + field);
       }
     }
 
-    if(config.get("sign") instanceof String sign) {
+    if (config.get("sign") instanceof String sign) {
       try {
         HoroscopeSign.valueOf(sign.toUpperCase());
       } catch (Exception e) {
-        throw new InvalidJsonConfigException("Nieprawidłowa wartość pola sign w konfiguracji horoscope. Musi odpowiadać znakom z enum HoroscopeSign");
+        throw new InvalidJsonConfigException(
+            "Nieprawidłowa wartość pola sign w konfiguracji horoscope. Musi odpowiadać znakom z enum HoroscopeSign");
       }
     } else {
-      throw new InvalidJsonConfigException("Pole sign musi być ciągiem znaków w konfiguracji horoscope");
+      throw new InvalidJsonConfigException(
+          "Pole sign musi być ciągiem znaków w konfiguracji horoscope");
     }
 
-    if(!(config.get("forTomorrow") instanceof Integer)) {
-      throw new InvalidJsonConfigException("Pole forTomorrow musi być wartością Boolean w konfiguracji horoscope");
+    if (!(config.get("forTomorrow") instanceof Integer)) {
+      throw new InvalidJsonConfigException(
+          "Pole forTomorrow musi być wartością Boolean w konfiguracji horoscope");
     }
   }
 

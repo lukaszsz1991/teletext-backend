@@ -1,11 +1,10 @@
 package pl.studia.teletext.teletext_backend.domain.services.pages;
 
+import jakarta.validation.Valid;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +24,8 @@ public class TeletextPageTemplateService {
   private final ConfigSchemaFactory configSchemaFactory;
   private final TeletextPageTemplateMapper teletextPageTemplateMapper;
 
-  public List<TeletextPageTemplate> getAllTemplates(TeletextCategory category, boolean includeInactive) {
+  public List<TeletextPageTemplate> getAllTemplates(
+      TeletextCategory category, boolean includeInactive) {
     return Optional.ofNullable(category)
         .map(c -> pageTemplateRepository.findAllByCategoryAndDeleted(c, includeInactive))
         .orElseGet(() -> pageTemplateRepository.findAllByDeleted(includeInactive));
@@ -74,7 +74,8 @@ public class TeletextPageTemplateService {
         .ifPresentOrElse(
             t -> t.setDeletedAt(null),
             () -> {
-              throw new TemplateNotFoundException("Szablon strony o ID: " + id + " nie istnieje lub jest już aktywny");
+              throw new TemplateNotFoundException(
+                  "Szablon strony o ID: " + id + " nie istnieje lub jest już aktywny");
             });
   }
 

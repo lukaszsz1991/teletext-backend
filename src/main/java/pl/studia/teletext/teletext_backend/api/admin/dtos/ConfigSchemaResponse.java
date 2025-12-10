@@ -4,8 +4,4 @@ import java.util.List;
 import java.util.Map;
 
 public record ConfigSchemaResponse(
-  String source,
-    List<String> required,
-    List<String> optional,
-    Map<String, String> types
-){}
+    String source, List<String> required, List<String> optional, Map<String, String> types) {}

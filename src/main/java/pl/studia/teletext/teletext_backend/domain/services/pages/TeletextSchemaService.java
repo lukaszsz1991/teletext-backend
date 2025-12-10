@@ -1,12 +1,11 @@
 package pl.studia.teletext.teletext_backend.domain.services.pages;
 
+import java.util.Arrays;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.ConfigSchemaResponse;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextSource;
-
-import java.util.Arrays;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,12 +24,16 @@ public class TeletextSchemaService {
         .map(
             source -> {
               var schema = configSchemaFactory.getSchema(source);
-              if(schema == null) throw new IllegalArgumentException("Schemat dla źródła " + source + " nie istnieje. Należy go zarejestrować. Zgłoś błąd do administratora.");
+              if (schema == null)
+                throw new IllegalArgumentException(
+                    "Schemat dla źródła "
+                        + source
+                        + " nie istnieje. Należy go zarejestrować. Zgłoś błąd do administratora.");
               return new ConfigSchemaResponse(
-                      source.getName(),
-                      schema.requiredFields(),
-                      schema.optionalFields(),
-                      schema.fieldTypes());
+                  source.getName(),
+                  schema.requiredFields(),
+                  schema.optionalFields(),
+                  schema.fieldTypes());
             })
         .toList();
   }

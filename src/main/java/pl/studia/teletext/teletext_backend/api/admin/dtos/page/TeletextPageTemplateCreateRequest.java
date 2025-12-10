@@ -2,10 +2,9 @@ package pl.studia.teletext.teletext_backend.api.admin.dtos.page;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.util.Map;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextSource;
-
-import java.util.Map;
 
 public record TeletextPageTemplateCreateRequest(
     @NotBlank(message = "Nazwa nie może być pusta") String name,

@@ -5,7 +5,10 @@ import java.util.Map;
 
 public interface ConfigSchema {
   void validate(Map<String, Object> config);
+
   List<String> requiredFields();
+
   List<String> optionalFields();
+
   Map<String, String> fieldTypes();
 }
