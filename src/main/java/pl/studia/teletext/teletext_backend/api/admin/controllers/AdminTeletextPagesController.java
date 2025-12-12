@@ -7,9 +7,8 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.studia.teletext.teletext_backend.api.admin.dtos.page.ManualPageCreateRequest;
-import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TeletextPageUpdateRequest;
-import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TemplatePageCreateRequest;
+import pl.studia.teletext.teletext_backend.api.admin.dtos.page.PageCreateRequest;
+import pl.studia.teletext.teletext_backend.api.admin.dtos.page.PageUpdateRequest;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextDetailedPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextPageResponse;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
@@ -33,24 +32,15 @@ public class AdminTeletextPagesController {
     return ResponseEntity.ok(results);
   }
 
-  @GetMapping("{pageNumber}")
-  public ResponseEntity<TeletextDetailedPageResponse> getPageByNumber(
-      @RequestParam int pageNumber) {
-    var result = pageService.getPageWithContent(pageNumber);
+  @GetMapping("{id}")
+  public ResponseEntity<TeletextDetailedPageResponse> getPageById(@PathVariable long id) {
+    var result = pageService.getPageWithContentById(id);
     return ResponseEntity.ok(result);
   }
 
-  @PostMapping("/manual")
-  public ResponseEntity<TeletextDetailedPageResponse> createManualPage(
-      @RequestBody @Valid ManualPageCreateRequest request) {
-    var result = pageService.createPage(request);
-    var uri = URI.create("/api/admin/pages/" + result.id());
-    return ResponseEntity.created(uri).build();
-  }
-
-  @PostMapping("/template")
-  public ResponseEntity<TeletextDetailedPageResponse> createTemplatePage(
-      @RequestBody @Valid TemplatePageCreateRequest request) {
+  @PostMapping
+  public ResponseEntity<TeletextDetailedPageResponse> createPage(
+      @RequestBody @Valid PageCreateRequest request) {
     var result = pageService.createPage(request);
     var uri = URI.create("/api/admin/pages/" + result.id());
     return ResponseEntity.created(uri).build();
@@ -58,9 +48,9 @@ public class AdminTeletextPagesController {
 
   @PutMapping("{id}")
   public ResponseEntity<TeletextDetailedPageResponse> updatePage(
-      @PathVariable Long id, @RequestBody @Valid TeletextPageUpdateRequest request) {
-    // TODO: implement
-    return ResponseEntity.ok().build();
+      @PathVariable Long id, @RequestBody @Valid PageUpdateRequest request) {
+    var result = pageService.updatePage(id, request);
+    return ResponseEntity.ok(result);
   }
 
   @PatchMapping("{id}/activate")

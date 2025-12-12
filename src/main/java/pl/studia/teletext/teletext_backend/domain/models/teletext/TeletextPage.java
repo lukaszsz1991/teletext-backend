@@ -72,4 +72,9 @@ public class TeletextPage {
     throw new IllegalStateException(
         "Brak tytułu strony o numerze " + this.pageNumber + ". Nieprawidłowy stan obiektu.");
   }
+
+  public String getType() {
+    if (this.template != null) return "TEMPLATE";
+    return "MANUAL";
+  }
 }

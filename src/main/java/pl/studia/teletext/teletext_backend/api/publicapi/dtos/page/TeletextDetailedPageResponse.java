@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public record TeletextDetailedPageResponse(
     Long id,
+    String type,
     Integer pageNumber,
     TeletextCategoryResponse category,
     TeletextFullPageContentResponse content,

@@ -6,9 +6,8 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.studia.teletext.teletext_backend.api.admin.dtos.page.ManualPageCreateRequest;
-import pl.studia.teletext.teletext_backend.api.admin.dtos.page.PageCreateRequest;
-import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TemplatePageCreateRequest;
+import pl.studia.teletext.teletext_backend.api.admin.dtos.page.*;
+import pl.studia.teletext.teletext_backend.api.admin.mappers.TeletextAdminPageMapper;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextDetailedPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.TeletextPageMapper;
@@ -24,13 +23,28 @@ public class TeletextPageService {
   private final TeletextPageGeneratorService pageGeneratorService;
   private final TeletextPageRepository teletextPageRepository;
   private final TeletextPageMapper mapper;
+  private final TeletextAdminPageMapper adminMapper;
 
-  public TeletextDetailedPageResponse getPageWithContent(Integer pageNumber) {
+  public TeletextDetailedPageResponse getPageWithContentByPageNumber(Integer pageNumber) {
     var page =
         teletextPageRepository
             .findByPageNumberWithContent(pageNumber)
             .orElseThrow(
                 () -> new PageNotFoundException("Nie odnaleziono strony o numerze " + pageNumber));
+
+    var result =
+        page.getTemplate() != null
+            ? pageGeneratorService.generatePageFromTemplate(page).block()
+            : page;
+
+    return mapper.toDetailedPageResponse(result);
+  }
+
+  public TeletextDetailedPageResponse getPageWithContentById(Long id) {
+    var page =
+        teletextPageRepository
+            .findByIdWithContent(id)
+            .orElseThrow(() -> new PageNotFoundException("Nie odnaleziono strony o id " + id));
 
     var result =
         page.getTemplate() != null
@@ -74,16 +88,44 @@ public class TeletextPageService {
   }
 
   public TeletextDetailedPageResponse createManualPage(ManualPageCreateRequest request) {
-    var page = mapper.toPage(request);
+    var page = adminMapper.toPage(request);
     var saved = teletextPageRepository.save(page);
     return mapper.toDetailedPageResponse(saved);
   }
 
   public TeletextDetailedPageResponse createTemplatePage(TemplatePageCreateRequest request) {
-    var page = mapper.toPage(request);
+    var page = adminMapper.toPage(request);
     var template = templateService.getTemplateById(request.templateId());
     page.setTemplate(template);
     var saved = teletextPageRepository.save(page);
     return mapper.toDetailedPageResponse(saved);
+  }
+
+  @Transactional
+  public TeletextDetailedPageResponse updatePage(Long id, PageUpdateRequest request) {
+    return request.handle(id, this);
+  }
+
+  public TeletextDetailedPageResponse updateManualPage(Long id, ManualPageUpdateRequest request) {
+    var page =
+        teletextPageRepository
+            .findByIdWithContent(id)
+            .orElseThrow(() -> new PageNotFoundException("Nie odnaleziono strony o id " + id));
+    adminMapper.updatePageFromManualRequest(request, page);
+    page = teletextPageRepository.save(page);
+    return mapper.toDetailedPageResponse(page);
+  }
+
+  public TeletextDetailedPageResponse updateTemplatePage(
+      Long id, TemplatePageUpdateRequest request) {
+    var page =
+        teletextPageRepository
+            .findById(id)
+            .orElseThrow(() -> new PageNotFoundException("Nie odnaleziono strony o id " + id));
+    var template = templateService.getTemplateById(request.templateId());
+    page.setTemplate(template);
+    adminMapper.updatePageFromTemplateRequest(request, page);
+    page = teletextPageRepository.save(page);
+    return mapper.toDetailedPageResponse(page);
   }
 }

@@ -7,9 +7,9 @@ import pl.studia.teletext.teletext_backend.domain.services.pages.TeletextPageSer
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = ManualPageCreateRequest.class, name = "MANUAL"),
-  @JsonSubTypes.Type(value = TemplatePageCreateRequest.class, name = "TEMPLATE")
+  @JsonSubTypes.Type(value = ManualPageUpdateRequest.class, name = "MANUAL"),
+  @JsonSubTypes.Type(value = TemplatePageUpdateRequest.class, name = "TEMPLATE")
 })
-public interface PageCreateRequest {
-  TeletextDetailedPageResponse handle(TeletextPageService service);
+public interface PageUpdateRequest {
+  TeletextDetailedPageResponse handle(Long id, TeletextPageService service);
 }

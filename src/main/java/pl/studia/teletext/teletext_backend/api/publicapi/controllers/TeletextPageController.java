@@ -31,7 +31,7 @@ public class TeletextPageController {
   @GetMapping("{pageNumber}")
   public ResponseEntity<TeletextDetailedPageResponse> getPageByNumber(
       @PathVariable Integer pageNumber) {
-    var page = teletextPageService.getPageWithContent(pageNumber);
+    var page = teletextPageService.getPageWithContentByPageNumber(pageNumber);
     teletextPageStatsService.recordPageVisit(page.id()); // TODO: move it to the middleware
     return ResponseEntity.ok(page);
   }
