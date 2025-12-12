@@ -1,5 +1,7 @@
 package pl.studia.teletext.teletext_backend.domain.services.pages;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -84,6 +86,9 @@ public class TeletextPageService {
 
   @Transactional
   public TeletextDetailedPageResponse createPage(PageCreateRequest request) {
+    // TODO: aktualnie przy dezaktywacji strony (bezposrednio, lub z template) numer strony zostaje
+    //  przypisany. nie bedzie dalo sie utworzyc nowej strony o takim samym numerze mimo usuniecia.
+    //  to samo z update
     return request.handle(this);
   }
 
@@ -127,5 +132,30 @@ public class TeletextPageService {
     adminMapper.updatePageFromTemplateRequest(request, page);
     page = teletextPageRepository.save(page);
     return mapper.toDetailedPageResponse(page);
+  }
+
+  @Transactional
+  public void activatePage(Long id) {
+    teletextPageRepository
+        .findById(id)
+        .filter(page -> page.getDeletedAt() != null)
+        .ifPresentOrElse(
+            page -> page.setDeletedAt(null),
+            () -> {
+              throw new PageNotFoundException(
+                  "Strona o ID: " + id + " nie istnieje lub jest już aktywna");
+            });
+  }
+
+  @Transactional
+  public void deactivatePage(Long id) {
+    teletextPageRepository
+        .findById(id)
+        .filter(page -> page.getDeletedAt() == null)
+        .ifPresentOrElse(
+            page -> page.setDeletedAt(Timestamp.from(Instant.now())),
+            () -> {
+              throw new PageNotFoundException("Strona o ID: " + id + " nie istnieje");
+            });
   }
 }

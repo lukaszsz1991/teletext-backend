@@ -55,13 +55,13 @@ public class AdminTeletextPagesController {
 
   @PatchMapping("{id}/activate")
   public ResponseEntity<Void> activatePage(@PathVariable Long id) {
-    // TODO: implement
+    pageService.activatePage(id);
     return ResponseEntity.noContent().build();
   }
 
   @DeleteMapping("{id}")
   public ResponseEntity<Void> deletePage(@PathVariable Long id) {
-    // TODO: implement
+    pageService.deactivatePage(id);
     return ResponseEntity.noContent().build();
   }
 }
