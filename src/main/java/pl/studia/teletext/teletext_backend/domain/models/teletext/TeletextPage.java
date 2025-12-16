@@ -43,7 +43,7 @@ public class TeletextPage {
 
   @PrePersist
   @PreUpdate
-  public void validate() {
+  private void validate() {
     validatePageNumberRange();
     validateCategory();
   }
