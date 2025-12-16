@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.user.ChangeUserPasswordRequest;
@@ -13,6 +14,7 @@ import pl.studia.teletext.teletext_backend.api.admin.dtos.user.UserResponse;
 import pl.studia.teletext.teletext_backend.api.admin.mappers.UserMapper;
 import pl.studia.teletext.teletext_backend.domain.models.security.User;
 import pl.studia.teletext.teletext_backend.domain.repositories.UserRepository;
+import pl.studia.teletext.teletext_backend.domain.services.security.CurrentUserService;
 import pl.studia.teletext.teletext_backend.exceptions.UserNotFoundException;
 
 @Service
@@ -22,6 +24,7 @@ public class UserService {
   private final UserRepository userRepository;
   private final UserMapper mapper;
   private final PasswordEncoder passwordEncoder;
+  private final CurrentUserService currentUserService;
 
   public List<UserResponse> getAllUsers(boolean includeDeleted) {
     var users = userRepository.findAll();
@@ -60,7 +63,8 @@ public class UserService {
   }
 
   public void deleteUserById(Long id) {
-    // TODO: prevent deleting own account
+    if (currentUserService.getCurrentUserId().equals(id))
+      throw new AccessDeniedException("Nie można usunąć własnego konta");
     var user = getUserEntityById(id);
     user.setDeletedAt(Timestamp.from(Instant.now()));
     // TODO: add mailing service to send account deletion notification
