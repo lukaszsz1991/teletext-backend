@@ -8,8 +8,8 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TeletextPageTemplateCreateRequest;
-import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TeletextPageTemplateUpdateRequest;
+import pl.studia.teletext.teletext_backend.api.admin.dtos.page_template.TeletextPageTemplateCreateRequest;
+import pl.studia.teletext.teletext_backend.api.admin.dtos.page_template.TeletextPageTemplateUpdateRequest;
 import pl.studia.teletext.teletext_backend.api.admin.mappers.TeletextPageTemplateMapper;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.templates.TeletextPageTemplate;
@@ -82,12 +82,6 @@ public class TeletextPageTemplateService {
         .findByIdActive(id)
         .ifPresentOrElse(
             t -> {
-              // TODO: deaktywuje strony, ale zostawiam numery stron.
-              //  Pojawi się problem przy tworzeniu nowej strony z tym numerem.
-              //  można usunac przypisanie strony (wtedy trzeba zmeinic walidacje i przejrzec
-              //  powiazania + testy)
-              //  ewentualnie zostawic jak jest, sciagnac atrybut uniqe z tabeli, ale walidowac nr
-              //  strony przy reaktywacji strony
               t.getPages().forEach(p -> p.setDeletedAt(Timestamp.from(Instant.now())));
               t.setDeletedAt(Timestamp.from(Instant.now()));
             },

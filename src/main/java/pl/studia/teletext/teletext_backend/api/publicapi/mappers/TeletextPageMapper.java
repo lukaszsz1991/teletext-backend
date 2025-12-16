@@ -1,35 +1,24 @@
 package pl.studia.teletext.teletext_backend.api.publicapi.mappers;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextCategoryResponse;
+import org.mapstruct.*;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextDetailedPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextFullPageContentResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextPageContentResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextPageResponse;
-import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPage;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPageContent;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = TeletextCategoryMapper.class)
 public interface TeletextPageMapper {
 
   @Mapping(target = "title", expression = "java(page.getTitle())")
   TeletextPageResponse toPageResponse(TeletextPage page);
 
+  @Mapping(target = "type", expression = "java(page.getType())")
   TeletextDetailedPageResponse toDetailedPageResponse(TeletextPage page);
 
   TeletextPageContentResponse toContentResponse(TeletextPageContent content);
 
   @Mapping(target = "source", expression = "java(content.getSource().getName())")
   TeletextFullPageContentResponse toFullContentResponse(TeletextPageContent content);
-
-  @Mapping(target = "originalName", expression = "java(category.name())")
-  @Mapping(target = "category", source = "category.title")
-  TeletextCategoryResponse toCategoryResponse(TeletextCategory category, int nextFreePage);
-
-  @Mapping(target = "originalName", expression = "java(category.name())")
-  @Mapping(target = "category", source = "title")
-  @Mapping(target = "nextFreePage", ignore = true)
-  TeletextCategoryResponse toCategoryResponse(TeletextCategory category);
 }

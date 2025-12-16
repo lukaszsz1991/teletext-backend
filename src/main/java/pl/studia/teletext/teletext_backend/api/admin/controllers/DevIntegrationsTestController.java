@@ -1,5 +1,6 @@
 package pl.studia.teletext.teletext_backend.api.admin.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,10 @@ import pl.studia.teletext.teletext_backend.domain.services.integrations.WeatherS
 @RequestMapping("/api/admin/test")
 @RequiredArgsConstructor
 @Profile({"dev", "local-dev"})
+@Tag(
+    name = "Development Integrations Test Controller - available only in dev mode",
+    description =
+        "Endpoints for testing external integrations during development. Not available in production.")
 public class DevIntegrationsTestController {
 
   private final LottoExternalDataMapper lottoExternalDataMapper;
