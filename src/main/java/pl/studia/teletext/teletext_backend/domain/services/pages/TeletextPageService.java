@@ -118,8 +118,7 @@ public class TeletextPageService {
     return adminMapper.toResponse(page);
   }
 
-  public TeletextAdminPageResponse updateTemplatePage(
-      Long id, TemplatePageUpdateRequest request) {
+  public TeletextAdminPageResponse updateTemplatePage(Long id, TemplatePageUpdateRequest request) {
     var page =
         teletextPageRepository
             .findById(id)

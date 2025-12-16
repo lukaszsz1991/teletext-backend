@@ -1,5 +1,6 @@
 package pl.studia.teletext.teletext_backend.api.admin.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.net.URI;
@@ -25,6 +26,10 @@ public class AdminTeletextPagesController {
   private final TeletextPageService pageService;
 
   @GetMapping
+  @Operation(
+      summary = "Get all teletext pages",
+      description =
+          "Returns a list of teletext pages. Optionally filter by category and include inactive pages.")
   public ResponseEntity<List<TeletextPageResponse>> getAllPages(
       @RequestParam(required = false) TeletextCategory category,
       @RequestParam(defaultValue = "false") boolean includeInactive) {
@@ -33,20 +38,31 @@ public class AdminTeletextPagesController {
   }
 
   @GetMapping("{id}")
+  @Operation(
+      summary = "Get teletext page by ID",
+      description =
+          "Returns a single teletext page by its ID, including its content. Shows even inactive pages.")
   public ResponseEntity<TeletextAdminPageResponse> getPageById(@PathVariable long id) {
     var result = pageService.getPageWithContentById(id);
     return ResponseEntity.ok(result);
   }
 
   @PostMapping
-  public ResponseEntity<Void> createPage(
-      @RequestBody @Valid PageCreateRequest request) {
+  @Operation(
+      summary = "Create a new teletext page",
+      description =
+          "Creates a new teletext page based on the provided data. Must declare type of the page (MANUAL or TEMPLATE).")
+  public ResponseEntity<Void> createPage(@RequestBody @Valid PageCreateRequest request) {
     var result = pageService.createPage(request);
     var uri = URI.create("/api/admin/pages/" + result.id());
     return ResponseEntity.created(uri).build();
   }
 
   @PutMapping("{id}")
+  @Operation(
+      summary = "Update an existing teletext page",
+      description =
+          "Updates the details of an existing teletext page identified by its ID. Must declare type of the page (MANUAL or TEMPLATE).")
   public ResponseEntity<TeletextAdminPageResponse> updatePage(
       @PathVariable Long id, @RequestBody @Valid PageUpdateRequest request) {
     var result = pageService.updatePage(id, request);
@@ -54,12 +70,20 @@ public class AdminTeletextPagesController {
   }
 
   @PatchMapping("{id}/activate")
+  @Operation(
+      summary = "Activate a teletext page",
+      description =
+          "Activates a teletext page identified by its ID. Can activate only previously deactivated pages.")
   public ResponseEntity<Void> activatePage(@PathVariable Long id) {
     pageService.activatePage(id);
     return ResponseEntity.noContent().build();
   }
 
   @DeleteMapping("{id}")
+  @Operation(
+      summary = "Deactivate a teletext page",
+      description =
+          "Deactivates a teletext page identified by its ID. The page will no longer be visible in public API.")
   public ResponseEntity<Void> deletePage(@PathVariable Long id) {
     pageService.deactivatePage(id);
     return ResponseEntity.noContent().build();

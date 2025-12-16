@@ -60,15 +60,14 @@ public class TeletextPage {
     return "MANUAL";
   }
 
-
   private void validatePageNumberRange() {
     int mainPage = this.category.getMainPage();
     if (this.pageNumber < mainPage + 1 || this.pageNumber > mainPage + 99) {
       throw new IllegalPageNumberException(
-        "Numer strony "
-          + this.pageNumber
-          + " jest poza zakresem dla kategorii "
-          + this.category.getTitle());
+          "Numer strony "
+              + this.pageNumber
+              + " jest poza zakresem dla kategorii "
+              + this.category.getTitle());
     }
   }
 
@@ -76,12 +75,12 @@ public class TeletextPage {
     if (this.template != null) {
       if (!this.category.equals(this.template.getCategory())) {
         throw new IllegalStateException(
-          "Szablon strony należy do innej kategorii niż sama strona. Strona: "
-            + this.pageNumber
-            + ", kategoria strony: "
-            + this.category
-            + ", kategoria szablonu: "
-            + this.template.getCategory());
+            "Szablon strony należy do innej kategorii niż sama strona. Strona: "
+                + this.pageNumber
+                + ", kategoria strony: "
+                + this.category
+                + ", kategoria szablonu: "
+                + this.template.getCategory());
       }
     }
   }

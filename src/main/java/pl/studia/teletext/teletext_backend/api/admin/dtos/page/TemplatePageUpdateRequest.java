@@ -3,7 +3,6 @@ package pl.studia.teletext.teletext_backend.api.admin.dtos.page;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextDetailedPageResponse;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
 import pl.studia.teletext.teletext_backend.domain.services.pages.TeletextPageService;
 
