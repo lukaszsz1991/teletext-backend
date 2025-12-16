@@ -26,6 +26,6 @@ public interface TeletextPageRepository extends JpaRepository<TeletextPage, Long
       TeletextCategory category, boolean includeInactive);
 
   @Query(
-      "SELECT p FROM TeletextPage p LEFT JOIN FETCH p.content WHERE p.id = :id AND p.deletedAt IS NULL")
+      "SELECT p FROM TeletextPage p LEFT JOIN FETCH p.content WHERE p.id = :id")
   Optional<TeletextPage> findByIdWithContent(Long id);
 }

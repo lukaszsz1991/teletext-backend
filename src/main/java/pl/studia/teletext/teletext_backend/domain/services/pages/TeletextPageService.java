@@ -42,7 +42,7 @@ public class TeletextPageService {
     return mapper.toDetailedPageResponse(result);
   }
 
-  public TeletextDetailedPageResponse getPageWithContentById(Long id) {
+  public TeletextAdminPageResponse getPageWithContentById(Long id) {
     var page =
         teletextPageRepository
             .findByIdWithContent(id)
@@ -53,7 +53,7 @@ public class TeletextPageService {
             ? pageGeneratorService.generatePageFromTemplate(page).block()
             : page;
 
-    return mapper.toDetailedPageResponse(result);
+    return adminMapper.toResponse(result);
   }
 
   public List<TeletextPageResponse> getPagesByCategory(TeletextCategory category, String title) {
@@ -85,43 +85,40 @@ public class TeletextPageService {
   }
 
   @Transactional
-  public TeletextDetailedPageResponse createPage(PageCreateRequest request) {
-    // TODO: aktualnie przy dezaktywacji strony (bezposrednio, lub z template) numer strony zostaje
-    //  przypisany. nie bedzie dalo sie utworzyc nowej strony o takim samym numerze mimo usuniecia.
-    //  to samo z update
+  public TeletextAdminPageResponse createPage(PageCreateRequest request) {
     return request.handle(this);
   }
 
-  public TeletextDetailedPageResponse createManualPage(ManualPageCreateRequest request) {
+  public TeletextAdminPageResponse createManualPage(ManualPageCreateRequest request) {
     var page = adminMapper.toPage(request);
     var saved = teletextPageRepository.save(page);
-    return mapper.toDetailedPageResponse(saved);
+    return adminMapper.toResponse(saved);
   }
 
-  public TeletextDetailedPageResponse createTemplatePage(TemplatePageCreateRequest request) {
+  public TeletextAdminPageResponse createTemplatePage(TemplatePageCreateRequest request) {
     var page = adminMapper.toPage(request);
     var template = templateService.getTemplateById(request.templateId());
     page.setTemplate(template);
     var saved = teletextPageRepository.save(page);
-    return mapper.toDetailedPageResponse(saved);
+    return adminMapper.toResponse(saved);
   }
 
   @Transactional
-  public TeletextDetailedPageResponse updatePage(Long id, PageUpdateRequest request) {
+  public TeletextAdminPageResponse updatePage(Long id, PageUpdateRequest request) {
     return request.handle(id, this);
   }
 
-  public TeletextDetailedPageResponse updateManualPage(Long id, ManualPageUpdateRequest request) {
+  public TeletextAdminPageResponse updateManualPage(Long id, ManualPageUpdateRequest request) {
     var page =
         teletextPageRepository
             .findByIdWithContent(id)
             .orElseThrow(() -> new PageNotFoundException("Nie odnaleziono strony o id " + id));
     adminMapper.updatePageFromManualRequest(request, page);
     page = teletextPageRepository.save(page);
-    return mapper.toDetailedPageResponse(page);
+    return adminMapper.toResponse(page);
   }
 
-  public TeletextDetailedPageResponse updateTemplatePage(
+  public TeletextAdminPageResponse updateTemplatePage(
       Long id, TemplatePageUpdateRequest request) {
     var page =
         teletextPageRepository
@@ -131,7 +128,7 @@ public class TeletextPageService {
     page.setTemplate(template);
     adminMapper.updatePageFromTemplateRequest(request, page);
     page = teletextPageRepository.save(page);
-    return mapper.toDetailedPageResponse(page);
+    return adminMapper.toResponse(page);
   }
 
   @Transactional

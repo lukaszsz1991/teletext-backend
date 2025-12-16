@@ -11,5 +11,5 @@ import pl.studia.teletext.teletext_backend.domain.services.pages.TeletextPageSer
   @JsonSubTypes.Type(value = TemplatePageCreateRequest.class, name = "TEMPLATE")
 })
 public interface PageCreateRequest {
-  TeletextDetailedPageResponse handle(TeletextPageService service);
+  TeletextAdminPageResponse handle(TeletextPageService service);
 }

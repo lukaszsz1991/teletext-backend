@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.page.PageCreateRequest;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.page.PageUpdateRequest;
-import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextDetailedPageResponse;
+import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TeletextAdminPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextPageResponse;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
 import pl.studia.teletext.teletext_backend.domain.services.pages.TeletextPageService;
@@ -33,13 +33,13 @@ public class AdminTeletextPagesController {
   }
 
   @GetMapping("{id}")
-  public ResponseEntity<TeletextDetailedPageResponse> getPageById(@PathVariable long id) {
+  public ResponseEntity<TeletextAdminPageResponse> getPageById(@PathVariable long id) {
     var result = pageService.getPageWithContentById(id);
     return ResponseEntity.ok(result);
   }
 
   @PostMapping
-  public ResponseEntity<TeletextDetailedPageResponse> createPage(
+  public ResponseEntity<Void> createPage(
       @RequestBody @Valid PageCreateRequest request) {
     var result = pageService.createPage(request);
     var uri = URI.create("/api/admin/pages/" + result.id());
@@ -47,7 +47,7 @@ public class AdminTeletextPagesController {
   }
 
   @PutMapping("{id}")
-  public ResponseEntity<TeletextDetailedPageResponse> updatePage(
+  public ResponseEntity<TeletextAdminPageResponse> updatePage(
       @PathVariable Long id, @RequestBody @Valid PageUpdateRequest request) {
     var result = pageService.updatePage(id, request);
     return ResponseEntity.ok(result);

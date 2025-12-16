@@ -15,7 +15,7 @@ public record TemplatePageCreateRequest(
     @NotNull(message = "Należy wybrać szablon strony") long templateId)
     implements PageCreateRequest {
   @Override
-  public TeletextDetailedPageResponse handle(TeletextPageService service) {
+  public TeletextAdminPageResponse handle(TeletextPageService service) {
     return service.createTemplatePage(this);
   }
 }

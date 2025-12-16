@@ -4,7 +4,6 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextDetailedPageResponse;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
 import pl.studia.teletext.teletext_backend.domain.services.pages.TeletextPageService;
 
@@ -17,7 +16,7 @@ public record ManualPageUpdateRequest(
     @NotBlank(message = "Opis strony musi być wypełniony") String description)
     implements PageUpdateRequest {
   @Override
-  public TeletextDetailedPageResponse handle(Long id, TeletextPageService service) {
+  public TeletextAdminPageResponse handle(Long id, TeletextPageService service) {
     return service.updateManualPage(id, this);
   }
 }

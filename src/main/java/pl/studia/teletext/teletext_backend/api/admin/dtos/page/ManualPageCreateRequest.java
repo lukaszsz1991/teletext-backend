@@ -17,7 +17,7 @@ public record ManualPageCreateRequest(
     @NotBlank(message = "Opis strony musi być wypełniony") String description)
     implements PageCreateRequest {
   @Override
-  public TeletextDetailedPageResponse handle(TeletextPageService service) {
+  public TeletextAdminPageResponse handle(TeletextPageService service) {
     return service.createManualPage(this);
   }
 }

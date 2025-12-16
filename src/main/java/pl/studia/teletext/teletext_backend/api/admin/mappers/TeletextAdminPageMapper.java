@@ -1,15 +1,15 @@
 package pl.studia.teletext.teletext_backend.api.admin.mappers;
 
 import org.mapstruct.*;
-import pl.studia.teletext.teletext_backend.api.admin.dtos.page.ManualPageCreateRequest;
-import pl.studia.teletext.teletext_backend.api.admin.dtos.page.ManualPageUpdateRequest;
-import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TemplatePageCreateRequest;
-import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TemplatePageUpdateRequest;
+import pl.studia.teletext.teletext_backend.api.admin.dtos.page.*;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.TeletextPageMapper;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPage;
 
 @Mapper(componentModel = "spring", uses = TeletextPageMapper.class)
 public interface TeletextAdminPageMapper {
+
+  @Mapping(target = "type", expression = "java(page.getType())")
+  TeletextAdminPageResponse toResponse(TeletextPage page);
 
   @Mapping(target = "content.title", source = "title")
   @Mapping(target = "content.description", source = "description")

@@ -15,7 +15,7 @@ public record TemplatePageUpdateRequest(
     @NotNull(message = "Należy wybrać szablon strony") long templateId)
     implements PageUpdateRequest {
   @Override
-  public TeletextDetailedPageResponse handle(Long id, TeletextPageService service) {
+  public TeletextAdminPageResponse handle(Long id, TeletextPageService service) {
     return service.updateTemplatePage(id, this);
   }
 }
