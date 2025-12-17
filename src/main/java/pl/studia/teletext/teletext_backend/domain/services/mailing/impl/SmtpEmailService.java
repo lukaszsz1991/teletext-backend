@@ -32,6 +32,7 @@ public class SmtpEmailService implements EmailService {
       retryFor = {MessagingException.class, MailSendException.class, RuntimeException.class},
       maxAttempts = 5,
       backoff = @Backoff(delay = 2000, multiplier = 2.0))
+  @Override
   public void sendEmail(String to, String subject, String body) {
     var message = mailSender.createMimeMessage();
     try {
@@ -50,6 +51,7 @@ public class SmtpEmailService implements EmailService {
       retryFor = {MessagingException.class, MailSendException.class, RuntimeException.class},
       maxAttempts = 5,
       backoff = @Backoff(delay = 2000, multiplier = 2.0))
+  @Override
   public void sendTemplateEmail(
       String to, String subject, String templateName, Map<String, Object> variables) {
     var message = mailSender.createMimeMessage();

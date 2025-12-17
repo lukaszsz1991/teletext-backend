@@ -2,6 +2,7 @@ package pl.studia.teletext.teletext_backend.domain.services;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -76,7 +77,7 @@ public class UserService {
     eventPublisher.publishEvent(
         new PasswordChangedEmailEvent(
             user.getEmail(),
-            user.getCreatedAt().toLocalDateTime(),
+            user.getUpdatedAt().toLocalDateTime(),
             currentUserService.getCurrentUsername()));
   }
 
@@ -91,7 +92,7 @@ public class UserService {
         new AccountStatusChangedEmailEvent(
             user.getEmail(),
             false,
-            user.getCreatedAt().toLocalDateTime(),
+            user.getDeletedAt().toLocalDateTime(),
             currentUserService.getCurrentUsername()));
   }
 
@@ -104,7 +105,7 @@ public class UserService {
         new AccountStatusChangedEmailEvent(
             user.getEmail(),
             true,
-            user.getCreatedAt().toLocalDateTime(),
+            user.getUpdatedAt().toLocalDateTime(),
             currentUserService.getCurrentUsername()));
   }
 
