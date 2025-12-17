@@ -31,4 +31,8 @@ public class CurrentUserService {
   public Long getCurrentUserId() {
     return getCurrentUser().getId();
   }
+
+  public String getCurrentUsername() {
+    return getCurrentUser().getUsername();
+  }
 }
