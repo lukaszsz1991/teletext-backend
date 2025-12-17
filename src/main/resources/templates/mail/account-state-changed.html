@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${title}">Status konta zmioniony</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f0f0f0;">
+<div style="
+    max-width:600px;
+    margin:40px auto;
+    background-color:#ffffff;
+    padding:24px;
+    font-family:Arial, sans-serif;
+    border-radius:6px;
+    text-align:center;
+">
+    <h2 style="margin-top:0;">
+        Witaj użytkowniku!
+    </h2>
+    <p>
+        Użytkownik <strong th:text="${changedBy}">User</strong>
+        zmienił status twojego konta na: <strong th:text="${status}">aktywne</strong>.
+    </p>
+    <p>
+        Data zmiany:
+        <strong th:text="${#temporals.format(changedAt, 'dd-MM-yyyy HH:mm')}">2025-01-01</strong>
+    </p>
+    <p style="margin-top:24px;">
+        Jeśli nastąpił pomyłka — zignoruj tego maila.
+    </p>
+    <hr style="margin:24px 0; border:none; border-top:1px solid #ddd;"/>
+    <div style="font-size:12px; color:#666;">
+        <span>© Teletext</span>
+        &nbsp;|&nbsp;
+        <span th:text="${now}">2025-01-01</span>
+    </div>
+</div>
+</body>
+</html>
