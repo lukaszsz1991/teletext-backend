@@ -18,7 +18,7 @@ public class LocalCacheConfig {
 
   @Bean
   public CacheManager cacheManager(CacheProperties cacheProperties) {
-    var manager = new CaffeineCacheManager("pages", "contents", "templates", "users");
+    var manager = new CaffeineCacheManager("pages", "users");
     manager.setCaffeine(
         Caffeine.newBuilder()
             .expireAfterWrite(cacheProperties.defaultTtl())
