@@ -6,7 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.studia.teletext.teletext_backend.domain.models.security.User;
 import pl.studia.teletext.teletext_backend.domain.repositories.UserRepository;
-import pl.studia.teletext.teletext_backend.exceptions.UserNotFoundException;
+import pl.studia.teletext.teletext_backend.exceptions.notfound.UserNotFoundException;
 
 @Service
 @RequiredArgsConstructor

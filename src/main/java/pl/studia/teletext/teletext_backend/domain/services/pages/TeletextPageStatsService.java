@@ -12,12 +12,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.stats.TeletextPageStatsResponse;
 import pl.studia.teletext.teletext_backend.api.admin.mappers.TeletextPageStatsMapper;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPageStats;
 import pl.studia.teletext.teletext_backend.domain.repositories.TeletextPageRepository;
 import pl.studia.teletext.teletext_backend.domain.repositories.TeletextPageStatsRepository;
-import pl.studia.teletext.teletext_backend.exceptions.PageNotFoundException;
+import pl.studia.teletext.teletext_backend.exceptions.notfound.PageNotFoundException;
+import pl.studia.teletext.teletext_backend.exceptions.notfound.PageStatsNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +41,10 @@ public class TeletextPageStatsService {
 
   public TeletextPageStatsResponse getStatsForPage(Integer pageNumber, Boolean includeDetails) {
     var stats = statsRepository.findAllByPageNumber(pageNumber);
+    if (CollectionUtils.isEmpty(stats)) {
+      throw new PageStatsNotFoundException(
+          "Brak statystyk, lub strona o numerze " + pageNumber + " nie istnieje");
+    }
     return mapper.toPageStatsResponse(pageNumber, stats, includeDetails);
   }
 
