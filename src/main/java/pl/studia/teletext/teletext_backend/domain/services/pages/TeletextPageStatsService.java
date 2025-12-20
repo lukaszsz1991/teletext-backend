@@ -10,6 +10,7 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.stats.TeletextPageStatsResponse;
 import pl.studia.teletext.teletext_backend.api.admin.mappers.TeletextPageStatsMapper;
@@ -26,7 +27,7 @@ public class TeletextPageStatsService {
   private final TeletextPageStatsRepository statsRepository;
   private final TeletextPageStatsMapper mapper;
 
-  @Transactional
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void recordPageVisit(Long pageId, Instant viewedAt) {
     var page =
         pageRepository

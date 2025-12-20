@@ -6,11 +6,12 @@ import pl.studia.teletext.teletext_backend.api.publicapi.mappers.TeletextCategor
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.TeletextPageMapper;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPage;
 
-@Mapper(componentModel = "spring", uses = {
-        TeletextPageMapper.class,
-        TeletextCategoryMapper.class,
-})
-
+@Mapper(
+    componentModel = "spring",
+    uses = {
+      TeletextPageMapper.class,
+      TeletextCategoryMapper.class,
+    })
 public interface TeletextAdminPageMapper {
 
   @Mapping(target = "type", expression = "java(page.getType())")

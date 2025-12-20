@@ -13,15 +13,15 @@ import pl.studia.teletext.teletext_backend.domain.services.pages.TeletextPageSta
 @RequiredArgsConstructor
 public class StatsEventListener {
 
-    private final TeletextPageStatsService statsService;
+  private final TeletextPageStatsService statsService;
 
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void handle(PageViewedEvent event) {
-        try {
-            statsService.recordPageVisit(event.pageId(), event.occurredAt());
-        } catch (Exception e) {
-            log.error("Failed to record page visit: {} ", e.getMessage());
-        }
+  @Async
+  @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+  public void handle(PageViewedEvent event) {
+    try {
+      statsService.recordPageVisit(event.pageId(), event.occurredAt());
+    } catch (Exception e) {
+      log.error("Failed to record page visit: {} ", e.getMessage());
     }
+  }
 }

@@ -23,7 +23,7 @@ public interface TeletextPageMapper {
   TeletextFullPageContentResponse toFullContentResponse(TeletextPageContent content);
 
   @Named("getSource")
-    default String getSource(TeletextPageContent content) {
-        return content.getSource().getName();
-    }
+  default String getSource(TeletextPageContent content) {
+    return content.getSource().getName();
+  }
 }

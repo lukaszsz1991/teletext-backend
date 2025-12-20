@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +20,6 @@ import pl.studia.teletext.teletext_backend.domain.repositories.TeletextPageRepos
 import pl.studia.teletext.teletext_backend.events.stats.PageViewedEvent;
 import pl.studia.teletext.teletext_backend.exceptions.PageNotFoundException;
 
-@Log4j2
 @Service
 @RequiredArgsConstructor
 public class TeletextPageService {
@@ -33,12 +31,11 @@ public class TeletextPageService {
   private final TeletextAdminPageMapper adminMapper;
   private final ApplicationEventPublisher eventPublisher;
 
-  @Transactional
+  @Transactional(readOnly = true)
   public TeletextDetailedPageResponse viewPageByPageNumber(int pageNumber) {
     var page = getPageWithContentByPageNumber(pageNumber);
-    var result = mapper.toDetailedPageResponse(page);
     eventPublisher.publishEvent(new PageViewedEvent(page.getId(), Instant.now()));
-    return result;
+    return mapper.toDetailedPageResponse(page);
   }
 
   private TeletextPage getPageWithContentByPageNumber(int pageNumber) {
