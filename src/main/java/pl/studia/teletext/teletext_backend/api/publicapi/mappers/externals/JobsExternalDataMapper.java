@@ -5,13 +5,14 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.ExternalDataResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.integrations.JobResponse;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextSource;
 
 @Component
 public class JobsExternalDataMapper implements ExternalDataMapper<JobResponse> {
   @Override
   public ExternalDataResponse toExternalDataResponse(JobResponse source) {
     return new ExternalDataResponse(
-        "job-offers", source.title(), source.snippet(), toAdditionalData(source));
+        TeletextSource.JOB_OFFERS, source.title(), source.snippet(), toAdditionalData(source));
   }
 
   @Override

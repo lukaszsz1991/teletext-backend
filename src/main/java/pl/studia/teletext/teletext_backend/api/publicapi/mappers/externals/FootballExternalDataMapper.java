@@ -8,6 +8,7 @@ import pl.studia.teletext.teletext_backend.api.publicapi.dtos.ExternalDataRespon
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.integrations.FootballMatchesResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.integrations.FootballResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.integrations.FootballTableResponse;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextSource;
 
 @Component
 public class FootballExternalDataMapper implements ExternalDataMapper<FootballResponse<?>> {
@@ -36,7 +37,7 @@ public class FootballExternalDataMapper implements ExternalDataMapper<FootballRe
 
   private ExternalDataResponse toFootballTableExternalDataResponse(FootballTableResponse source) {
     return new ExternalDataResponse(
-        "sport-table",
+        TeletextSource.SPORT_TABLE,
         source.getLeague() + " - sezon " + source.getSeason(),
         "Tabela ligowa - stan na dzień " + LocalDate.now(),
         toAdditionalData(source));
@@ -51,7 +52,7 @@ public class FootballExternalDataMapper implements ExternalDataMapper<FootballRe
   private ExternalDataResponse toFootballMatchesExternalDataResponse(
       FootballMatchesResponse source) {
     return new ExternalDataResponse(
-        "sport-matches",
+        TeletextSource.SPORT_MATCHES,
         source.getLeague() + " - sezon " + source.getSeason(),
         "Mecze w tygodniu " + source.getData().getWeek(),
         toAdditionalData(source));

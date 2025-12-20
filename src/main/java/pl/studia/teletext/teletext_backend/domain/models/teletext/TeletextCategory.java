@@ -4,21 +4,42 @@ import lombok.Getter;
 
 @Getter
 public enum TeletextCategory {
-  NEWS("Wiadomości", "Informacje z kraju i świata", 100, new String[] {"news"}),
+  NEWS(
+      "Wiadomości", "Informacje z kraju i świata", 100, new TeletextSource[] {TeletextSource.NEWS}),
   SPORTS(
-      "Sport", "Wyniki i aktualności sportowe", 200, new String[] {"sport-matches", "sport-table"}),
-  LOTTERY("Gry losowe", "Wyniki lotto i innych gier", 300, new String[] {"lottery"}),
-  TV("Program TV", "Program telewizyjny", 400, new String[] {"tv-program"}),
-  WEATHER("Pogoda", "Prognozy i warunki pogodowe", 500, new String[] {"weather"}),
-  JOBS("Oferty pracy", "Aktualne oferty zatrudnienia", 600, new String[] {"job-offers"}),
-  HOROSCOPE("Horoskop", "Dzienne i tygodniowe horoskopy", 700, new String[] {"horoscope"}),
-  FINANCE("Finanse", "Kursy, giełda i ekonomia", 800, new String[] {"exchange-rate"}),
-  MISC("Różne", "Pozostałe informacje", 900, new String[] {"manual"});
+      "Sport",
+      "Wyniki i aktualności sportowe",
+      200,
+      new TeletextSource[] {TeletextSource.SPORT_MATCHES, TeletextSource.SPORT_TABLE}),
+  LOTTERY(
+      "Gry losowe",
+      "Wyniki lotto i innych gier",
+      300,
+      new TeletextSource[] {TeletextSource.LOTTERY}),
+  TV("Program TV", "Program telewizyjny", 400, new TeletextSource[] {TeletextSource.TV_PROGRAM}),
+  WEATHER(
+      "Pogoda", "Prognozy i warunki pogodowe", 500, new TeletextSource[] {TeletextSource.WEATHER}),
+  JOBS(
+      "Oferty pracy",
+      "Aktualne oferty zatrudnienia",
+      600,
+      new TeletextSource[] {TeletextSource.JOB_OFFERS}),
+  HOROSCOPE(
+      "Horoskop",
+      "Dzienne i tygodniowe horoskopy",
+      700,
+      new TeletextSource[] {TeletextSource.HOROSCOPE}),
+  FINANCE(
+      "Finanse",
+      "Kursy, giełda i ekonomia",
+      800,
+      new TeletextSource[] {TeletextSource.EXCHANGE_RATE}),
+  MISC("Różne", "Pozostałe informacje", 900, new TeletextSource[] {TeletextSource.MANUAL});
 
   private final String title;
   private final String description;
   private final int mainPage;
-  private final String[] mappedSources;
+  private final TeletextSource[] mappedSources;
 
   /**
    * Konstruktor enuma TeletextCategory. Waliduje strony główne kategorii. Strony muszą być między
@@ -32,7 +53,7 @@ public enum TeletextCategory {
    *     wartościami w {@link
    *     pl.studia.teletext.teletext_backend.api.publicapi.dtos.ExternalDataResponse}
    */
-  TeletextCategory(String title, String description, int mainPage, String[] mappedSources) {
+  TeletextCategory(String title, String description, int mainPage, TeletextSource[] mappedSources) {
     validateMainPage(mainPage);
     this.title = title;
     this.description = description;

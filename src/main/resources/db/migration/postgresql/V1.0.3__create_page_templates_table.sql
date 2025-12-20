@@ -12,9 +12,9 @@ CREATE TABLE page_templates
 );
 
 INSERT INTO page_templates(name, source, category, config_json) VALUES
-('Kursy Walut USD', 'exchange-rate', 'FINANCE', '{"currencyCode":"USD","lastCount":5}'),
-('Kursy Walut EUR', 'exchange-rate', 'FINANCE', '{"currencyCode":"EUR","lastCount":5}'),
-('Tabela Ekstraklasa', 'sport-table', 'SPORTS', '{"league":"ekstraklasa"}'),
-('Wyniki Ekstraklasa', 'sport-matches', 'SPORTS', '{"league":"ekstraklasa","week":48}'),
-('Mecze Ekstraklasa', 'sport-matches', 'SPORTS', '{"league":"ekstraklasa","week":49}'),
-('Pogoda Wrocław', 'weather', 'WEATHER', '{"city":"wroclaw"}')
+('Kursy Walut USD', 'EXCHANGE_RATE', 'FINANCE', '{"currencyCode":"USD","lastCount":5}'),
+('Kursy Walut EUR', 'EXCHANGE_RATE', 'FINANCE', '{"currencyCode":"EUR","lastCount":5}'),
+('Tabela Ekstraklasa', 'SPORT_TABLE', 'SPORTS', '{"league":"ekstraklasa"}'),
+('Wyniki Ekstraklasa', 'SPORT_MATCHES', 'SPORTS', '{"league":"ekstraklasa","week":48}'),
+('Mecze Ekstraklasa', 'SPORT_MATCHES', 'SPORTS', '{"league":"ekstraklasa","week":49}'),
+('Pogoda Wrocław', 'WEATHER', 'WEATHER', '{"city":"wroclaw"}')
