@@ -6,6 +6,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +53,7 @@ public class TeletextPageService {
         : page;
   }
 
+  @Cacheable(value = "pages", key = "#id", unless = "#result == null")
   public TeletextAdminPageResponse getPageWithContentById(Long id) {
     var page =
         teletextPageRepository
@@ -97,12 +101,14 @@ public class TeletextPageService {
     return request.handle(this);
   }
 
+  @CachePut(value = "pages", key = "#result.id", condition = "#result != null")
   public TeletextAdminPageResponse createManualPage(ManualPageCreateRequest request) {
     var page = adminMapper.toPage(request);
     var saved = teletextPageRepository.save(page);
     return adminMapper.toResponse(saved);
   }
 
+  @CachePut(value = "pages", key = "#result.id", condition = "#result != null")
   public TeletextAdminPageResponse createTemplatePage(TemplatePageCreateRequest request) {
     var page = adminMapper.toPage(request);
     var template = templateService.getTemplateById(request.templateId());
@@ -116,6 +122,7 @@ public class TeletextPageService {
     return request.handle(id, this);
   }
 
+  @CachePut(value = "pages", key = "#result.id", condition = "#result != null")
   public TeletextAdminPageResponse updateManualPage(Long id, ManualPageUpdateRequest request) {
     var page =
         teletextPageRepository
@@ -126,6 +133,7 @@ public class TeletextPageService {
     return adminMapper.toResponse(page);
   }
 
+  @CachePut(value = "pages", key = "#result.id", condition = "#result != null")
   public TeletextAdminPageResponse updateTemplatePage(Long id, TemplatePageUpdateRequest request) {
     var page =
         teletextPageRepository
@@ -139,6 +147,7 @@ public class TeletextPageService {
   }
 
   @Transactional
+  @CacheEvict(value = "pages", key = "#id")
   public void activatePage(Long id) {
     teletextPageRepository
         .findById(id)
@@ -152,6 +161,7 @@ public class TeletextPageService {
   }
 
   @Transactional
+  @CacheEvict(value = "pages", key = "#id")
   public void deactivatePage(Long id) {
     teletextPageRepository
         .findById(id)

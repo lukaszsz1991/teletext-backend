@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,12 +43,14 @@ public class UserService {
         .toList();
   }
 
+  @Cacheable(value = "users", key = "#id", unless = "#result == null")
   public UserResponse getUserById(Long id) {
     var user = getUserEntityById(id);
     return mapper.toUserResponse(user);
   }
 
   @Transactional
+  @CacheEvict(value = "users", key = "#result.id")
   public UserResponse createUser(CreateUserRequest request) {
     var user = mapper.toUserEntity(request);
     user.setPassword(passwordEncoder.encode(request.password()));
@@ -60,6 +65,7 @@ public class UserService {
   }
 
   @Transactional
+  @CachePut(value = "users", key = "#id", unless = "#result == null")
   public UserResponse updateUser(Long id, UpdateUserRequest request) {
     var user = getUserEntityById(id);
     user.setUsername(request.username());
@@ -69,6 +75,7 @@ public class UserService {
   }
 
   @Transactional
+  @CacheEvict(value = "users", key = "#id")
   public void changePassword(Long id, ChangeUserPasswordRequest request) {
     var user = getUserEntityById(id);
     user.setPassword(passwordEncoder.encode(request.password()));
@@ -81,6 +88,7 @@ public class UserService {
   }
 
   @Transactional
+  @CacheEvict(value = "users", key = "#id")
   public void deleteUserById(Long id) {
     if (currentUserService.getCurrentUserId().equals(id))
       throw new AccessDeniedException("Nie można usunąć własnego konta");
@@ -96,16 +104,18 @@ public class UserService {
   }
 
   @Transactional
-  public void restoreUserById(Long id) {
+  @CachePut(value = "users", key = "#id", unless = "#result == null")
+  public UserResponse restoreUserById(Long id) {
     var user = getDeletedUserEntityById(id);
     user.setDeletedAt(null);
-    userRepository.save(user);
+    var saved = userRepository.save(user);
     eventPublisher.publishEvent(
         new AccountStatusChangedEmailEvent(
             user.getEmail(),
             true,
             user.getUpdatedAt().toLocalDateTime(),
             currentUserService.getCurrentUsername()));
+    return mapper.toUserResponse(saved);
   }
 
   private User getUserEntityById(Long id) {
