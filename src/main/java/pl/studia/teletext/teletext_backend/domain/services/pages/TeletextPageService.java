@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.page.*;
@@ -14,9 +16,12 @@ import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextDetai
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.TeletextPageMapper;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPage;
 import pl.studia.teletext.teletext_backend.domain.repositories.TeletextPageRepository;
+import pl.studia.teletext.teletext_backend.events.stats.PageViewedEvent;
 import pl.studia.teletext.teletext_backend.exceptions.PageNotFoundException;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class TeletextPageService {
@@ -26,20 +31,26 @@ public class TeletextPageService {
   private final TeletextPageRepository teletextPageRepository;
   private final TeletextPageMapper mapper;
   private final TeletextAdminPageMapper adminMapper;
+  private final ApplicationEventPublisher eventPublisher;
 
-  public TeletextDetailedPageResponse getPageWithContentByPageNumber(Integer pageNumber) {
+  @Transactional
+  public TeletextDetailedPageResponse viewPageByPageNumber(int pageNumber) {
+    var page = getPageWithContentByPageNumber(pageNumber);
+    var result = mapper.toDetailedPageResponse(page);
+    eventPublisher.publishEvent(new PageViewedEvent(page.getId(), Instant.now()));
+    return result;
+  }
+
+  private TeletextPage getPageWithContentByPageNumber(int pageNumber) {
     var page =
         teletextPageRepository
             .findByPageNumberWithContent(pageNumber)
             .orElseThrow(
                 () -> new PageNotFoundException("Nie odnaleziono strony o numerze " + pageNumber));
 
-    var result =
-        page.getTemplate() != null
-            ? pageGeneratorService.generatePageFromTemplate(page).block()
-            : page;
-
-    return mapper.toDetailedPageResponse(result);
+    return page.getTemplate() != null
+        ? pageGeneratorService.generatePageFromTemplate(page).block()
+        : page;
   }
 
   public TeletextAdminPageResponse getPageWithContentById(Long id) {

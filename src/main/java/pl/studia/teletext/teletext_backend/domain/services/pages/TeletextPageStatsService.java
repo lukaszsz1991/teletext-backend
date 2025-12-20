@@ -1,5 +1,7 @@
 package pl.studia.teletext.teletext_backend.domain.services.pages;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Comparator;
@@ -25,12 +27,12 @@ public class TeletextPageStatsService {
   private final TeletextPageStatsMapper mapper;
 
   @Transactional
-  public void recordPageVisit(Long pageId) {
+  public void recordPageVisit(Long pageId, Instant viewedAt) {
     var page =
         pageRepository
             .findById(pageId)
             .orElseThrow(() -> new PageNotFoundException("Page with id " + pageId + " not found"));
-    var stat = new TeletextPageStats(page);
+    var stat = new TeletextPageStats(page, Timestamp.from(viewedAt));
     statsRepository.save(stat);
   }
 

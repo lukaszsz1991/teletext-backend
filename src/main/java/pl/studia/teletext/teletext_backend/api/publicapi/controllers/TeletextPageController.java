@@ -12,7 +12,6 @@ import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextDetai
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextPageResponse;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
 import pl.studia.teletext.teletext_backend.domain.services.pages.TeletextPageService;
-import pl.studia.teletext.teletext_backend.domain.services.pages.TeletextPageStatsService;
 
 @RestController
 @RequestMapping("/api/public/pages")
@@ -20,7 +19,6 @@ import pl.studia.teletext.teletext_backend.domain.services.pages.TeletextPageSta
 public class TeletextPageController {
 
   private final TeletextPageService teletextPageService;
-  private final TeletextPageStatsService teletextPageStatsService;
 
   @GetMapping
   public ResponseEntity<List<TeletextPageResponse>> getAllPages(
@@ -30,9 +28,8 @@ public class TeletextPageController {
 
   @GetMapping("{pageNumber}")
   public ResponseEntity<TeletextDetailedPageResponse> getPageByNumber(
-      @PathVariable Integer pageNumber) {
-    var page = teletextPageService.getPageWithContentByPageNumber(pageNumber);
-    teletextPageStatsService.recordPageVisit(page.id()); // TODO: move it to the middleware
+      @PathVariable int pageNumber) {
+    var page = teletextPageService.viewPageByPageNumber(pageNumber);
     return ResponseEntity.ok(page);
   }
 }
