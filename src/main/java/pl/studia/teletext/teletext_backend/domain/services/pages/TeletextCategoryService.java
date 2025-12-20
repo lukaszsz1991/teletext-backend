@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextCategoryResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextPageResponse;
-import pl.studia.teletext.teletext_backend.api.publicapi.mappers.TeletextPageMapper;
+import pl.studia.teletext.teletext_backend.api.publicapi.mappers.TeletextCategoryMapper;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextSource;
 import pl.studia.teletext.teletext_backend.exceptions.IllegalPageNumberException;
@@ -17,7 +17,7 @@ import pl.studia.teletext.teletext_backend.exceptions.IllegalPageNumberException
 @RequiredArgsConstructor
 public class TeletextCategoryService {
 
-  private final TeletextPageMapper teletextPageMapper;
+  private final TeletextCategoryMapper teletextCategoryMapper;
   private final TeletextPageService teletextPageService;
 
   /** Zwraca wszystkie kategorie teletekstu z enumu i mapuje je na odpowiedzi DTO. */
@@ -25,14 +25,14 @@ public class TeletextCategoryService {
     return Arrays.stream(TeletextCategory.values())
         .map(
             cat ->
-                teletextPageMapper.toCategoryResponse(
+                teletextCategoryMapper.toCategoryResponse(
                     cat, getNextAvailablePageNumberInCategory(cat)))
         .toArray(TeletextCategoryResponse[]::new);
   }
 
   public TeletextCategoryResponse getCategoryByName(TeletextCategory category) {
     int nextFreePage = getNextAvailablePageNumberInCategory(category);
-    return teletextPageMapper.toCategoryResponse(category, nextFreePage);
+    return teletextCategoryMapper.toCategoryResponse(category, nextFreePage);
   }
 
   public TeletextCategory getCategoryByExternalDataSource(TeletextSource source) {

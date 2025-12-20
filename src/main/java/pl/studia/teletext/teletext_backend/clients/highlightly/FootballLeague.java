@@ -1,5 +1,6 @@
 package pl.studia.teletext.teletext_backend.clients.highlightly;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,4 +16,18 @@ public enum FootballLeague {
 
   private final int id;
   private final String paramName;
+
+  @JsonCreator
+  public static FootballLeague fromString(String value) {
+    try {
+      return FootballLeague.valueOf(value);
+    } catch (IllegalArgumentException ignored) {
+      for (FootballLeague league : FootballLeague.values()) {
+        if (league.getParamName().equalsIgnoreCase(value)) {
+          return league;
+        }
+      }
+    }
+    throw new IllegalArgumentException("Nie znaleziono ligi piłkarskiej o nazwie: " + value);
+  }
 }

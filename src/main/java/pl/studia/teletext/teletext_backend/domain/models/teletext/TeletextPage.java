@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.templates.TeletextPageTemplate;
 import pl.studia.teletext.teletext_backend.exceptions.IllegalPageNumberException;
 
 @Entity
@@ -17,7 +18,7 @@ public class TeletextPage {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(unique = true, nullable = false)
+  @Column(nullable = false)
   private Integer pageNumber;
 
   @Enumerated(EnumType.STRING)
@@ -43,6 +44,23 @@ public class TeletextPage {
   @PrePersist
   @PreUpdate
   private void validate() {
+    validatePageNumberRange();
+    validateCategory();
+  }
+
+  public String getTitle() {
+    if (this.content != null) return this.content.getTitle();
+    if (this.template != null) return this.template.getName();
+    throw new IllegalStateException(
+        "Brak tytułu strony o numerze " + this.pageNumber + ". Nieprawidłowy stan obiektu.");
+  }
+
+  public String getType() {
+    if (this.template != null) return "TEMPLATE";
+    return "MANUAL";
+  }
+
+  private void validatePageNumberRange() {
     int mainPage = this.category.getMainPage();
     if (this.pageNumber < mainPage + 1 || this.pageNumber > mainPage + 99) {
       throw new IllegalPageNumberException(
@@ -53,10 +71,17 @@ public class TeletextPage {
     }
   }
 
-  public String getTitle() {
-    if (this.content != null) return this.content.getTitle();
-    if (this.template != null) return this.template.getName();
-    throw new IllegalStateException(
-        "Brak tytułu strony o numerze " + this.pageNumber + ". Nieprawidłowy stan obiektu.");
+  private void validateCategory() {
+    if (this.template != null) {
+      if (!this.category.equals(this.template.getCategory())) {
+        throw new IllegalStateException(
+            "Szablon strony należy do innej kategorii niż sama strona. Strona: "
+                + this.pageNumber
+                + ", kategoria strony: "
+                + this.category
+                + ", kategoria szablonu: "
+                + this.template.getCategory());
+      }
+    }
   }
 }

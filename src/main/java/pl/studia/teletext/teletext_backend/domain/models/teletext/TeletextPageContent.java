@@ -40,4 +40,10 @@ public class TeletextPageContent {
   @UpdateTimestamp private Timestamp updatedAt;
 
   private Timestamp deletedAt;
+
+  @PrePersist
+  @PreUpdate
+  private void validate() {
+    this.page.getCategory().validateSource(this.source);
+  }
 }

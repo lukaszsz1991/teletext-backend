@@ -88,14 +88,8 @@ public class TeletextPageGeneratorService {
     int defaultLastCount = 5;
     var currencyCode = (String) config.get("currencyCode");
     var lastCount = (int) config.getOrDefault("lastCount", defaultLastCount);
-    var currency =
-        Optional.ofNullable(currencyCode)
-            .orElseThrow(
-                () ->
-                    new IllegalArgumentException(
-                        "W konfiguracji szablonu NBP brakuje pola 'currencyCode'"));
     return currencyService
-        .getLastCurrencyRates(currency, lastCount)
+        .getLastCurrencyRates(currencyCode, lastCount)
         .map(currencyExternalDataMapper::toExternalDataResponse);
   }
 
@@ -130,9 +124,11 @@ public class TeletextPageGeneratorService {
   }
 
   private Mono<ExternalDataResponse> getJobOffersData(Map<String, Object> config) {
-    var request = (JoobleRequest) config.get("joobleRequest");
-    var jobNo = (int) config.get("addedOrder");
+    var keywords = (String) config.get("keywords");
+    var location = (String) config.get("location");
+    var jobNo = (int) config.getOrDefault("addedOrder", 1);
 
+    var request = new JoobleRequest(keywords, location);
     return jobsService
         .getJobByAddingOrder(request, jobNo)
         .map(jobsExternalDataMapper::toExternalDataResponse);

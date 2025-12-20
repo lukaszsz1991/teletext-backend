@@ -1,5 +1,7 @@
 package pl.studia.teletext.teletext_backend.clients.horoscope;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public enum HoroscopeSign {
   BARAN,
   BYK,
@@ -12,5 +14,10 @@ public enum HoroscopeSign {
   STRZELEC,
   KOZIOROZEC,
   WODNIK,
-  RYBY
+  RYBY;
+
+  @JsonCreator
+  public static HoroscopeSign fromString(String value) {
+    return HoroscopeSign.valueOf(value.trim().toUpperCase());
+  }
 }
