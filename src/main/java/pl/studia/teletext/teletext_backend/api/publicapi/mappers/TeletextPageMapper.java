@@ -19,6 +19,11 @@ public interface TeletextPageMapper {
 
   TeletextPageContentResponse toContentResponse(TeletextPageContent content);
 
-  @Mapping(target = "source", expression = "java(content.getSource().getName())")
+  @Mapping(target = "source", source = "content", qualifiedByName = "getSource")
   TeletextFullPageContentResponse toFullContentResponse(TeletextPageContent content);
+
+  @Named("getSource")
+  default String getSource(TeletextPageContent content) {
+    return content.getSource().getName();
+  }
 }
