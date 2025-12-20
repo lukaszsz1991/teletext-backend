@@ -8,7 +8,11 @@ import pl.studia.teletext.teletext_backend.config.properties.JwtProperties;
 import pl.studia.teletext.teletext_backend.config.properties.WebClientProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties({JwtProperties.class, WebClientProperties.class, CacheProperties.class})
+@EnableConfigurationProperties({
+  JwtProperties.class,
+  WebClientProperties.class,
+  CacheProperties.class
+})
 public class TeletextWebAppBackendApplication {
 
   public static void main(String[] args) {

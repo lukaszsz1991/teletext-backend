@@ -14,21 +14,15 @@ import pl.studia.teletext.teletext_backend.config.properties.CacheProperties;
 @Profile(value = "local-dev")
 public class LocalCacheConfig {
 
-    private static final long MAXIMUM_SIZE = 10_000;
+  private static final long MAXIMUM_SIZE = 10_000;
 
-    @Bean
-    public CacheManager cacheManager(CacheProperties cacheProperties) {
-        var manager = new CaffeineCacheManager(
-                "pages",
-                "contents",
-                "templates",
-                "users"
-        );
-        manager.setCaffeine(
-                Caffeine.newBuilder()
-                        .expireAfterWrite(cacheProperties.defaultTtl())
-                        .maximumSize(MAXIMUM_SIZE)
-        );
-        return manager;
-    }
+  @Bean
+  public CacheManager cacheManager(CacheProperties cacheProperties) {
+    var manager = new CaffeineCacheManager("pages", "contents", "templates", "users");
+    manager.setCaffeine(
+        Caffeine.newBuilder()
+            .expireAfterWrite(cacheProperties.defaultTtl())
+            .maximumSize(MAXIMUM_SIZE));
+    return manager;
+  }
 }
