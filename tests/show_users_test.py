@@ -1,6 +1,6 @@
 import requests
 
-BASE_URL = "http://localhost:3000/api"
+BASE_URL = "http://localhost:8080/api"
 LOGIN_URL = f"{BASE_URL}/admin/auth/login"
 USERS_URL = f"{BASE_URL}/admin/users"
 

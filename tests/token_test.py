@@ -1,15 +1,56 @@
+import pytest
 import requests
 
-def test_admin_login():
-    url = "http://localhost:8080/api/admin/auth/login"
+BASE_URL = "http://localhost:8080"
+
+
+# 1. Zmieniamy get_token na fixture
+@pytest.fixture
+def token():
     payload = {
         "username": "admin",
         "password": "admin"
     }
 
-    response = requests.post(url, json=payload)
+    response = requests.post(
+        url=f"{BASE_URL}/api/admin/auth/login",
+        json=payload
+    )
 
-    assert response.status_code == 200, f"Unexpected status code: {response.status_code}"
+    assert response.status_code == 200
+    return response.json()["token"]
+
+
+# Przekazujemy 'token' jako argument do testu - pytest sam go wstrzyknie
+def test_get_pages_by_category(token):
+    headers = {
+        "Authorization": f"Bearer {token}"
+    }
+
+    params = {
+        "category": "SPORTS"
+    }
+
+    response = requests.get(
+        url=f"{BASE_URL}/api/admin/pages",
+        headers=headers,
+        params=params
+    )
+
+    # 1. Status code
+    assert response.status_code == 200
+
     data = response.json()
-    assert "token" in data, "JWT token not found in response"
-    print("Login successful, token:", data["token"])
+
+    # 2. Czy odpowiedź jest listą
+    assert isinstance(data, list)
+
+    # 3. ZABEZPIECZENIE: Sprawdź czy lista nie jest pusta
+    assert len(data) > 0, "Lista zwrócona przez API jest pusta - nie można zweryfikować kategorii!"
+
+    # 4. POPRAWKA LOGICZNA: Wchodzimy w głąb obiektu category
+    for page in data:
+        # Zakładam, że sprawdzamy pole 'originalName' z poprzedniego screena
+        # Jeśli API zwraca po prostu nazwę, upewnij się jak wygląda JSON
+        actual_category = page["category"]["originalName"]
+        assert actual_category == "SPORTS", f"Oczekiwano SPORTS, otrzymano {actual_category}"
