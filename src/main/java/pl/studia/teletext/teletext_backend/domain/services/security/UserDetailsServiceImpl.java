@@ -20,7 +20,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     return userRepository
         .findByUsername(username)
         .filter(u -> u.getDeletedAt() == null)
-        .orElseThrow(
-            () -> new UsernameNotFoundException("User with username " + username + " not found"));
+        .orElseThrow(() -> new UsernameNotFoundException("Nie znaleziono użytkownika " + username));
   }
 }

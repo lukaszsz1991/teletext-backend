@@ -7,8 +7,8 @@ import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCatego
 import pl.studia.teletext.teletext_backend.domain.services.pages.TeletextPageService;
 
 public record TemplatePageUpdateRequest(
-    @Min(value = 101, message = "Numer strony musi być większy niż 100")
-        @Max(value = 999, message = "Numer strony musi być mniejszy niż 1000")
+    @Min(value = 101, message = "Numer strony musi być większy niż {value}")
+        @Max(value = 999, message = "Numer strony musi być mniejszy niż {value}")
         int pageNumber,
     @NotNull(message = "Należy podać kategorię strony") TeletextCategory category,
     @NotNull(message = "Należy wybrać szablon strony") long templateId)

@@ -12,7 +12,7 @@ import pl.studia.teletext.teletext_backend.domain.annotations.validators.Passwor
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = PasswordMatchValidator.class)
 public @interface PasswordsMatch {
-  String message() default "Passwords do not match";
+  String message() default "Hasła muszą się zgadzać";
 
   Class<?>[] groups() default {};
 

@@ -32,7 +32,8 @@ public class TeletextPageStatsService {
     var page =
         pageRepository
             .findById(pageId)
-            .orElseThrow(() -> new PageNotFoundException("Page with id " + pageId + " not found"));
+            .orElseThrow(
+                () -> new PageNotFoundException("Strona o ID " + pageId + " nie znaleziona"));
     var stat = new TeletextPageStats(page, Timestamp.from(viewedAt));
     statsRepository.save(stat);
   }

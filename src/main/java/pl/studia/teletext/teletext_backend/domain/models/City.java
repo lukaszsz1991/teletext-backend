@@ -6,12 +6,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record City(
-    @NotBlank(message = "City name must not be blank")
-        @Size(min = 1, max = 100, message = "City name must be between {min} and {max} chars long")
+    @NotBlank(message = "Nazwa miasta nie może być pusta")
+        @Size(min = 1, max = 100, message = "Nazwa miasta musi mieć od 1 do 100 znaków")
         String name,
-    @DecimalMin(value = "-90.0", message = "Latitude must be >= -90")
-        @DecimalMax(value = "90.0", message = "Latitude must be <= 90")
+    @DecimalMin(value = "-90.0", message = "Szerokość geograficzna musi być >= {value}")
+        @DecimalMax(value = "90.0", message = "Szerokość geograficzna musi być <= {value}")
         double latitude,
-    @DecimalMin(value = "-180.0", message = "Longitude must be >= -180")
-        @DecimalMax(value = "180.0", message = "Longitude must be <= 180")
+    @DecimalMin(value = "-180.0", message = "Długość geograficzna musi być >= {value}")
+        @DecimalMax(value = "180.0", message = "Długość geograficzna musi być <= {value}")
         double longitude) {}

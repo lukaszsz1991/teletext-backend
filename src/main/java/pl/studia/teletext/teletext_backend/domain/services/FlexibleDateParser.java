@@ -55,7 +55,7 @@ public class FlexibleDateParser {
       } catch (DateTimeParseException ignored) {
       }
     }
-    throw new DateTimeParseException("Cannot parse date: " + date, date, -1);
+    throw new DateTimeParseException("Nie udało się przekonwertować: " + date, date, -1);
   }
 
   public static String format(LocalDateTime value) {
