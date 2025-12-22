@@ -43,7 +43,7 @@ public class HighlightlyClient {
                           log.error("Error fetching data from Highlightly/Standing: {}", errorBody);
                           return Mono.error(
                               new ExternalApiException(
-                                  "Error fetching data from Highlightly",
+                                  "Błąd podczas pobierania danych z Highlightly",
                                   clientResponse.statusCode().value()));
                         }))
         .bodyToMono(HighlightlyStandingsInfo.class);
@@ -85,7 +85,7 @@ public class HighlightlyClient {
                           log.error("Error fetching data from Highlightly/Matches: {}", errorBody);
                           return Mono.error(
                               new ExternalApiException(
-                                  "Error fetching data from Highlightly",
+                                  "Błąd podczas pobierania danych z Highlightly",
                                   clientResponse.statusCode().value()));
                         }))
         .bodyToMono(HighlightlyMatchesInfo.class);

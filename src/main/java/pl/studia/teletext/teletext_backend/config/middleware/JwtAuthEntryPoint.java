@@ -25,9 +25,8 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
       throws IOException {
     var problemDetail =
         ProblemDetail.forStatusAndDetail(
-            HttpStatus.UNAUTHORIZED, "Unauthorized: " + authException.getMessage());
-    problemDetail.setTitle("Unauthorized");
-    problemDetail.setDetail("Invalid or missing JWT token");
+            HttpStatus.UNAUTHORIZED, "Nieprawidłowy lub brakujący token JWT");
+    problemDetail.setTitle("Brak autoryzacji");
 
     response.setStatus(HttpStatus.UNAUTHORIZED.value());
     response.setContentType("application/problem+json");

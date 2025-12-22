@@ -40,7 +40,7 @@ public class SmtpEmailService implements EmailService {
       message.setText(body);
       message.addRecipients(RecipientType.TO, to);
     } catch (MessagingException e) {
-      throw new RuntimeException("Failed to create email message", e);
+      throw new RuntimeException("Nie udało się utworzyć wiadomości email", e);
     }
     mailSender.send(message);
   }
@@ -64,7 +64,7 @@ public class SmtpEmailService implements EmailService {
       helper.setText(html, true);
       mailSender.send(message);
     } catch (MessagingException e) {
-      throw new RuntimeException("Failed to create email message", e);
+      throw new RuntimeException("Nie udało się utworzyć wiadomości email", e);
     }
   }
 

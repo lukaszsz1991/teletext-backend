@@ -25,9 +25,8 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
       throws IOException {
     var problemDetail =
         ProblemDetail.forStatusAndDetail(
-            HttpStatus.FORBIDDEN, "Forbidden: " + accessDeniedException.getMessage());
-    problemDetail.setTitle("Forbidden");
-    problemDetail.setDetail("You do not have permission to access this resource");
+            HttpStatus.FORBIDDEN, "Nie masz uprawnień, aby uzyskać dostęp do tego zasobu");
+    problemDetail.setTitle("Odmowa dostępu");
 
     response.setStatus(HttpStatus.FORBIDDEN.value());
     response.setContentType("application/problem+json");

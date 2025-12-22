@@ -40,7 +40,7 @@ public class JoobleClient {
                           log.error("Error fetching data from Jooble: {}", errorBody);
                           return Mono.error(
                               new ExternalApiException(
-                                  "Error fetching data from Jooble",
+                                  "Błąd podczas pobierania danych z Jooble: ",
                                   clientResponse.statusCode().value()));
                         }))
         .bodyToMono(JoobleResponse.class);

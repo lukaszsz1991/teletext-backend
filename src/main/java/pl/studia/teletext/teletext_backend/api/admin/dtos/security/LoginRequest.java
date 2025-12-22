@@ -4,9 +4,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record LoginRequest(
-    @NotNull(message = "Username is required")
-        @Size(min = 5, max = 50, message = "Username must be between 5 and 50 characters")
+    @NotNull(message = "Nazwa użytkownika jest wymagana")
+        @Size(min = 5, max = 50, message = "Nazwa użytkownika musi mieć od {min} do {max} znaków")
         String username,
-    @NotNull(message = "Password is required")
-        @Size(min = 5, max = 100, message = "Password must be between 5 and 100 characters")
+    @NotNull(message = "Hasło jest wymagane")
+        @Size(min = 5, max = 100, message = "Hasło musi mieć od {min} do {max} znaków")
         String password) {}

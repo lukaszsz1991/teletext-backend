@@ -7,10 +7,10 @@ import pl.studia.teletext.teletext_backend.domain.annotations.PasswordsMatch;
 
 @PasswordsMatch
 public record ChangeUserPasswordRequest(
-    @NotNull(message = "Password is required")
-        @Size(min = 5, max = 100, message = "Password must be between 8 and 100 characters")
+    @NotNull(message = "Hasło jest wymagane")
+        @Size(min = 5, max = 100, message = "Hasło musi mieć od {min} do {max} znaków")
         String password,
-    @NotNull(message = "Password is required")
-        @Size(min = 5, max = 100, message = "Password must be between 8 and 100 characters")
+    @NotNull(message = "Hasło jest wymagane")
+        @Size(min = 5, max = 100, message = "Hasło musi mieć od {min} do {max} znaków")
         String repeatPassword)
     implements PasswordChange {}
