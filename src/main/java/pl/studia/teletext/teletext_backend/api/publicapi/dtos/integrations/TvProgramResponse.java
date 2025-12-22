@@ -1,7 +1,7 @@
 package pl.studia.teletext.teletext_backend.api.publicapi.dtos.integrations;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record TvProgramResponse(
@@ -10,7 +10,7 @@ public record TvProgramResponse(
   List<ProgramSlot> program
 ) {
   public record ProgramSlot(
-    LocalTime time,
+    LocalDateTime time,
     String title,
     String description
   ) {}

@@ -39,9 +39,15 @@ public class TvpClient {
         .flatMap(
             errorBody -> {
               log.error("Error fetching data from TVP: {}", errorBody);
-              return Mono.error(
-                  new ExternalApiException(
-                      "Błąd pobierania danych programu TV z TVP", response.statusCode().value()));
+              if (response.statusCode() == HttpStatusCode.valueOf(404)) {
+                return Mono.error(
+                    new ExternalApiException(
+                        "Nie znaleziono danych programu TV w TVP", response.statusCode().value()));
+              } else {
+                return Mono.error(
+                    new ExternalApiException(
+                        "Błąd pobierania danych programu TV z TVP", response.statusCode().value()));
+              }
             });
   }
 
