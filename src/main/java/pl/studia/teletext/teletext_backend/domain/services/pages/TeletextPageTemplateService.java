@@ -14,7 +14,7 @@ import pl.studia.teletext.teletext_backend.api.admin.mappers.TeletextPageTemplat
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.templates.TeletextPageTemplate;
 import pl.studia.teletext.teletext_backend.domain.repositories.TeletextPageTemplateRepository;
-import pl.studia.teletext.teletext_backend.exceptions.TemplateNotFoundException;
+import pl.studia.teletext.teletext_backend.exceptions.notfound.TemplateNotFoundException;
 
 @Service
 @RequiredArgsConstructor

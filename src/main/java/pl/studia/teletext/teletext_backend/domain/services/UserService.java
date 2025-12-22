@@ -23,7 +23,7 @@ import pl.studia.teletext.teletext_backend.domain.services.security.CurrentUserS
 import pl.studia.teletext.teletext_backend.events.mailing.dto.AccountCreatedEmailEvent;
 import pl.studia.teletext.teletext_backend.events.mailing.dto.AccountStatusChangedEmailEvent;
 import pl.studia.teletext.teletext_backend.events.mailing.dto.PasswordChangedEmailEvent;
-import pl.studia.teletext.teletext_backend.exceptions.UserNotFoundException;
+import pl.studia.teletext.teletext_backend.exceptions.notfound.UserNotFoundException;
 
 @Service
 @RequiredArgsConstructor

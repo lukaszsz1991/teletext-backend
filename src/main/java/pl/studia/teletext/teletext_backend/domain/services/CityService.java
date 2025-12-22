@@ -7,7 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import pl.studia.teletext.teletext_backend.domain.models.City;
 import pl.studia.teletext.teletext_backend.domain.repositories.CityRepository;
-import pl.studia.teletext.teletext_backend.exceptions.CityNotFoundException;
+import pl.studia.teletext.teletext_backend.exceptions.notfound.CityNotFoundException;
 
 @Log4j2
 @Service

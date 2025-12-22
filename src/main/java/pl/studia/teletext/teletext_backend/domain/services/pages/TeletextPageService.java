@@ -21,7 +21,7 @@ import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCatego
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPage;
 import pl.studia.teletext.teletext_backend.domain.repositories.TeletextPageRepository;
 import pl.studia.teletext.teletext_backend.events.stats.PageViewedEvent;
-import pl.studia.teletext.teletext_backend.exceptions.PageNotFoundException;
+import pl.studia.teletext.teletext_backend.exceptions.notfound.PageNotFoundException;
 
 @Service
 @RequiredArgsConstructor

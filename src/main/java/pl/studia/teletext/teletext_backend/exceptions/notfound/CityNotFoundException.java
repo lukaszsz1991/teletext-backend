@@ -1,4 +1,4 @@
-package pl.studia.teletext.teletext_backend.exceptions;
+package pl.studia.teletext.teletext_backend.exceptions.notfound;
 
 public class CityNotFoundException extends NotFoundException {
   public CityNotFoundException(String message) {
