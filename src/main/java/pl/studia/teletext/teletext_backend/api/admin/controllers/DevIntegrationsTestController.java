@@ -1,6 +1,7 @@
 package pl.studia.teletext.teletext_backend.api.admin.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,6 @@ import pl.studia.teletext.teletext_backend.clients.jooble.JoobleRequest;
 import pl.studia.teletext.teletext_backend.clients.news.NewsCategory;
 import pl.studia.teletext.teletext_backend.clients.tvp.TvpChannel;
 import pl.studia.teletext.teletext_backend.domain.services.integrations.*;
-
-import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/admin/test")
@@ -135,12 +134,12 @@ public class DevIntegrationsTestController {
 
   @GetMapping("tv-program")
   public ResponseEntity<?> getMatchesForWeek(
-    @RequestParam TvpChannel channelName, @RequestParam LocalDate date) {
+      @RequestParam TvpChannel channelName, @RequestParam LocalDate date) {
     var result =
-      tvProgramService
-        .getTvProgram(channelName, date)
-        .map(tvProgramExternalDataMapper::toExternalDataResponse)
-        .block();
+        tvProgramService
+            .getTvProgram(channelName, date)
+            .map(tvProgramExternalDataMapper::toExternalDataResponse)
+            .block();
     return ResponseEntity.ok(result);
   }
 }

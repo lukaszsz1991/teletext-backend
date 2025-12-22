@@ -1,9 +1,8 @@
 package pl.studia.teletext.teletext_backend.clients.tvp;
 
 import jakarta.xml.bind.annotation.adapters.XmlAdapter;
-import pl.studia.teletext.teletext_backend.domain.services.FlexibleDateParser;
-
 import java.time.LocalDateTime;
+import pl.studia.teletext.teletext_backend.domain.services.FlexibleDateParser;
 
 public class JaxbLocalDateTimeAdapter extends XmlAdapter<String, LocalDateTime> {
 

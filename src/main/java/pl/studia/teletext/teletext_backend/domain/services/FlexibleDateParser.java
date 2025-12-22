@@ -19,8 +19,7 @@ public class FlexibleDateParser {
           DateTimeFormatter.ISO_OFFSET_DATE_TIME,
           DateTimeFormatter.ISO_LOCAL_DATE_TIME,
           DateTimeFormatter.ISO_LOCAL_DATE,
-          TVP_FORMATTER
-        );
+          TVP_FORMATTER);
 
   /**
    * Parse a date/time string into a {@link java.time.LocalDateTime}.

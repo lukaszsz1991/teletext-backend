@@ -2,8 +2,6 @@ package pl.studia.teletext.teletext_backend.domain.services.pages;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -157,10 +155,10 @@ public class TeletextPageGeneratorService {
   }
 
   private Mono<ExternalDataResponse> getTvProgramData(Map<String, Object> config) {
-    var channel = TvpChannel.fromString((String) config.get("channel"));
+    var channel = TvpChannel.fromString((String) config.get("channelName"));
     var date = FlexibleDateParser.parse((String) config.get("date")).toLocalDate();
     return tvProgramService
-      .getTvProgram(channel, date)
-      .map(tvProgramExternalDataMapper::toExternalDataResponse);
+        .getTvProgram(channel, date)
+        .map(tvProgramExternalDataMapper::toExternalDataResponse);
   }
 }

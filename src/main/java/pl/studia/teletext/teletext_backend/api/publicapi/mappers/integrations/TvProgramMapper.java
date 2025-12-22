@@ -1,11 +1,10 @@
 package pl.studia.teletext.teletext_backend.api.publicapi.mappers.integrations;
 
+import java.time.LocalDate;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.integrations.TvProgramResponse;
 import pl.studia.teletext.teletext_backend.clients.tvp.TvpResponse;
-
-import java.time.LocalDate;
 
 @Mapper(componentModel = "spring")
 public interface TvProgramMapper {
@@ -15,5 +14,4 @@ public interface TvProgramMapper {
 
   @Mapping(target = "time", source = "realDateTime")
   TvProgramResponse.ProgramSlot toProgramSlot(TvpResponse.PrRecord prRecord);
-
 }

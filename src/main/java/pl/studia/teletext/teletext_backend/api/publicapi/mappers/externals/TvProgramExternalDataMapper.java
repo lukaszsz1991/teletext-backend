@@ -1,12 +1,11 @@
 package pl.studia.teletext.teletext_backend.api.publicapi.mappers.externals;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.stereotype.Component;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.ExternalDataResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.integrations.TvProgramResponse;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextSource;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class TvProgramExternalDataMapper implements ExternalDataMapper<TvProgramResponse> {

@@ -1,6 +1,5 @@
 package pl.studia.teletext.teletext_backend.clients.tvp;
 
-import java.net.URI;
 import java.time.LocalDate;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,11 +22,14 @@ public class TvpClient {
   }
 
   public Mono<TvpResponse> fetchTvProgram(TvpChannel channel, LocalDate date) {
+    return fetchForYear(channel, date, date.getYear())
+        .onErrorResume(e -> fetchForYear(channel, date, date.getYear() + 1));
+  }
+
+  private Mono<TvpResponse> fetchForYear(TvpChannel channel, LocalDate date, int year) {
     return tvpWebClient
         .get()
-        .uri(uri -> uri
-          .path(buildRawPath(channel, date))
-          .build())
+        .uri(uri -> uri.path(buildRawPath(channel, date, year)).build())
         .retrieve()
         .onStatus(HttpStatusCode::isError, TvpClient::handleError)
         .bodyToMono(TvpResponse.class);
@@ -51,11 +53,13 @@ public class TvpClient {
             });
   }
 
-  private String buildRawPath(TvpChannel channel, LocalDate date) {
+  // year passed separately because of incorrect dates in the API
+  // (eg. 2025-12-29 and above are placed in 2026)
+  private String buildRawPath(TvpChannel channel, LocalDate date, int year) {
     return UriComponentsBuilder.newInstance()
         .pathSegment(BASE_PREFIX)
         .pathSegment(channel.getUrlName())
-        .pathSegment(String.valueOf(date.getYear()))
+        .pathSegment(String.valueOf(year))
         .pathSegment("xml_OMI")
         .pathSegment(buildXmlFileName(channel.getUrlCode(), date))
         .build()

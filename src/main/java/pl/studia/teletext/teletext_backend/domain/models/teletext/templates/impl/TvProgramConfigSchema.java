@@ -2,8 +2,6 @@ package pl.studia.teletext.teletext_backend.domain.models.teletext.templates.imp
 
 import java.util.List;
 import java.util.Map;
-
-import pl.studia.teletext.teletext_backend.clients.highlightly.FootballLeague;
 import pl.studia.teletext.teletext_backend.clients.tvp.TvpChannel;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.templates.ConfigSchema;
 import pl.studia.teletext.teletext_backend.exceptions.InvalidJsonConfigException;
@@ -18,7 +16,7 @@ public class TvProgramConfigSchema implements ConfigSchema {
     for (String field : requiredFields()) {
       if (!config.containsKey(field)) {
         throw new InvalidJsonConfigException(
-          "Brak wymaganego pola w konfiguracji tv-program: " + field);
+            "Brak wymaganego pola w konfiguracji tv-program: " + field);
       }
     }
 
@@ -27,11 +25,11 @@ public class TvProgramConfigSchema implements ConfigSchema {
         TvpChannel.fromString(channel.toUpperCase());
       } catch (Exception e) {
         throw new InvalidJsonConfigException(
-          "Pole channelName musi być wartością enum TvpChannel w konfiguracji tv-program");
+            "Pole channelName musi być wartością enum TvpChannel w konfiguracji tv-program");
       }
     } else {
       throw new InvalidJsonConfigException(
-        "Pole channelName musi być ciągiem znaków w konfiguracji tv-program");
+          "Pole channelName musi być ciągiem znaków w konfiguracji tv-program");
     }
   }
 

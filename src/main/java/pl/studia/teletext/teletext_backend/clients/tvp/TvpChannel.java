@@ -3,7 +3,6 @@ package pl.studia.teletext.teletext_backend.clients.tvp;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import pl.studia.teletext.teletext_backend.clients.highlightly.FootballLeague;
 
 @AllArgsConstructor
 @Getter

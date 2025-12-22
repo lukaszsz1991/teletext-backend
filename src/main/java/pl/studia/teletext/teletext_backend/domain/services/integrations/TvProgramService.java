@@ -1,5 +1,6 @@
 package pl.studia.teletext.teletext_backend.domain.services.integrations;
 
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.integrations.TvProgramResponse;
@@ -7,8 +8,6 @@ import pl.studia.teletext.teletext_backend.api.publicapi.mappers.integrations.Tv
 import pl.studia.teletext.teletext_backend.clients.tvp.TvpChannel;
 import pl.studia.teletext.teletext_backend.clients.tvp.TvpClient;
 import reactor.core.publisher.Mono;
-
-import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
