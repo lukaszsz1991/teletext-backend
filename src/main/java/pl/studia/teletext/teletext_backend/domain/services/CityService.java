@@ -34,7 +34,7 @@ public class CityService {
               return normalizedInputName.equals(normalizedName);
             })
         .findFirst()
-        .orElseThrow(() -> new CityNotFoundException("City with name " + name + " not found"));
+        .orElseThrow(() -> new CityNotFoundException("Nie znaleziono miasta " + name));
   }
 
   private String normalizeCityName(String name) {

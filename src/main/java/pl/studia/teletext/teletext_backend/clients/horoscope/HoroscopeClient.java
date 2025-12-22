@@ -36,7 +36,7 @@ public class HoroscopeClient {
                           log.error("Error fetching data from Horoscope/Today: {}", errorBody);
                           return Mono.error(
                               new ExternalApiException(
-                                  "Error fetching data from Horoscope/Today",
+                                  "Błąd podczas pobierania danych Horoskopu - dziś",
                                   clientResponse.statusCode().value()));
                         }))
         .bodyToMono(HoroscopeResponse.class);
@@ -57,7 +57,7 @@ public class HoroscopeClient {
                           log.error("Error fetching data from Horoscope/Tomorrow: {}", errorBody);
                           return Mono.error(
                               new ExternalApiException(
-                                  "Error fetching data from Horoscope/Tomorrow",
+                                  "Błąd podczas pobierania danych Horoskopu - jutro",
                                   clientResponse.statusCode().value()));
                         }))
         .bodyToMono(HoroscopeResponse.class);

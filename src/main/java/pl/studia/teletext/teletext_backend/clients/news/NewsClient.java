@@ -38,7 +38,7 @@ public class NewsClient {
                           log.error("Error fetching data from News Data: {}", errorBody);
                           return Mono.error(
                               new ExternalApiException(
-                                  "Error fetching data from News Data",
+                                  "Błąd podczas pobierania wiadomości z News Data",
                                   clientResponse.statusCode().value()));
                         }))
         .bodyToMono(NewsDataResponse.class);

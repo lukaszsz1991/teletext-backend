@@ -32,20 +32,21 @@ public class JwtService {
     try {
       Claims claims = extractAllClaims(token);
       if (!jwtProperties.issuer().equals(claims.getIssuer())) {
-        throw new JwtValidatingException("Invalid JWT issuer");
+        throw new JwtValidatingException("Nieprawidłowy wydawca JWT");
       }
       if (!claims.getAudience().contains(jwtProperties.audience())) {
-        throw new JwtValidatingException("Invalid JWT audience");
+        throw new JwtValidatingException("Nieprawidłowy odbiorca JWT");
       }
     } catch (Exception e) {
       log.error("Invalid JWT: {}", e.getMessage());
-      throw new JwtValidatingException("JWT validation failed", e);
+      throw new JwtValidatingException("Walidacja JWT nie powiodła się", e);
     }
   }
 
   public String extractUsername(String token) {
     return extractClaim(token, Claims::getSubject)
-        .orElseThrow(() -> new JwtValidatingException("Unable to extract username from JWT"));
+        .orElseThrow(
+            () -> new JwtValidatingException("Nie udało się wyodrębnić nazwy użytkownika z JWT"));
   }
 
   public Long getExpirationMs() {
@@ -75,7 +76,7 @@ public class JwtService {
           .parseSignedClaims(token)
           .getPayload();
     } catch (ExpiredJwtException ex) {
-      throw new JwtValidatingException("JWT token has expired", ex);
+      throw new JwtValidatingException("Token JWT wygasł");
     }
   }
 

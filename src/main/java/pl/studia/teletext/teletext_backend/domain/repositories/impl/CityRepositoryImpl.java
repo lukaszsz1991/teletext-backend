@@ -2,6 +2,7 @@ package pl.studia.teletext.teletext_backend.domain.repositories.impl;
 
 import jakarta.validation.ValidationException;
 import jakarta.validation.Validator;
+import jakarta.validation.constraints.NotBlank;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,7 +30,7 @@ public class CityRepositoryImpl implements CityRepository {
     var violations = validator.validate(city);
     if (!violations.isEmpty()) {
       var firstMsg = violations.stream().findFirst().get().getMessage();
-      throw new ValidationException("City validation failed: " + firstMsg + "; City: " + city);
+      throw new ValidationException("Walidacja miasta " + city + " nie powiodła się: " + firstMsg);
     }
   }
 
@@ -40,10 +41,10 @@ public class CityRepositoryImpl implements CityRepository {
               try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
                 return reader.lines().toList();
               } catch (IOException ex) {
-                throw new RuntimeException("Error reading cities file", ex);
+                throw new RuntimeException("Błąd wczytania pliku " + CITIES_FILE_PATH, ex);
               }
             })
-        .orElseThrow(() -> new RuntimeException("Cities file not found: " + CITIES_FILE_PATH));
+        .orElseThrow(() -> new RuntimeException("Plik nie znaleziony: " + CITIES_FILE_PATH));
   }
 
   private City mapToCity(String csvLine) {
@@ -56,12 +57,12 @@ public class CityRepositoryImpl implements CityRepository {
     return city;
   }
 
-  private double parseCoordinate(String value) {
-    if (value.isBlank()) throw new ValidationException("City coordinate value is blank");
+  private double parseCoordinate(
+      @NotBlank(message = "Lokalizacja miasta jest pusta") String value) {
     try {
       return Double.parseDouble(value);
     } catch (NumberFormatException ex) {
-      throw new ValidationException("Invalid city coordinate value: " + value, ex);
+      throw new ValidationException("Nieprawidłowa lokalizacja miasta: " + value);
     }
   }
 }

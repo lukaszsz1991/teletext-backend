@@ -36,7 +36,8 @@ public class OpenMeteoClient {
             clientResponse ->
                 Mono.error(
                     new ExternalApiException(
-                        "Error fetching data from OpenMeteo", clientResponse.statusCode().value())))
+                        "Błąd pobierania danych pogodowych z Meteo Client",
+                        clientResponse.statusCode().value())))
         .bodyToMono(OpenMeteoResponse.class);
   }
 }

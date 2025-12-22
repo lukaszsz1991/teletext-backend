@@ -30,7 +30,7 @@ public class NbpClient {
             clientResponse ->
                 Mono.error(
                     new ExternalApiException(
-                        "Error fetching data from NBP", clientResponse.statusCode().value())))
+                        "Błąd pobierania kursów z NBP", clientResponse.statusCode().value())))
         .bodyToMono(NbpRateResponse.class);
   }
 }

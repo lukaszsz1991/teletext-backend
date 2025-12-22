@@ -35,7 +35,7 @@ public class LottoClient {
                           log.error("Error fetching data from Lotto/Info: {}", errorBody);
                           return Mono.error(
                               new ExternalApiException(
-                                  "Error fetching data from Lotto",
+                                  "Błąd podczas pobierania informacji z Lotto",
                                   clientResponse.statusCode().value()));
                         }))
         .bodyToMono(LottoInfoResponse.class);
@@ -60,7 +60,7 @@ public class LottoClient {
                           log.error("Error fetching data from Lotto/Results: {}", errorBody);
                           return Mono.error(
                               new ExternalApiException(
-                                  "Error fetching data from Lotto",
+                                  "Błąd podczas pobierania wyników losowania z Lotto",
                                   clientResponse.statusCode().value()));
                         }))
         .bodyToFlux(LottoResultResponse.class);
