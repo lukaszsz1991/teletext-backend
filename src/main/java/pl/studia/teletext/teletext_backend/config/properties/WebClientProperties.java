@@ -16,4 +16,5 @@ public record WebClientProperties(
     String joobleSecret,
     String horoscopeBaseUrl,
     String highlightlyBaseUrl,
-    String highlightlySecret) {}
+    String highlightlySecret,
+    String tvpBaseUrl) {}
