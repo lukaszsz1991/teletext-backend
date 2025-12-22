@@ -1,5 +1,7 @@
 package pl.studia.teletext.teletext_backend.domain.services.pages;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Comparator;
@@ -8,6 +10,7 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.stats.TeletextPageStatsResponse;
 import pl.studia.teletext.teletext_backend.api.admin.mappers.TeletextPageStatsMapper;
@@ -24,13 +27,13 @@ public class TeletextPageStatsService {
   private final TeletextPageStatsRepository statsRepository;
   private final TeletextPageStatsMapper mapper;
 
-  @Transactional
-  public void recordPageVisit(Long pageId) {
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void recordPageVisit(Long pageId, Instant viewedAt) {
     var page =
         pageRepository
             .findById(pageId)
             .orElseThrow(() -> new PageNotFoundException("Page with id " + pageId + " not found"));
-    var stat = new TeletextPageStats(page);
+    var stat = new TeletextPageStats(page, Timestamp.from(viewedAt));
     statsRepository.save(stat);
   }
 

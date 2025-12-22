@@ -8,7 +8,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.sql.Timestamp;
 import lombok.Data;
@@ -31,13 +30,8 @@ public class TeletextPageStats {
   @Column(nullable = false)
   private Timestamp openedAt;
 
-  public TeletextPageStats(TeletextPage page) {
+  public TeletextPageStats(TeletextPage page, Timestamp openedAt) {
     this.page = page;
-    this.openedAt = new Timestamp(System.currentTimeMillis());
-  }
-
-  @PrePersist
-  protected void onCreate() {
-    this.openedAt = new Timestamp(System.currentTimeMillis());
+    this.openedAt = openedAt;
   }
 }

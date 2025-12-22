@@ -6,6 +6,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.studia.teletext.teletext_backend.api.admin.dtos.page.*;
@@ -14,7 +18,9 @@ import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextDetai
 import pl.studia.teletext.teletext_backend.api.publicapi.dtos.page.TeletextPageResponse;
 import pl.studia.teletext.teletext_backend.api.publicapi.mappers.TeletextPageMapper;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextCategory;
+import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPage;
 import pl.studia.teletext.teletext_backend.domain.repositories.TeletextPageRepository;
+import pl.studia.teletext.teletext_backend.events.stats.PageViewedEvent;
 import pl.studia.teletext.teletext_backend.exceptions.PageNotFoundException;
 
 @Service
@@ -26,22 +32,28 @@ public class TeletextPageService {
   private final TeletextPageRepository teletextPageRepository;
   private final TeletextPageMapper mapper;
   private final TeletextAdminPageMapper adminMapper;
+  private final ApplicationEventPublisher eventPublisher;
 
-  public TeletextDetailedPageResponse getPageWithContentByPageNumber(Integer pageNumber) {
+  @Transactional(readOnly = true)
+  public TeletextDetailedPageResponse viewPageByPageNumber(int pageNumber) {
+    var page = getPageWithContentByPageNumber(pageNumber);
+    eventPublisher.publishEvent(new PageViewedEvent(page.getId(), Instant.now()));
+    return mapper.toDetailedPageResponse(page);
+  }
+
+  private TeletextPage getPageWithContentByPageNumber(int pageNumber) {
     var page =
         teletextPageRepository
             .findByPageNumberWithContent(pageNumber)
             .orElseThrow(
                 () -> new PageNotFoundException("Nie odnaleziono strony o numerze " + pageNumber));
 
-    var result =
-        page.getTemplate() != null
-            ? pageGeneratorService.generatePageFromTemplate(page).block()
-            : page;
-
-    return mapper.toDetailedPageResponse(result);
+    return page.getTemplate() != null
+        ? pageGeneratorService.generatePageFromTemplate(page).block()
+        : page;
   }
 
+  @Cacheable(value = "pages", key = "#id", unless = "#result == null")
   public TeletextAdminPageResponse getPageWithContentById(Long id) {
     var page =
         teletextPageRepository
@@ -89,12 +101,14 @@ public class TeletextPageService {
     return request.handle(this);
   }
 
+  @CachePut(value = "pages", key = "#result.id", condition = "#result != null")
   public TeletextAdminPageResponse createManualPage(ManualPageCreateRequest request) {
     var page = adminMapper.toPage(request);
     var saved = teletextPageRepository.save(page);
     return adminMapper.toResponse(saved);
   }
 
+  @CachePut(value = "pages", key = "#result.id", condition = "#result != null")
   public TeletextAdminPageResponse createTemplatePage(TemplatePageCreateRequest request) {
     var page = adminMapper.toPage(request);
     var template = templateService.getTemplateById(request.templateId());
@@ -108,6 +122,7 @@ public class TeletextPageService {
     return request.handle(id, this);
   }
 
+  @CachePut(value = "pages", key = "#result.id", condition = "#result != null")
   public TeletextAdminPageResponse updateManualPage(Long id, ManualPageUpdateRequest request) {
     var page =
         teletextPageRepository
@@ -118,6 +133,7 @@ public class TeletextPageService {
     return adminMapper.toResponse(page);
   }
 
+  @CachePut(value = "pages", key = "#result.id", condition = "#result != null")
   public TeletextAdminPageResponse updateTemplatePage(Long id, TemplatePageUpdateRequest request) {
     var page =
         teletextPageRepository
@@ -131,6 +147,7 @@ public class TeletextPageService {
   }
 
   @Transactional
+  @CacheEvict(value = "pages", key = "#id")
   public void activatePage(Long id) {
     teletextPageRepository
         .findById(id)
@@ -144,6 +161,7 @@ public class TeletextPageService {
   }
 
   @Transactional
+  @CacheEvict(value = "pages", key = "#id")
   public void deactivatePage(Long id) {
     teletextPageRepository
         .findById(id)
