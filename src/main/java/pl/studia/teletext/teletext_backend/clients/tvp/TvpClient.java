@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.util.UriComponentsBuilder;
 import pl.studia.teletext.teletext_backend.exceptions.ExternalApiException;
 import reactor.core.publisher.Mono;
@@ -23,7 +24,9 @@ public class TvpClient {
 
   public Mono<TvpResponse> fetchTvProgram(TvpChannel channel, LocalDate date) {
     return fetchForYear(channel, date, date.getYear())
-        .onErrorResume(e -> fetchForYear(channel, date, date.getYear() + 1));
+        .onErrorResume(
+            WebClientResponseException.NotFound.class,
+            e -> fetchForYear(channel, date, date.getYear() + 1));
   }
 
   private Mono<TvpResponse> fetchForYear(TvpChannel channel, LocalDate date, int year) {
@@ -69,7 +72,7 @@ public class TvpClient {
   private String buildXmlFileName(String channelCode, LocalDate date) {
     var fileName =
         String.format(
-            "m%4d%02d%02d_%s.xml",
+            "m%04d%02d%02d_%s.xml",
             date.getYear(), date.getMonthValue(), date.getDayOfMonth(), channelCode);
     log.debug(
         "Built TVP XML file name: {}. File built with code {} and date {}.",

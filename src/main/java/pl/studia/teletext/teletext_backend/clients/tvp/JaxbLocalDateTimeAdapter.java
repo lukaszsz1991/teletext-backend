@@ -13,6 +13,6 @@ public class JaxbLocalDateTimeAdapter extends XmlAdapter<String, LocalDateTime> 
 
   @Override
   public String marshal(LocalDateTime value) {
-    return FlexibleDateParser.parse(value);
+    return FlexibleDateParser.format(value);
   }
 }

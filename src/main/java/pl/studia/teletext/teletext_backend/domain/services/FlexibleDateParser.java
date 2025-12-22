@@ -58,7 +58,7 @@ public class FlexibleDateParser {
     throw new DateTimeParseException("Cannot parse date: " + date, date, -1);
   }
 
-  public static String parse(LocalDateTime value) {
+  public static String format(LocalDateTime value) {
     return TVP_FORMATTER.format(value);
   }
 }

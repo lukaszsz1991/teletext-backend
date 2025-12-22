@@ -132,8 +132,8 @@ public class DevIntegrationsTestController {
     return ResponseEntity.ok(result);
   }
 
-  @GetMapping("tv-program")
-  public ResponseEntity<?> getMatchesForWeek(
+  @GetMapping("/tv-program")
+  public ResponseEntity<?> getTvProgram(
       @RequestParam TvpChannel channelName, @RequestParam LocalDate date) {
     var result =
         tvProgramService

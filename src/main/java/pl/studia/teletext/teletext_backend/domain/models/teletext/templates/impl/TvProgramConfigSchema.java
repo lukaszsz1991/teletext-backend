@@ -23,7 +23,7 @@ public class TvProgramConfigSchema implements ConfigSchema {
     if (config.get("channelName") instanceof String channel) {
       try {
         TvpChannel.fromString(channel.toUpperCase());
-      } catch (Exception e) {
+      } catch (IllegalArgumentException e) {
         throw new InvalidJsonConfigException(
             "Pole channelName musi być wartością enum TvpChannel w konfiguracji tv-program");
       }

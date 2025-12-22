@@ -12,7 +12,7 @@ public enum TvpChannel {
   TVP_ABC2("DMPR", "TVPABC2", "TVP ABC 2"),
   TVP_DOKUMENT("DOK", "TVPDokument", "TVP Dokument"),
   TVP_HISTORIA2("H2", "TVPHistoria2", "TVP Historia 2"),
-  TVP_INFO("INF", "TVPHistoria2", "TVP Info"),
+  TVP_INFO("INF", "TVPInfo", "TVP Info"),
   TVP_KOBIETA("KBT", "TVPKobieta", "TVP Kobieta"),
   TVP_HD("KHSH", "TVPHD", "TVP HD"),
   TVP_SPORT("KSP", "TVPSport", "TVP Sport"),
