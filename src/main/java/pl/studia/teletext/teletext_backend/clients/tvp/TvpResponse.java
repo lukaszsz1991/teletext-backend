@@ -1,18 +1,35 @@
 package pl.studia.teletext.teletext_backend.clients.tvp;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonRootName;
-import java.time.LocalDateTime;
-import tools.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import tools.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import lombok.Data;
 
-@JsonRootName("APCData")
-public record TvpResponse(
-    @JacksonXmlElementWrapper(useWrapping = false) @JacksonXmlProperty(localName = "prrecord")
-        PrRecord[] records) {
-  public record PrRecord(
-      @JacksonXmlProperty(localName = "REAL_DATE_TIME") @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-          LocalDateTime realDateTime,
-      @JacksonXmlProperty(localName = "PTITEL") String title,
-      @JacksonXmlProperty(localName = "EPG") String description) {}
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Data
+@XmlRootElement(name = "APCData")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class TvpResponse {
+
+  @XmlElement(name = "prrecord")
+  private List<PrRecord> records;
+
+  @Data
+  @XmlAccessorType(XmlAccessType.FIELD)
+  public static class PrRecord {
+
+    @XmlElement(name = "REAL_DATE_TIME")
+    @XmlJavaTypeAdapter(JaxbLocalDateTimeAdapter.class)
+    private LocalDateTime realDateTime;
+
+    @XmlElement(name = "PTITEL")
+    private String title;
+
+    @XmlElement(name = "EPG")
+    private String description;
+  }
 }

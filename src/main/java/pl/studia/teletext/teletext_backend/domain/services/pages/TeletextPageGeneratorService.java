@@ -2,6 +2,8 @@ package pl.studia.teletext.teletext_backend.domain.services.pages;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +14,10 @@ import pl.studia.teletext.teletext_backend.clients.highlightly.FootballLeague;
 import pl.studia.teletext.teletext_backend.clients.horoscope.HoroscopeSign;
 import pl.studia.teletext.teletext_backend.clients.jooble.JoobleRequest;
 import pl.studia.teletext.teletext_backend.clients.news.NewsCategory;
+import pl.studia.teletext.teletext_backend.clients.tvp.TvpChannel;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPage;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.TeletextPageContent;
+import pl.studia.teletext.teletext_backend.domain.services.FlexibleDateParser;
 import pl.studia.teletext.teletext_backend.domain.services.integrations.*;
 import reactor.core.publisher.Mono;
 
@@ -28,6 +32,7 @@ public class TeletextPageGeneratorService {
   private final JobsService jobsService;
   private final WeatherService weatherService;
   private final HoroscopeService horoscopeService;
+  private final TvProgramService tvProgramService;
   private final CurrencyExternalDataMapper currencyExternalDataMapper;
   private final FootballExternalDataMapper footballExternalDataMapper;
   private final NewsExternalDataMapper newsExternalDataMapper;
@@ -35,6 +40,7 @@ public class TeletextPageGeneratorService {
   private final JobsExternalDataMapper jobsExternalDataMapper;
   private final WeatherExternalDataMapper weatherExternalDataMapper;
   private final HoroscopeExternalMapper horoscopeExternalMapper;
+  private final TvProgramExternalDataMapper tvProgramExternalDataMapper;
 
   public Mono<TeletextPage> generatePageFromTemplate(TeletextPage page) {
     var template =
@@ -61,6 +67,7 @@ public class TeletextPageGeneratorService {
           case JOB_OFFERS -> getJobOffersData(config);
           case WEATHER -> getWeatherData(config);
           case HOROSCOPE -> getHoroscopeData(config);
+          case TV_PROGRAM -> getTvProgramData(config);
           default ->
               Mono.error(
                   new IllegalArgumentException(
@@ -147,5 +154,13 @@ public class TeletextPageGeneratorService {
     return horoscopeService
         .getSingleSignHoroscope(sign, forTomorrow)
         .map(horoscopeExternalMapper::toExternalDataResponse);
+  }
+
+  private Mono<ExternalDataResponse> getTvProgramData(Map<String, Object> config) {
+    var channel = TvpChannel.fromString((String) config.get("channel"));
+    var date = FlexibleDateParser.parse((String) config.get("date")).toLocalDate();
+    return tvProgramService
+      .getTvProgram(channel, date)
+      .map(tvProgramExternalDataMapper::toExternalDataResponse);
   }
 }

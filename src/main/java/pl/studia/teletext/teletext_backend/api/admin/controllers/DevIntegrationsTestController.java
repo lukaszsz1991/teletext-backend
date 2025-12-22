@@ -9,24 +9,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pl.studia.teletext.teletext_backend.api.publicapi.mappers.externals.CurrencyExternalDataMapper;
-import pl.studia.teletext.teletext_backend.api.publicapi.mappers.externals.FootballExternalDataMapper;
-import pl.studia.teletext.teletext_backend.api.publicapi.mappers.externals.HoroscopeExternalMapper;
-import pl.studia.teletext.teletext_backend.api.publicapi.mappers.externals.JobsExternalDataMapper;
-import pl.studia.teletext.teletext_backend.api.publicapi.mappers.externals.LottoExternalDataMapper;
-import pl.studia.teletext.teletext_backend.api.publicapi.mappers.externals.NewsExternalDataMapper;
-import pl.studia.teletext.teletext_backend.api.publicapi.mappers.externals.WeatherExternalDataMapper;
+import pl.studia.teletext.teletext_backend.api.publicapi.mappers.externals.*;
 import pl.studia.teletext.teletext_backend.clients.highlightly.FootballLeague;
 import pl.studia.teletext.teletext_backend.clients.horoscope.HoroscopeSign;
 import pl.studia.teletext.teletext_backend.clients.jooble.JoobleRequest;
 import pl.studia.teletext.teletext_backend.clients.news.NewsCategory;
-import pl.studia.teletext.teletext_backend.domain.services.integrations.CurrencyService;
-import pl.studia.teletext.teletext_backend.domain.services.integrations.FootballService;
-import pl.studia.teletext.teletext_backend.domain.services.integrations.HoroscopeService;
-import pl.studia.teletext.teletext_backend.domain.services.integrations.JobsService;
-import pl.studia.teletext.teletext_backend.domain.services.integrations.LotteryService;
-import pl.studia.teletext.teletext_backend.domain.services.integrations.NewsService;
-import pl.studia.teletext.teletext_backend.domain.services.integrations.WeatherService;
+import pl.studia.teletext.teletext_backend.clients.tvp.TvpChannel;
+import pl.studia.teletext.teletext_backend.domain.services.integrations.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/admin/test")
@@ -45,6 +36,7 @@ public class DevIntegrationsTestController {
   private final JobsExternalDataMapper jobsExternalDataMapper;
   private final HoroscopeExternalMapper horoscopeExternalMapper;
   private final FootballExternalDataMapper footballExternalMapper;
+  private final TvProgramExternalDataMapper tvProgramExternalDataMapper;
   private final CurrencyService currencyService;
   private final WeatherService weatherService;
   private final LotteryService lotteryService;
@@ -52,6 +44,7 @@ public class DevIntegrationsTestController {
   private final JobsService jobsService;
   private final HoroscopeService horoscopeService;
   private final FootballService footballService;
+  private final TvProgramService tvProgramService;
 
   @GetMapping("/currencies")
   public ResponseEntity<?> getCurrencies(
@@ -137,6 +130,17 @@ public class DevIntegrationsTestController {
             .getMatchesForLeague(league, week)
             .map(footballExternalMapper::toExternalDataResponse)
             .block();
+    return ResponseEntity.ok(result);
+  }
+
+  @GetMapping("tv-program")
+  public ResponseEntity<?> getMatchesForWeek(
+    @RequestParam TvpChannel channelName, @RequestParam LocalDate date) {
+    var result =
+      tvProgramService
+        .getTvProgram(channelName, date)
+        .map(tvProgramExternalDataMapper::toExternalDataResponse)
+        .block();
     return ResponseEntity.ok(result);
   }
 }

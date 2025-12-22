@@ -12,11 +12,15 @@ import java.util.List;
 
 public class FlexibleDateParser {
 
+  private static final DateTimeFormatter TVP_FORMATTER =
+      DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
   private static final List<DateTimeFormatter> FORMATTERS =
       List.of(
           DateTimeFormatter.ISO_OFFSET_DATE_TIME,
           DateTimeFormatter.ISO_LOCAL_DATE_TIME,
-          DateTimeFormatter.ISO_LOCAL_DATE);
+          DateTimeFormatter.ISO_LOCAL_DATE,
+          TVP_FORMATTER
+        );
 
   /**
    * Parse a date/time string into a {@link java.time.LocalDateTime}.
@@ -53,5 +57,9 @@ public class FlexibleDateParser {
       }
     }
     throw new DateTimeParseException("Cannot parse date: " + date, date, -1);
+  }
+
+  public static String parse(LocalDateTime value) {
+    return TVP_FORMATTER.format(value);
   }
 }

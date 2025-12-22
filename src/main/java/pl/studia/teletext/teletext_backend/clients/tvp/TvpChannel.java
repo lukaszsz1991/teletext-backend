@@ -1,7 +1,9 @@
 package pl.studia.teletext.teletext_backend.clients.tvp;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import pl.studia.teletext.teletext_backend.clients.highlightly.FootballLeague;
 
 @AllArgsConstructor
 @Getter
@@ -49,4 +51,14 @@ public enum TvpChannel {
   private final String urlCode;
   private final String urlName;
   private final String displayName;
+
+  @JsonCreator
+  public static TvpChannel fromString(String value) {
+    try {
+      value = value.trim().toUpperCase();
+      return TvpChannel.valueOf(value);
+    } catch (IllegalArgumentException ignored) {
+      throw new IllegalArgumentException("Nie znaleziono kanału TV o nazwie: " + value);
+    }
+  }
 }

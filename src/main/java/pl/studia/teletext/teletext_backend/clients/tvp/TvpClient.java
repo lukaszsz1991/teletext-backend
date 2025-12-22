@@ -25,7 +25,9 @@ public class TvpClient {
   public Mono<TvpResponse> fetchTvProgram(TvpChannel channel, LocalDate date) {
     return tvpWebClient
         .get()
-        .uri(uri -> buildUri(channel, date))
+        .uri(uri -> uri
+          .path(buildRawPath(channel, date))
+          .build())
         .retrieve()
         .onStatus(HttpStatusCode::isError, TvpClient::handleError)
         .bodyToMono(TvpResponse.class);
@@ -43,7 +45,7 @@ public class TvpClient {
             });
   }
 
-  private URI buildUri(TvpChannel channel, LocalDate date) {
+  private String buildRawPath(TvpChannel channel, LocalDate date) {
     return UriComponentsBuilder.newInstance()
         .pathSegment(BASE_PREFIX)
         .pathSegment(channel.getUrlName())
@@ -51,7 +53,7 @@ public class TvpClient {
         .pathSegment("xml_OMI")
         .pathSegment(buildXmlFileName(channel.getUrlCode(), date))
         .build()
-        .toUri();
+        .toUriString();
   }
 
   private String buildXmlFileName(String channelCode, LocalDate date) {

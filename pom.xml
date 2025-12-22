@@ -23,7 +23,7 @@
         <version.bouncycastle>1.82</version.bouncycastle>
         <version.swagger>2.8.13</version.swagger>
         <version.caffeine>3.2.3</version.caffeine>
-        <version.jackson-xml>3.0.3</version.jackson-xml>
+        <version.jackson-xml>2.20.1</version.jackson-xml>
     </properties>
 
     <dependencies>
@@ -77,7 +77,7 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
         <dependency>
-            <groupId>tools.jackson.dataformat</groupId>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
             <version>${version.jackson-xml}</version>
         </dependency>
