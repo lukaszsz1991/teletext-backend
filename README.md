@@ -26,6 +26,9 @@ W celu wykonywania zapytań try-it-out do zasobów chronionych, należy podać t
 ---
 
 ## Uwierzytelnianie i autoryzacja
+
+### JWT
+
 System uwierzytelniania oparty jest na JWT (JSON Web Tokens). Dostęp do zasobów `/api/public/**` jest otwarty dla wszystkich użytkowników, natomiast dostęp do zasobów `/api/admin/**` wymaga posiadania ważnego tokenu JWT.
 
 Token można uzyskać jedynie przez zalogowanie się na konto z rolą **ADMIN** przy użyciu endpointu 
@@ -40,7 +43,7 @@ Authorization: Bearer <token>
 Token ma określony czas ważności, po którym użytkownik musi ponownie się zalogować, aby uzyskać nowy token.
 Czas ważności ustawiony jest w pliku `application.properties (w odpowiednim profilu)` pod kluczem `jwt.expiration-ms`.
 
-### :exclamation: JWT Secret
+#### :exclamation: JWT Secret
 Przed uruchomieniem aplikacji należy ustawić zmienną środowiskową **`TELETEXT_JWT_SECRET`** podając w niej co najmniej 32 bajtowy ciąg znaków zakodowany w Base64.
 
 #### Generowanie secretu:
@@ -53,6 +56,45 @@ openssl rand -base64 32
 ```powershell
 [Convert]::ToBase64String((1..32 | ForEach-Object {Get-Random -Maximum 256}))
 ```
+
+### Refresh Token
+
+W celu zwiększenia doświadczenia użytkownika, do aplikacji został dodany mechanizm odświeżania tokenów JWT.
+
+Pozwala on na uzyskanie nowego tokenu JWT bez konieczności ponownego logowania się, pod warunkiem, że posiadany refresh token jest nadal ważny.
+
+Refresh tokeny są generowane podczas logowania i zwracane razem z tokenem JWT.
+
+Refresh token można odświeżyć przekazując go w ciele żądania do endpointu:
+
+```
+POST /api/admin/auth/refresh
+body:
+{
+  "refreshToken": "<refresh_token>"
+}
+```
+
+Refresh token nie jest wymagany do korzystania z aplikacji, ale pozwala na dłuższe utrzymanie sesji bez konieczności ponownego logowania się.
+
+Domyślny czas ważności refresh tokena ustawiony jest w pliku `application.properties (w odpowiednim profilu)` pod kluczem `jwt.refresh-token-expiration-seconds`.
+Można go edytować bezpośrednio w tym miejscu, lub przez zmienną środowiskową **`JWT_REFRESH_TOKEN_EXPIRATION_SECONDS`**.
+
+Refresh tokeny są przechowywane w bazie danych po stronie serwera, co pozwala unieważnić je przy wylogowaniu użytkownika.
+Wylogowanie odbywa się poprzez wywołanie endpointu:
+
+```
+POST /api/admin/auth/logout
+body:
+{
+  "refreshToken": "<refresh_token>"
+}
+```
+
+Przy wylogowaniu i refreshowaniu tokena, stary refresh token jest usuwany z bazy danych, a nowy jest tworzony (w przypadku refreshowania).
+
+Odświeżanie nie powiedzie się, jeśli token nie istnieje w bazie, lub jeśli jego czas ważności minął.
+
 ### Role i konta
 > Aktualnie jedyną rolą jest `ADMIN`
 

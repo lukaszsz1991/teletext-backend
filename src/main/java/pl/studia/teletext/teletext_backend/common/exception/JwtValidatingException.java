@@ -1,6 +1,6 @@
 package pl.studia.teletext.teletext_backend.common.exception;
 
-public class JwtValidatingException extends RuntimeException {
+public class JwtValidatingException extends AuthTokenException {
   public JwtValidatingException(String message) {
     super(message);
   }
