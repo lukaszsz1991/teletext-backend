@@ -6,7 +6,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
-import pl.studia.teletext.teletext_backend.domain.services.pages.TeletextPageStatsService;
+import pl.studia.teletext.teletext_backend.teletext.page.service.TeletextPageStatsService;
 
 @Log4j2
 @Component

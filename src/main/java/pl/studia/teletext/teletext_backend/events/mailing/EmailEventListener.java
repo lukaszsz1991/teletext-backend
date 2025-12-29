@@ -8,10 +8,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
-import pl.studia.teletext.teletext_backend.domain.services.mailing.EmailService;
-import pl.studia.teletext.teletext_backend.events.mailing.dto.AccountCreatedEmailEvent;
-import pl.studia.teletext.teletext_backend.events.mailing.dto.AccountStatusChangedEmailEvent;
-import pl.studia.teletext.teletext_backend.events.mailing.dto.PasswordChangedEmailEvent;
+import pl.studia.teletext.teletext_backend.infrastructure.mail.EmailService;
 
 @Component
 @RequiredArgsConstructor

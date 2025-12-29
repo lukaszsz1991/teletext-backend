@@ -15,9 +15,9 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
-import pl.studia.teletext.teletext_backend.api.admin.dtos.page.TeletextAdminPageResponse;
-import pl.studia.teletext.teletext_backend.api.admin.dtos.user.UserResponse;
 import pl.studia.teletext.teletext_backend.config.properties.CacheProperties;
+import pl.studia.teletext.teletext_backend.teletext.page.api.admin.dto.TeletextAdminPageResponse;
+import pl.studia.teletext.teletext_backend.user.api.dto.UserResponse;
 
 @Configuration
 @EnableCaching
