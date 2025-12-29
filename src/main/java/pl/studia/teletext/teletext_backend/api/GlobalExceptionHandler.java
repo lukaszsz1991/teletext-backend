@@ -16,7 +16,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import pl.studia.teletext.teletext_backend.exceptions.*;
+import pl.studia.teletext.teletext_backend.common.exception.*;
+import pl.studia.teletext.teletext_backend.common.exception.not_found.NotFoundException;
 
 @Log4j2
 @ControllerAdvice
