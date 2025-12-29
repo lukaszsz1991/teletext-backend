@@ -16,7 +16,7 @@ public class OpenApiConfiguration {
   @Value("${application.version}")
   private String appVersion;
 
-  @Value("${spring.mail.username}")
+  @Value("${spring.mail.username:teletext@example.com}")
   private String email;
 
   @Bean
