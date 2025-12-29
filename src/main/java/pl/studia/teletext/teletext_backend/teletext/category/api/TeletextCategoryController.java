@@ -15,10 +15,7 @@ import pl.studia.teletext.teletext_backend.teletext.category.service.TeletextCat
 @RestController
 @RequestMapping("/api/public/categories")
 @RequiredArgsConstructor
-@Tag(
-    name = "Teletext Categories",
-    description = "Endpoints for retrieving teletext categories"
-)
+@Tag(name = "Teletext Categories", description = "Endpoints for retrieving teletext categories")
 public class TeletextCategoryController {
 
   private final TeletextCategoryService teletextCategoryService;
@@ -26,8 +23,7 @@ public class TeletextCategoryController {
   @GetMapping
   @Operation(
       summary = "Get All Categories",
-      description = "Retrieve a list of all teletext categories"
-  )
+      description = "Retrieve a list of all teletext categories")
   public ResponseEntity<TeletextCategoryResponse[]> getCategories() {
     return ResponseEntity.ok(teletextCategoryService.getAllCategories());
   }
@@ -35,8 +31,7 @@ public class TeletextCategoryController {
   @GetMapping("{category}")
   @Operation(
       summary = "Get Category By Name",
-      description = "Retrieve a specific teletext category by its name"
-  )
+      description = "Retrieve a specific teletext category by its name")
   public ResponseEntity<TeletextCategoryResponse> getCategoryByName(
       @PathVariable TeletextCategory category) {
     return ResponseEntity.ok(teletextCategoryService.getCategoryByName(category));
