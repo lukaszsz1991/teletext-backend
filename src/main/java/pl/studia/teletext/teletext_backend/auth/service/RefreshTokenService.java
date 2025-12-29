@@ -3,6 +3,7 @@ package pl.studia.teletext.teletext_backend.auth.service;
 import java.time.Instant;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.studia.teletext.teletext_backend.auth.domain.RefreshToken;
@@ -11,6 +12,7 @@ import pl.studia.teletext.teletext_backend.auth.repository.RefreshTokenRepositor
 import pl.studia.teletext.teletext_backend.common.exception.RefreshTokenExpiredException;
 import pl.studia.teletext.teletext_backend.common.exception.not_found.RefreshTokenNotFoundException;
 import pl.studia.teletext.teletext_backend.config.properties.JwtProperties;
+import pl.studia.teletext.teletext_backend.user.service.CurrentUserService;
 import pl.studia.teletext.teletext_backend.user.service.UserService;
 
 @Service
@@ -20,6 +22,7 @@ public class RefreshTokenService {
   private final RefreshTokenRepository refreshTokenRepository;
   private final UserService userService;
   private final JwtProperties jwtProperties;
+  private final CurrentUserService currentUserService;
 
   @Transactional
   public RefreshToken createRefreshToken(String username) {
@@ -35,14 +38,12 @@ public class RefreshTokenService {
         .findByTokenWithUser(token)
         .map(
             t -> {
-              if (isTokenExpired(t)) {
-                refreshTokenRepository.delete(t);
+              refreshTokenRepository.delete(t);
+              if (t.isExpired()) {
                 throw new RefreshTokenExpiredException(
                     "Logowanie wygasło, należy zalogować się jeszcze raz.");
               }
-              var newToken = refreshTokenRepository.save(buildRefreshToken(t.getUser()));
-              refreshTokenRepository.delete(t);
-              return newToken;
+              return refreshTokenRepository.save(buildRefreshToken(t.getUser()));
             })
         .orElseThrow(() -> new RefreshTokenNotFoundException("Nie znaleziono podanego tokenu."));
   }
@@ -52,7 +53,14 @@ public class RefreshTokenService {
     refreshTokenRepository
         .findByToken(token)
         .ifPresentOrElse(
-            refreshTokenRepository::delete,
+            t -> {
+              var loggedUser = currentUserService.getCurrentUser();
+              if (loggedUser.equals(t.getUser())) {
+                refreshTokenRepository.delete(t);
+              } else {
+                throw new AccessDeniedException("Nie udało się wylogować!");
+              }
+            },
             () -> {
               throw new RefreshTokenNotFoundException(
                   "Nie udało się wylogować - podany token nie istnieje.");
@@ -62,10 +70,6 @@ public class RefreshTokenService {
   @Transactional
   public void removeExpiredRefreshTokens() {
     refreshTokenRepository.deleteAllExpiredSince(Instant.now());
-  }
-
-  private boolean isTokenExpired(RefreshToken refreshToken) {
-    return refreshToken.getExpiryDate().isBefore(Instant.now());
   }
 
   private RefreshToken buildRefreshToken(User user) {

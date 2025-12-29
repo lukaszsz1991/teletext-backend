@@ -12,12 +12,17 @@ public class RefreshToken {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(unique = true)
+  @Column(unique = true, nullable = false)
   private String token;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id", referencedColumnName = "id")
+  @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
   private User user;
 
+  @Column(nullable = false)
   private Instant expiryDate;
+
+  public boolean isExpired() {
+    return this.expiryDate != null && this.expiryDate.isBefore(Instant.now());
+  }
 }
