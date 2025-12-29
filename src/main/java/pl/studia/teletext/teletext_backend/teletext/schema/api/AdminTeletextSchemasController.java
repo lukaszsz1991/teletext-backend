@@ -18,7 +18,7 @@ import pl.studia.teletext.teletext_backend.teletext.schema.service.TeletextSchem
 @RequiredArgsConstructor
 @Tag(
     name = "Teletext Schemas Management Controller",
-    description = "Operations for teletext configuration schemas. Allowed only for ADMIN role.")
+    description = "Operations for teletext configuration schemas.")
 public class AdminTeletextSchemasController {
 
   private final TeletextSchemaService teletextSourceService;

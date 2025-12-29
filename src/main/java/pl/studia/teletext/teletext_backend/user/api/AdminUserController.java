@@ -27,9 +27,7 @@ import pl.studia.teletext.teletext_backend.user.service.UserService;
 @RestController
 @RequestMapping("/api/admin/users")
 @RequiredArgsConstructor
-@Tag(
-    name = "Users management controller",
-    description = "CRUD operations for users. Allowed only for ADMIN role.")
+@Tag(name = "Users management controller", description = "CRUD operations for users.")
 public class AdminUserController {
 
   private final UserService userService;
