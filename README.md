@@ -93,7 +93,7 @@ body:
 
 Przy wylogowaniu i refreshowaniu tokena, stary refresh token jest usuwany z bazy danych, a nowy jest tworzony (w przypadku refreshowania).
 
-Odświeżanie nie powiedzie się, jeśli token nie istieje w bazie, lub jeśli jego czas ważności minął.
+Odświeżanie nie powiedzie się, jeśli token nie istnieje w bazie, lub jeśli jego czas ważności minął.
 
 ### Role i konta
 > Aktualnie jedyną rolą jest `ADMIN`
