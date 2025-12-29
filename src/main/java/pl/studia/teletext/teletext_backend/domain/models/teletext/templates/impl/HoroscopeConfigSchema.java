@@ -22,8 +22,8 @@ public class HoroscopeConfigSchema implements ConfigSchema {
 
     if (config.get("sign") instanceof String sign) {
       try {
-        HoroscopeSign.valueOf(sign.toUpperCase());
-      } catch (Exception e) {
+        HoroscopeSign.fromString(sign);
+      } catch (IllegalArgumentException e) {
         throw new InvalidJsonConfigException(
             "Nieprawidłowa wartość pola sign w konfiguracji horoscope. Musi odpowiadać znakom z enum HoroscopeSign");
       }
@@ -32,7 +32,8 @@ public class HoroscopeConfigSchema implements ConfigSchema {
           "Pole sign musi być ciągiem znaków w konfiguracji horoscope");
     }
 
-    if (!(config.getOrDefault("forTomorrow", false) instanceof Boolean)) {
+    var forTomorrow = config.get("forTomorrow");
+    if (!(forTomorrow instanceof Boolean)) {
       throw new InvalidJsonConfigException(
           "Pole forTomorrow musi być wartością Boolean w konfiguracji horoscope");
     }

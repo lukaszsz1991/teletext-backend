@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import pl.studia.teletext.teletext_backend.clients.tvp.TvpChannel;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.templates.ConfigSchema;
+import pl.studia.teletext.teletext_backend.domain.services.FlexibleDateParser;
 import pl.studia.teletext.teletext_backend.exceptions.InvalidJsonConfigException;
 
 public class TvProgramConfigSchema implements ConfigSchema {
@@ -22,7 +23,7 @@ public class TvProgramConfigSchema implements ConfigSchema {
 
     if (config.get("channelName") instanceof String channel) {
       try {
-        TvpChannel.fromString(channel.toUpperCase());
+        TvpChannel.fromString(channel);
       } catch (IllegalArgumentException e) {
         throw new InvalidJsonConfigException(
             "Pole channelName musi być wartością enum TvpChannel w konfiguracji tv-program");
@@ -30,6 +31,19 @@ public class TvProgramConfigSchema implements ConfigSchema {
     } else {
       throw new InvalidJsonConfigException(
           "Pole channelName musi być ciągiem znaków w konfiguracji tv-program");
+    }
+
+    var date = config.get("date");
+    if (!(date instanceof String dateStr)) {
+      throw new InvalidJsonConfigException(
+          "Pole date musi być ciągiem znaków w konfiguracji tv-program");
+    }
+
+    try {
+      FlexibleDateParser.parse(dateStr);
+    } catch (IllegalArgumentException e) {
+      throw new InvalidJsonConfigException(
+          "Pole date musi być datą w formacie rrrr-MM-dd w konfiguracji tv-program");
     }
   }
 
@@ -45,6 +59,6 @@ public class TvProgramConfigSchema implements ConfigSchema {
 
   @Override
   public Map<String, String> fieldTypes() {
-    return Map.of("channelName", "String (TvpChannel)", "date", "Date");
+    return Map.of("channelName", "String (TvpChannel)", "date", "String (LocalDate)");
   }
 }

@@ -22,7 +22,7 @@ public class SportTableConfigSchema implements ConfigSchema {
 
     if (config.get("league") instanceof String category) {
       try {
-        FootballLeague.valueOf(category.toUpperCase());
+        FootballLeague.fromString(category);
       } catch (Exception e) {
         throw new InvalidJsonConfigException(
             "Pole league musi być wartością enum FootballLeague w konfiguracji sport-table");
