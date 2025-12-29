@@ -29,7 +29,13 @@ public class JobOffersConfigSchema implements ConfigSchema {
           "Pole location musi być ciągiem znaków w konfiguracji job-offers");
     }
 
-    if (!(config.getOrDefault("addedOrder", 1) instanceof Integer)) {
+    var addedOrder = config.get("addedOrder");
+    if (addedOrder instanceof Number n) {
+      if (n.intValue() < 1) {
+        throw new InvalidJsonConfigException(
+            "Pole addedOrder musi być liczbą większą od 0 w konfiguracji job-offers");
+      }
+    } else if (addedOrder != null) {
       throw new InvalidJsonConfigException(
           "Pole addedOrder musi być liczbą w konfiguracji job-offers");
     }

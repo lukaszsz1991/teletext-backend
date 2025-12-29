@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import pl.studia.teletext.teletext_backend.domain.models.teletext.templates.ConfigSchema;
 
+// NOTE: ManulConfigSchema does not require any validation as it has no configuration fields.
 public class ManualConfigSchema implements ConfigSchema {
   @Override
   public void validate(Map<String, Object> config) {}

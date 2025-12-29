@@ -24,7 +24,13 @@ public class ExchangeRateConfigSchema implements ConfigSchema {
           "Pole currencyCode musi być ciągiem znaków w konfiguracji exchange-rate");
     }
 
-    if (!(config.getOrDefault("lastCount", 1) instanceof Integer)) {
+    var lastCount = config.get("lastCount");
+    if (lastCount instanceof Number n) {
+      if (n.intValue() < 1) {
+        throw new InvalidJsonConfigException(
+            "Pole lastCount musi być liczbą większą od 0 w konfiguracji exchange-rate");
+      }
+    } else if (lastCount != null) {
       throw new InvalidJsonConfigException(
           "Pole lastCount musi być liczbą w konfiguracji exchange-rate");
     }

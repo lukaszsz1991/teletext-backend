@@ -22,7 +22,7 @@ public class SportMatchesConfigSchema implements ConfigSchema {
 
     if (config.get("league") instanceof String category) {
       try {
-        FootballLeague.valueOf(category.toUpperCase());
+        FootballLeague.fromString(category);
       } catch (Exception e) {
         throw new InvalidJsonConfigException(
             "Pole league musi być wartością enum FootballLeague w konfiguracji sport-matches");
@@ -32,7 +32,13 @@ public class SportMatchesConfigSchema implements ConfigSchema {
           "Pole league musi być ciągiem znaków w konfiguracji sport-matches");
     }
 
-    if (!(config.get("week") instanceof Integer)) {
+    var week = config.get("week");
+    if (week instanceof Number n) {
+      if (n.intValue() < 1 || n.intValue() > 53) {
+        throw new InvalidJsonConfigException(
+            "Pole week musi być liczbą pomiędzy 1 a 53 w konfiguracji sport-matches");
+      }
+    } else if (week != null) {
       throw new InvalidJsonConfigException(
           "Pole week musi być liczbą w konfiguracji sport-matches");
     }

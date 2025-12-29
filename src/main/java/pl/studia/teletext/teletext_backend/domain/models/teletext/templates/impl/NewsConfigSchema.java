@@ -31,7 +31,8 @@ public class NewsConfigSchema implements ConfigSchema {
           "Pole category musi być ciągiem znaków w konfiguracji news");
     }
 
-    if (!(config.getOrDefault("isPolish", true) instanceof Boolean)) {
+    var isPolish = config.get("isPolish");
+    if (!(isPolish instanceof Boolean)) {
       throw new InvalidJsonConfigException(
           "Pole isPolish musi być wartością boolean w konfiguracji news");
     }

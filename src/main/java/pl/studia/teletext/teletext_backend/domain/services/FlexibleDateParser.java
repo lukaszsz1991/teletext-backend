@@ -30,6 +30,7 @@ public class FlexibleDateParser {
    *   <li>ISO offset date-time (e.g. 2025-01-01T12:00:00+01:00)
    *   <li>ISO local date-time (e.g. 2025-01-01T12:00:00)
    *   <li>ISO local date (e.g. 2025-01-01) — returns start of day
+   *   <li>Custom TVP format (e.g. 2025-01-01 12:00:00)
    * </ul>
    *
    * @param date the date/time string to parse
