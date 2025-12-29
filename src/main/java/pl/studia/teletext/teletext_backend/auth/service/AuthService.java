@@ -16,14 +16,25 @@ public class AuthService {
 
   private final AuthenticationManager authenticationManager;
   private final JwtService jwtService;
+  private final RefreshTokenService refreshTokenService;
   private final UserDetailsService userDetailsService;
 
   public LoginResponse authenticate(LoginRequest request) {
-    log.debug("Authenticating user: {}", request.username());
-    var authToken = new UsernamePasswordAuthenticationToken(request.username(), request.password());
+    var username = request.username();
+    log.debug("Authenticating user: {}", username);
+    var authToken = new UsernamePasswordAuthenticationToken(username, request.password());
     authenticationManager.authenticate(authToken);
-    var userDetails = userDetailsService.loadUserByUsername(request.username());
+    var userDetails = userDetailsService.loadUserByUsername(username);
     var jwtToken = jwtService.generateToken(userDetails);
-    return new LoginResponse(jwtToken, "Bearer", jwtService.getExpirationMs());
+    var refreshToken = refreshTokenService.createRefreshToken(userDetails.getUsername());
+    return new LoginResponse(
+        jwtToken, "Bearer", jwtService.getExpirationMs(), refreshToken.getToken());
+  }
+
+  public LoginResponse reauthenticate(String refreshToken) {
+    var token = refreshTokenService.refreshToken(refreshToken);
+    var userDetails = userDetailsService.loadUserByUsername(token.getUser().getUsername());
+    var jwtToken = jwtService.generateToken(userDetails);
+    return new LoginResponse(jwtToken, "Bearer", jwtService.getExpirationMs(), token.getToken());
   }
 }

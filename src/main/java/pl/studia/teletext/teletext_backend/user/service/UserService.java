@@ -121,7 +121,7 @@ public class UserService {
     return userRepository
         .findById(id)
         .filter(u -> u.getDeletedAt() == null)
-        .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+        .orElseThrow(() -> new UserNotFoundException("Nie znaleziono użytkownika o ID: " + id));
   }
 
   private User getDeletedUserEntityById(Long id) {
@@ -129,6 +129,15 @@ public class UserService {
         .findById(id)
         .filter(u -> u.getDeletedAt() != null)
         .orElseThrow(
-            () -> new UserNotFoundException("User with id " + id + " not found or not deleted"));
+            () ->
+                new UserNotFoundException(
+                    "Nie znaleziono użytkownika o ID: " + id + ", lub został usunięty"));
+  }
+
+  public User getUserByUsername(String username) {
+    return userRepository
+        .findByUsername(username)
+        .filter(u -> u.getDeletedAt() == null)
+        .orElseThrow(() -> new UserNotFoundException("Nie znaleziono użytkownika: " + username));
   }
 }

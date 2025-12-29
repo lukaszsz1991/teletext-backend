@@ -34,14 +34,16 @@ public class GlobalExceptionHandler {
       case "PageNotFoundException" -> problemDetail.setTitle("Strona telegazety nie znaleziona");
       case "TemplateNotFoundException" -> problemDetail.setTitle("Szablon strony nie znaleziony");
       case "CityNotFoundException" -> problemDetail.setTitle("Miasto nie znalezione");
+      case "RefreshTokenNotFoundException" ->
+          problemDetail.setTitle("Odnowienie logowania nie powiodło się");
       default -> problemDetail.setTitle("Nie znaleziono zasobu");
     }
     return ResponseEntity.status(status).body(problemDetail);
   }
 
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
-  @ExceptionHandler(JwtValidatingException.class)
-  public ResponseEntity<ProblemDetail> handleJwtValidatingException(JwtValidatingException ex) {
+  @ExceptionHandler(AuthTokenException.class)
+  public ResponseEntity<ProblemDetail> handleJwtValidatingException(AuthTokenException ex) {
     var status = HttpStatus.UNAUTHORIZED;
     var problemDetail =
         ProblemDetail.forStatusAndDetail(status, "Błąd logowania: " + ex.getMessage());
