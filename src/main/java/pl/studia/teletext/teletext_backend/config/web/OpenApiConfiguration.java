@@ -16,6 +16,9 @@ public class OpenApiConfiguration {
   @Value("${application.version}")
   private String appVersion;
 
+  @Value("${spring.mail.username}")
+  private String email;
+
   @Bean
   public OpenAPI teletextOpenAPI() {
     return new OpenAPI()
@@ -24,7 +27,7 @@ public class OpenApiConfiguration {
                 .title("Teletext Backend API")
                 .description("API documentation for the Teletext Backend application.")
                 .version(appVersion)
-                .contact(new Contact().name("Teletext Dev Team").email("teletext@example.com")))
+                .contact(new Contact().name("Teletext Dev Team").email(email)))
         .components(
             new Components()
                 .addSecuritySchemes(

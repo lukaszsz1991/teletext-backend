@@ -22,7 +22,7 @@ import pl.studia.teletext.teletext_backend.teletext.template.service.TeletextPag
 @RequiredArgsConstructor
 @Tag(
     name = "Teletext Page Templates Management Controller",
-    description = "Operations for teletext page templates. Allowed only for ADMIN role.")
+    description = "Operations for teletext page templates.")
 public class AdminTeletextTemplateController {
 
   private final TeletextPageTemplateService pageTemplateService;
