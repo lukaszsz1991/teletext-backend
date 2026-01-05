@@ -32,3 +32,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+## Pycache##
+__pysache__/
+*.pyc
+
