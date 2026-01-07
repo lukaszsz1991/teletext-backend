@@ -1,0 +1,52 @@
+name: Python integration tests
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+jobs:
+  python-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Generate JWT secret
+        id: generate_secret
+        run: echo "TELETEXT_JWT_SECRET=$(openssl rand -hex 32)" >> $GITHUB_ENV
+
+      - name: Run backend
+        run: |
+          chmod +x ./mvnw
+          ./mvnw -q spring-boot:run -Plocal-dev &
+          echo "Waiting for backend to start..."
+          for i in {1..30}; do
+            if curl -s http://localhost:8080/actuator/health | grep -q '"status":"UP"'; then
+              echo "Backend is up"
+              break
+            fi
+            echo "Waiting for backend to be ready ($i/30)..."
+            sleep 2
+          done
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ./test/requirements.txt
+
+      - name: Run integration tests
+        run: pytest ./test

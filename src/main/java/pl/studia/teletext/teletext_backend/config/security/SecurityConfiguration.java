@@ -34,13 +34,17 @@ public class SecurityConfiguration {
             request ->
                 request
                     .requestMatchers(
-                        "/api/public/**", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**")
+                        "/api/public/**",
+                        "/swagger-ui.html",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/actuator/health")
                     .permitAll()
                     .requestMatchers("/api/admin/auth/login", "/api/admin/auth/refresh")
                     .permitAll()
                     .requestMatchers("/api/admin/auth/logout")
                     .authenticated()
-                    .requestMatchers("/api/admin/**")
+                    .requestMatchers("/api/admin/**", "/actuator/**")
                     .hasRole("ADMIN")
                     .anyRequest()
                     .denyAll())

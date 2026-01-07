@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pl.studia.teletext.teletext_backend.teletext.page.service.TeletextPageStatsService;
 import pl.studia.teletext.teletext_backend.teletext.stats.api.dto.TeletextPageStatsResponse;
+import pl.studia.teletext.teletext_backend.teletext.stats.service.TeletextPageStatsService;
 
 @RestController
 @RequestMapping("/api/admin/stats")

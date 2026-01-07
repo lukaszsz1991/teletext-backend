@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import pl.studia.teletext.teletext_backend.common.exception.IllegalPageNumberException;
 import pl.studia.teletext.teletext_backend.teletext.category.domain.TeletextCategory;
+import pl.studia.teletext.teletext_backend.teletext.stats.domain.TeletextPageStats;
 import pl.studia.teletext.teletext_backend.teletext.template.domain.TeletextPageTemplate;
 
 @Entity

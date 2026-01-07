@@ -3,6 +3,7 @@ package pl.studia.teletext.teletext_backend.api;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.ValidationException;
 import lombok.extern.log4j.Log4j2;
+import org.hibernate.TypeMismatchException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,8 @@ public class GlobalExceptionHandler {
       case "UserNotFoundException" -> problemDetail.setTitle("Użytkownik nie znaleziony");
       case "PageNotFoundException" -> problemDetail.setTitle("Strona telegazety nie znaleziona");
       case "TemplateNotFoundException" -> problemDetail.setTitle("Szablon strony nie znaleziony");
+      case "PageStatsNotFoundException" ->
+          problemDetail.setTitle("Statystyki stron nie znalezione");
       case "CityNotFoundException" -> problemDetail.setTitle("Miasto nie znalezione");
       case "RefreshTokenNotFoundException" ->
           problemDetail.setTitle("Odnowienie logowania nie powiodło się");
@@ -83,17 +86,23 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(status).body(problemDetail);
   }
 
-  @ExceptionHandler({MethodArgumentNotValidException.class, ValidationException.class})
+  @ExceptionHandler({
+    MethodArgumentNotValidException.class,
+    ValidationException.class,
+    IllegalArgumentException.class,
+    TypeMismatchException.class
+  })
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<ProblemDetail> handleValidationErrors(Exception e) {
-    String errorMessage;
-    if (e instanceof MethodArgumentNotValidException manve) {
-      errorMessage = manve.getBindingResult().getAllErrors().getFirst().getDefaultMessage();
-    } else {
-      errorMessage = e.getMessage();
+    String errorMessage = e.getMessage();
+    String title = "Błąd walidacji";
+    if (e instanceof MethodArgumentNotValidException ex) {
+      errorMessage = ex.getBindingResult().getAllErrors().getFirst().getDefaultMessage();
+    } else if (e instanceof IllegalArgumentException || e instanceof TypeMismatchException) {
+      title = "Nieprawidłowy argument";
     }
     var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, errorMessage);
-    problemDetail.setTitle("Błąd walidacji");
+    problemDetail.setTitle(title);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
   }
 
