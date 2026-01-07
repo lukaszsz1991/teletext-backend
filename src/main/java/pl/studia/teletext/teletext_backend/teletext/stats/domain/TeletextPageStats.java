@@ -1,4 +1,4 @@
-package pl.studia.teletext.teletext_backend.teletext.page.domain;
+package pl.studia.teletext.teletext_backend.teletext.stats.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import java.sql.Timestamp;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.studia.teletext.teletext_backend.teletext.page.domain.TeletextPage;
 
 @Entity
 @Table(name = "page_stats")
