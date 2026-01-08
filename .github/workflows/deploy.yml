@@ -38,7 +38,7 @@ jobs:
           docker push europe-central2-docker.pkg.dev/composite-drive-483612-v1/teletext-backend/backend-image:prod
 
       - name: Deploy on VM
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.4
         with:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USER }}
@@ -54,3 +54,4 @@ jobs:
               --restart unless-stopped \
 
               europe-central2-docker.pkg.dev/composite-drive-483612-v1/teletext-backend/backend-image:prod
+
