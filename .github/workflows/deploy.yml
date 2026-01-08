@@ -52,6 +52,4 @@ jobs:
               --env-file /opt/teletext.env \
               -p 8080:8080 \
               --restart unless-stopped \
-
               europe-central2-docker.pkg.dev/composite-drive-483612-v1/teletext-backend/backend-image:prod
-
