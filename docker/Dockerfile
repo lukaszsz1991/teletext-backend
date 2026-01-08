@@ -1,4 +1,4 @@
-FROM maven:3.9.11-eclipse-temurin-25-alpine AS build
+FROM maven:3.9.12-eclipse-temurin-21-alpine AS build
 
 WORKDIR /app
 
@@ -6,9 +6,9 @@ COPY ./pom.xml .
 RUN mvn dependency:go-offline -B
 
 COPY ./src ./src
-RUN mvn clean package -DskipTests -B -P!local-dev
+RUN mvn clean package -DskipTests -B -Pdev
 
-FROM eclipse-temurin:25-jre-alpine
+FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
