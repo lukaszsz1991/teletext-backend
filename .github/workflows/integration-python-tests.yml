@@ -20,6 +20,9 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
+      - name: Install curl
+        run: sudo apt-get update && sudo apt-get install -y curl
+
       - name: Generate JWT secret
         id: generate_secret
         run: echo "TELETEXT_JWT_SECRET=$(openssl rand -hex 32)" >> $GITHUB_ENV

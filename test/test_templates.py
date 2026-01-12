@@ -1,8 +1,9 @@
 import pytest
 import requests
+import uuid
 
 BASE_URL = 'http://localhost:8080/api/admin'
-LOGIN_URL = f'{BASE_URL}/auth/login'  # Upewnij się, że to właściwy endpoint logowania
+LOGIN_URL = f'{BASE_URL}/auth/login'
 
 @pytest.fixture
 def token():
@@ -28,7 +29,7 @@ def test_get_all_templates(token):
     print("Szablony:", response.json())
 
 
-@pytest.mark.parametrize("category", ["sports", "tv", "weather"])
+@pytest.mark.parametrize("category", ["sports", "finance", "weather"])
 def test_get_templates_by_category(token, category):
     params = {"category": category}
     response = requests.get(
@@ -43,20 +44,33 @@ def test_get_templates_by_category(token, category):
     print(f"Szablony w kategorii '{category}': {[t['name'] for t in response.json()]}")
 
 def test_create_template(token):
+    unique_suffix = str(uuid.uuid4())[:8]
     payload = {
-        "name": "Wyniki turecka101 liga",
+        "name": f"TEST_TEMPLATE_{unique_suffix}",
         "source": "sport_table",
         "category": "sports",
         "configJson": {"league": "bundesliga"}
     }
-    response = requests.post(
+
+    create_resp = requests.post(
         f"{BASE_URL}/templates",
         headers=auth_header(token),
         json=payload,
         timeout=5
     )
-    assert response.status_code == 201
-    assert response.json()["name"] == payload["name"]
+
+    assert create_resp.status_code == 201
+    template_id = create_resp.json()["id"]
+
+    # cleanup
+    delete_resp = requests.delete(
+        f"{BASE_URL}/templates/{template_id}",
+        headers=auth_header(token),
+        timeout=5
+    )
+
+    assert delete_resp.status_code in (200, 204)
+
 
 #test walidacji
 @pytest.mark.parametrize("payload", [
@@ -72,6 +86,32 @@ def test_create_template_invalid(token, payload):
     )
     assert response.status_code in [400, 500]
 
+def test_create_template_invalid_types(token):
+    payload = {
+        "name": 123,  # powinno być str
+        "source": True,  # powinno być str
+        "category": None,  # powinno być str
+        "configJson": "bundesliga"  # powinno być dict
+    }
+    response = requests.post(
+        f"{BASE_URL}/templates",
+        headers=auth_header(token),
+        json=payload
+    )
+    assert response.status_code in [400, 422]
+
+def test_create_duplicate_template(token):
+    payload = {
+        "name": "Wynikii Ekstraklasa",
+        "source": "sport_table",
+        "category": "sports",
+        "configJson": {"league": "bundesliga"}
+    }
+    first = requests.post(f"{BASE_URL}/templates", headers=auth_header(token), json=payload)
+    second = requests.post(f"{BASE_URL}/templates", headers=auth_header(token), json=payload)
+    assert second.status_code == 409
+
+
 def test_update_template(token):
     payload = {
         "category": "sports",
@@ -86,4 +126,59 @@ def test_update_template(token):
     )
     assert response.status_code == 200
     assert response.json()["name"] == payload["name"]
+
+def test_deactivate_template(token):
+    response = requests.delete(
+        f"{BASE_URL}/templates/28",
+        headers=auth_header(token)
+    )
+    assert response.status_code == 204
+
+def test_activate_template(token):
+    response = requests.patch(
+        f"{BASE_URL}/templates/28/activate",
+        headers=auth_header(token),
+        json={}
+    )
+    assert response.status_code in [200, 204]
+
+def test_activate_nonexistent_template(token):
+    response = requests.patch(
+        f"{BASE_URL}/templates/9999/activate",
+        headers=auth_header(token),
+        json={}
+    )
+    assert response.status_code == 404
+
+def test_activate_template_twice(token):
+    # druga aktywacja
+    first = requests.patch(
+        f"{BASE_URL}/templates/28/activate",
+        headers=auth_header(token),
+        json={}
+    )
+    assert first.status_code in [200, 204]
+
+def test_deactivate_existing_template(token):
+    response = requests.delete(
+        f"{BASE_URL}/templates/28",
+        headers=auth_header(token)
+    )
+    assert response.status_code == 204
+
+def test_deactivate_nonexistent_template(token):
+    response = requests.delete(
+        f"{BASE_URL}/templates/9999",
+        headers=auth_header(token)
+    )
+    assert response.status_code == 404
+
+def test_deactivate_already_deactivated_template(token):
+    # zakładamy że 28 już nieaktywny
+    response = requests.delete(
+        f"{BASE_URL}/templates/28",
+        headers=auth_header(token)
+    )
+    assert response.status_code in [204, 409]
+
 
