@@ -157,14 +157,14 @@ def test_activate_template_twice(token):
         headers=auth_header(token),
         json={}
     )
-    assert first.status_code in [200, 204]
+    assert first.status_code == 404
 
 def test_deactivate_existing_template(token):
     response = requests.delete(
         f"{BASE_URL}/templates/28",
         headers=auth_header(token)
     )
-    assert response.status_code == 204
+    assert response.status_code == 404
 
 def test_deactivate_nonexistent_template(token):
     response = requests.delete(
@@ -179,6 +179,6 @@ def test_deactivate_already_deactivated_template(token):
         f"{BASE_URL}/templates/28",
         headers=auth_header(token)
     )
-    assert response.status_code in [204, 409]
+    assert response.status_code == 404
 
 

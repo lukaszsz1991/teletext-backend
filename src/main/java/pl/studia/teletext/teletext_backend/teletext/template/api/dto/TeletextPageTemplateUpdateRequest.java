@@ -1,4 +1,4 @@
-package pl.studia.teletext.teletext_backend.teletext.category.api.dto;
+package pl.studia.teletext.teletext_backend.teletext.template.api.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

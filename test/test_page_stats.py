@@ -96,7 +96,7 @@ def test_page_stats_invalid_param(token):
         timeout=5
     )
 
-    assert response.status_code in [400, 200]
+    assert response.status_code == 400
     print("Odpowiedź z błędnym parametrem:", response.json())
     print("Kod odpowiedzi:", response.status_code)
     print("Treść odpowiedzi:", response.text)

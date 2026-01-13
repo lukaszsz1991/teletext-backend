@@ -3,13 +3,15 @@ package pl.studia.teletext.teletext_backend.api;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.ValidationException;
 import lombok.extern.log4j.Log4j2;
-import org.hibernate.TypeMismatchException;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -90,7 +92,9 @@ public class GlobalExceptionHandler {
     MethodArgumentNotValidException.class,
     ValidationException.class,
     IllegalArgumentException.class,
-    TypeMismatchException.class
+    TypeMismatchException.class,
+    InvalidDataAccessApiUsageException.class,
+    HttpMessageNotReadableException.class
   })
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<ProblemDetail> handleValidationErrors(Exception e) {
@@ -100,6 +104,9 @@ public class GlobalExceptionHandler {
       errorMessage = ex.getBindingResult().getAllErrors().getFirst().getDefaultMessage();
     } else if (e instanceof IllegalArgumentException || e instanceof TypeMismatchException) {
       title = "Nieprawidłowy argument";
+    } else if (e instanceof InvalidDataAccessApiUsageException
+        || e instanceof HttpMessageNotReadableException) {
+      title = "Nieprawidłowe typy danych w wysyłanym żądaniu";
     }
     var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, errorMessage);
     problemDetail.setTitle(title);

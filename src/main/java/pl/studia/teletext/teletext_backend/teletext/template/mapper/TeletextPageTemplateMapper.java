@@ -1,11 +1,11 @@
 package pl.studia.teletext.teletext_backend.teletext.template.mapper;
 
 import org.mapstruct.*;
-import pl.studia.teletext.teletext_backend.teletext.category.api.dto.TeletextPageFullTemplateResponse;
-import pl.studia.teletext.teletext_backend.teletext.category.api.dto.TeletextPageTemplateCreateRequest;
-import pl.studia.teletext.teletext_backend.teletext.category.api.dto.TeletextPageTemplateResponse;
-import pl.studia.teletext.teletext_backend.teletext.category.api.dto.TeletextPageTemplateUpdateRequest;
 import pl.studia.teletext.teletext_backend.teletext.page.mapper.TeletextPageMapper;
+import pl.studia.teletext.teletext_backend.teletext.template.api.dto.TeletextPageFullTemplateResponse;
+import pl.studia.teletext.teletext_backend.teletext.template.api.dto.TeletextPageTemplateCreateRequest;
+import pl.studia.teletext.teletext_backend.teletext.template.api.dto.TeletextPageTemplateResponse;
+import pl.studia.teletext.teletext_backend.teletext.template.api.dto.TeletextPageTemplateUpdateRequest;
 import pl.studia.teletext.teletext_backend.teletext.template.domain.TeletextPageTemplate;
 
 @Mapper(
