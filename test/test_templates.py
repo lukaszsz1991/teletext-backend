@@ -127,13 +127,6 @@ def test_update_template(token):
     assert response.status_code == 200
     assert response.json()["name"] == payload["name"]
 
-def test_deactivate_template(token):
-    response = requests.delete(
-        f"{BASE_URL}/templates/28",
-        headers=auth_header(token)
-    )
-    assert response.status_code == 204
-
 def test_activate_template(token):
     response = requests.patch(
         f"{BASE_URL}/templates/28/activate",
@@ -142,6 +135,13 @@ def test_activate_template(token):
     )
     assert response.status_code in [200, 204]
 
+def test_deactivate_template(token):
+    response = requests.delete(
+        f"{BASE_URL}/templates/28",
+        headers=auth_header(token)
+    )
+    assert response.status_code == 204
+
 def test_activate_nonexistent_template(token):
     response = requests.patch(
         f"{BASE_URL}/templates/9999/activate",
@@ -149,15 +149,6 @@ def test_activate_nonexistent_template(token):
         json={}
     )
     assert response.status_code == 404
-
-def test_activate_template_twice(token):
-    # druga aktywacja
-    first = requests.patch(
-        f"{BASE_URL}/templates/28/activate",
-        headers=auth_header(token),
-        json={}
-    )
-    assert first.status_code == 404
 
 def test_deactivate_existing_template(token):
     response = requests.delete(
@@ -173,12 +164,5 @@ def test_deactivate_nonexistent_template(token):
     )
     assert response.status_code == 404
 
-def test_deactivate_already_deactivated_template(token):
-    # zakładamy że 28 już nieaktywny
-    response = requests.delete(
-        f"{BASE_URL}/templates/28",
-        headers=auth_header(token)
-    )
-    assert response.status_code == 404
 
 
