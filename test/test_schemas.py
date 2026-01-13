@@ -43,4 +43,47 @@ def test_get_all_schemas(token):
             field_type = schema["types"][field]
             assert any(field_type.startswith(prefix) for prefix in valid_prefixes)
 
+def test_schema_for_weather(token):
+    response = requests.get(f"{BASE_URL}/schemas", headers=auth_header(token))
+    assert response.status_code == 200
+
+    schemas = response.json()
+    schema = next(s for s in schemas if s["source"] == "weather")
+
+    assert "city" in schema["required"]
+    assert schema["types"]["city"].startswith("String")
+
+@pytest.mark.parametrize("source, expected_required", [
+    ("tv-program", ["channelName", "date"]),
+    ("weather", ["city"]),
+    ("exchange-rate", ["currencyCode"]),
+])
+def test_schema_for_known_source(token, source, expected_required):
+    response = requests.get(f"{BASE_URL}/schemas/{source}", headers=auth_header(token))
+    assert response.status_code == 200
+    schema = response.json()
+    assert schema["source"] == source
+    for field in expected_required:
+        assert field in schema["required"]
+        assert field in schema["types"]
+
+def test_schema_for_unknown_source(token):
+    response = requests.get(f"{BASE_URL}/schemas/unknown-source", headers=auth_header(token))
+    assert response.status_code == 404
+
+def test_schema_field_types(token):
+    source = "tv-program"
+    response = requests.get(f"{BASE_URL}/schemas/{source}", headers=auth_header(token))
+    assert response.status_code == 200
+    schema = response.json()
+
+    valid_prefixes = ["String", "Integer", "Boolean"]
+    for field, field_type in schema["types"].items():
+        assert any(field_type.startswith(prefix) for prefix in valid_prefixes)
+
+def test_all_schemas_requires_authentication():
+    response = requests.get(f"{BASE_URL}/schemas")
+    assert response.status_code in [401, 403]
+
+
 
