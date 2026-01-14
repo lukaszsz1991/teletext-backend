@@ -1,5 +1,11 @@
 package pl.studia.teletext.teletext_backend.auth.service;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+import java.time.Instant;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,30 +22,18 @@ import pl.studia.teletext.teletext_backend.config.properties.JwtProperties;
 import pl.studia.teletext.teletext_backend.user.service.CurrentUserService;
 import pl.studia.teletext.teletext_backend.user.service.UserService;
 
-import java.time.Instant;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
 @ExtendWith(MockitoExtension.class)
 class RefreshTokenServiceTest {
 
-  @Mock
-  private RefreshTokenRepository refreshTokenRepository;
+  @Mock private RefreshTokenRepository refreshTokenRepository;
 
-  @Mock
-  private UserService userService;
+  @Mock private UserService userService;
 
-  @Mock
-  private JwtProperties jwtProperties;
+  @Mock private JwtProperties jwtProperties;
 
-  @Mock
-  private CurrentUserService currentUserService;
+  @Mock private CurrentUserService currentUserService;
 
-  @InjectMocks
-  private RefreshTokenService refreshTokenService;
+  @InjectMocks private RefreshTokenService refreshTokenService;
 
   private User user;
 
@@ -73,10 +67,12 @@ class RefreshTokenServiceTest {
   @Test
   void shouldThrownUserNotFoundExceptionWhenCreatingTokenForNonexistentUser() {
     // given
-    when(userService.getUserByUsername(anyString())).thenThrow(new UserNotFoundException("User not found"));
+    when(userService.getUserByUsername(anyString()))
+        .thenThrow(new UserNotFoundException("User not found"));
 
     // when & then
-    assertThrows(UserNotFoundException.class, () -> refreshTokenService.createRefreshToken("nonexistent"));
+    assertThrows(
+        UserNotFoundException.class, () -> refreshTokenService.createRefreshToken("nonexistent"));
   }
 
   @Test
@@ -124,7 +120,8 @@ class RefreshTokenServiceTest {
     when(refreshTokenRepository.findByTokenWithUser(anyString())).thenReturn(Optional.of(oldToken));
 
     // when & then
-    assertThrows(RefreshTokenExpiredException.class, () -> refreshTokenService.refreshToken("expired"));
+    assertThrows(
+        RefreshTokenExpiredException.class, () -> refreshTokenService.refreshToken("expired"));
     verify(refreshTokenRepository).delete(oldToken);
   }
 
@@ -134,7 +131,8 @@ class RefreshTokenServiceTest {
     when(refreshTokenRepository.findByTokenWithUser(anyString())).thenReturn(Optional.empty());
 
     // when & then
-    assertThrows(RefreshTokenNotFoundException.class, () -> refreshTokenService.refreshToken("notfound"));
+    assertThrows(
+        RefreshTokenNotFoundException.class, () -> refreshTokenService.refreshToken("notfound"));
   }
 
   @Test
@@ -173,7 +171,8 @@ class RefreshTokenServiceTest {
     when(refreshTokenRepository.findByToken(anyString())).thenReturn(Optional.empty());
 
     // when & then
-    assertThrows(RefreshTokenNotFoundException.class, () -> refreshTokenService.removeToken("notfound"));
+    assertThrows(
+        RefreshTokenNotFoundException.class, () -> refreshTokenService.removeToken("notfound"));
   }
 
   @Test

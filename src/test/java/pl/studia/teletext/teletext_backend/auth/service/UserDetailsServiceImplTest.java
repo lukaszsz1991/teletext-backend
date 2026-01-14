@@ -1,5 +1,12 @@
 package pl.studia.teletext.teletext_backend.auth.service;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
+
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,22 +16,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import pl.studia.teletext.teletext_backend.auth.domain.User;
 import pl.studia.teletext.teletext_backend.auth.repository.UserRepository;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 public class UserDetailsServiceImplTest {
 
-  @Mock
-  private UserRepository userRepository;
+  @Mock private UserRepository userRepository;
 
-  @InjectMocks
-  private UserDetailsServiceImpl userDetailsService;
+  @InjectMocks private UserDetailsServiceImpl userDetailsService;
 
   @Test
   void shouldLoadUserByUsernameSuccessfully() {
@@ -48,7 +45,8 @@ public class UserDetailsServiceImplTest {
     when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
 
     // when & then
-    assertThrows(UsernameNotFoundException.class, () -> userDetailsService.loadUserByUsername(username));
+    assertThrows(
+        UsernameNotFoundException.class, () -> userDetailsService.loadUserByUsername(username));
   }
 
   @Test
@@ -60,6 +58,7 @@ public class UserDetailsServiceImplTest {
     when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
 
     // when & then
-    assertThrows(UsernameNotFoundException.class, () -> userDetailsService.loadUserByUsername(username));
+    assertThrows(
+        UsernameNotFoundException.class, () -> userDetailsService.loadUserByUsername(username));
   }
 }
