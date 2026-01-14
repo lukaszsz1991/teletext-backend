@@ -3,6 +3,7 @@ package pl.studia.teletext.teletext_backend.auth.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.DecodingException;
 import io.jsonwebtoken.security.Keys;
@@ -77,6 +78,8 @@ public class JwtService {
           .getPayload();
     } catch (ExpiredJwtException ex) {
       throw new JwtValidatingException("Token JWT wygasł");
+    } catch (MalformedJwtException ex) {
+      throw new JwtValidatingException("Token JWT jest nieprawidłowy");
     }
   }
 
