@@ -4,7 +4,7 @@ CREATE TABLE page_templates
     name        VARCHAR(255)                            NOT NULL UNIQUE,
     source      VARCHAR(255)                            NOT NULL,
     category    VARCHAR(255)                            NOT NULL,
-    config_json JSON,
+    config_json TEXT,
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     deleted_at  TIMESTAMP,

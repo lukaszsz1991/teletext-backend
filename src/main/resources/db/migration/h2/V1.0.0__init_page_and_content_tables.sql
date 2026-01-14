@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS page_contents (
     description TEXT NOT NULL,
     page_id BIGINT NOT NULL REFERENCES pages(id) ON DELETE CASCADE,
     source VARCHAR(255),
-    additional_data JSON,
+    additional_data TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP
