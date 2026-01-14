@@ -8,8 +8,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
@@ -31,9 +31,9 @@ public class SecurityConfiguration {
       AuthenticationEntryPoint authEntryPoint,
       AccessDeniedHandler accessDeniedHandler)
       throws Exception {
-    return http
-      .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
-      .authorizeHttpRequests(
+    return http.headers(
+            headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+        .authorizeHttpRequests(
             request ->
                 request
                     .requestMatchers(
