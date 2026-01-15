@@ -2,7 +2,9 @@ package pl.studia.teletext.teletext_backend.teletext.schema.service;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.stereotype.Component;
+import pl.studia.teletext.teletext_backend.common.exception.not_found.SchemaNotFoundException;
 import pl.studia.teletext.teletext_backend.teletext.page.domain.TeletextSource;
 import pl.studia.teletext.teletext_backend.teletext.schema.ConfigSchema;
 import pl.studia.teletext.teletext_backend.teletext.schema.validator.*;
@@ -25,6 +27,12 @@ public class ConfigSchemaFactory {
   }
 
   public ConfigSchema getSchema(TeletextSource source) {
-    return schemas.get(source);
+    return Optional.ofNullable(schemas.get(source))
+        .orElseThrow(
+            () ->
+                new SchemaNotFoundException(
+                    "Schemat dla źródła "
+                        + source
+                        + " nie istnieje. Należy go zarejestrować. Zgłoś błąd do administratora."));
   }
 }
