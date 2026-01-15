@@ -23,7 +23,7 @@ import pl.studia.teletext.teletext_backend.teletext.page.api.publicapi.dto.Telet
 import pl.studia.teletext.teletext_backend.teletext.page.domain.TeletextPage;
 import pl.studia.teletext.teletext_backend.teletext.page.mapper.TeletextAdminPageMapper;
 import pl.studia.teletext.teletext_backend.teletext.page.mapper.TeletextPageMapper;
-import pl.studia.teletext.teletext_backend.teletext.stats.repository.TeletextPageRepository;
+import pl.studia.teletext.teletext_backend.teletext.page.repository.TeletextPageRepository;
 import pl.studia.teletext.teletext_backend.teletext.template.service.TeletextPageGeneratorService;
 import pl.studia.teletext.teletext_backend.teletext.template.service.TeletextPageTemplateService;
 

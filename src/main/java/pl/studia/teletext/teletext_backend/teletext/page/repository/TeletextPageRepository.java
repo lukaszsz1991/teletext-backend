@@ -1,4 +1,4 @@
-package pl.studia.teletext.teletext_backend.teletext.stats.repository;
+package pl.studia.teletext.teletext_backend.teletext.page.repository;
 
 import java.util.List;
 import java.util.Optional;
