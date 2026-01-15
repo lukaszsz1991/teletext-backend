@@ -23,6 +23,8 @@ def test_get_all_active_pages(token):
         headers=auth_header(token),
         timeout=5
     )
+    print("Status:", response.status_code)
+    print("Body:", response.text)
     assert response.status_code == 200
 
     pages = response.json()
