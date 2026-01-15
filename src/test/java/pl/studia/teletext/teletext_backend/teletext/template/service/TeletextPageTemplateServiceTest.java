@@ -30,6 +30,7 @@ import pl.studia.teletext.teletext_backend.teletext.template.domain.TeletextPage
 import pl.studia.teletext.teletext_backend.teletext.template.mapper.TeletextPageTemplateMapper;
 import pl.studia.teletext.teletext_backend.teletext.template.repository.TeletextPageTemplateRepository;
 
+// TODO: add TeletextPageStatsService tests after merging python tests branch.
 @ExtendWith(MockitoExtension.class)
 public class TeletextPageTemplateServiceTest {
 
