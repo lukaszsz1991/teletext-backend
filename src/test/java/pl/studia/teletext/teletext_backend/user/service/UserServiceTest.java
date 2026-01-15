@@ -1,5 +1,14 @@
 package pl.studia.teletext.teletext_backend.user.service;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,16 +28,6 @@ import pl.studia.teletext.teletext_backend.user.api.dto.CreateUserRequest;
 import pl.studia.teletext.teletext_backend.user.api.dto.UpdateUserRequest;
 import pl.studia.teletext.teletext_backend.user.api.dto.UserResponse;
 import pl.studia.teletext.teletext_backend.user.mapper.UserMapper;
-
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -126,7 +125,8 @@ public class UserServiceTest {
   @Test
   void shouldCreateUser() {
     // given
-    var createRequest = new CreateUserRequest("test-username", "test-email", "test-password", "test-password");
+    var createRequest =
+        new CreateUserRequest("test-username", "test-email", "test-password", "test-password");
     var mappedUser = user(false);
     when(userMapper.toUserEntity(eq(createRequest))).thenReturn(mappedUser);
     when(passwordEncoder.encode(eq(createRequest.password()))).thenReturn("encoded-password");
@@ -200,7 +200,8 @@ public class UserServiceTest {
     when(userRepository.findById(eq(id))).thenReturn(Optional.empty());
 
     // when & then
-    assertThrows(UserNotFoundException.class, () -> userService.changePassword(id, changePasswordRequest));
+    assertThrows(
+        UserNotFoundException.class, () -> userService.changePassword(id, changePasswordRequest));
   }
 
   @Test
