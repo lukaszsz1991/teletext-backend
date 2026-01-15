@@ -20,21 +20,6 @@ public class TeletextSchemaService {
   }
 
   public List<ConfigSchemaResponse> getAllSchemas() {
-    return Arrays.stream(TeletextSource.values())
-        .map(
-            source -> {
-              var schema = configSchemaFactory.getSchema(source);
-              if (schema == null)
-                throw new IllegalArgumentException(
-                    "Schemat dla źródła "
-                        + source
-                        + " nie istnieje. Należy go zarejestrować. Zgłoś błąd do administratora.");
-              return new ConfigSchemaResponse(
-                  source.getName(),
-                  schema.requiredFields(),
-                  schema.optionalFields(),
-                  schema.fieldTypes());
-            })
-        .toList();
+    return Arrays.stream(TeletextSource.values()).map(this::getSchema).toList();
   }
 }
