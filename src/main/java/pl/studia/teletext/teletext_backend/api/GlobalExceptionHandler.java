@@ -39,6 +39,8 @@ public class GlobalExceptionHandler {
       case "PageStatsNotFoundException" ->
           problemDetail.setTitle("Statystyki stron nie znalezione");
       case "CityNotFoundException" -> problemDetail.setTitle("Miasto nie znalezione");
+      case "SchemaNotFoundException" ->
+          problemDetail.setTitle("Schemat źródła strony nie znaleziony");
       case "RefreshTokenNotFoundException" ->
           problemDetail.setTitle("Odnowienie logowania nie powiodło się");
       default -> problemDetail.setTitle("Nie znaleziono zasobu");
