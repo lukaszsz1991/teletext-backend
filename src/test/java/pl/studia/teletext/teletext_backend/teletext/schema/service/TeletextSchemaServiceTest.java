@@ -61,7 +61,8 @@ public class TeletextSchemaServiceTest {
   @Test
   void shouldThrowSchemaNotFoundExceptionWhenGettingAllSchemasIfAnySchemaNotRegistered() {
     // given
-    when(configSchemaFactory.getSchema(any(TeletextSource.class))).thenThrow(SchemaNotFoundException.class);
+    when(configSchemaFactory.getSchema(any(TeletextSource.class)))
+        .thenThrow(SchemaNotFoundException.class);
 
     // when & then
     assertThrows(SchemaNotFoundException.class, () -> teletextSchemaService.getAllSchemas());
