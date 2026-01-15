@@ -9,11 +9,11 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.studia.teletext.teletext_backend.teletext.category.api.dto.TeletextPageFullTemplateResponse;
-import pl.studia.teletext.teletext_backend.teletext.category.api.dto.TeletextPageTemplateCreateRequest;
-import pl.studia.teletext.teletext_backend.teletext.category.api.dto.TeletextPageTemplateResponse;
-import pl.studia.teletext.teletext_backend.teletext.category.api.dto.TeletextPageTemplateUpdateRequest;
 import pl.studia.teletext.teletext_backend.teletext.category.domain.TeletextCategory;
+import pl.studia.teletext.teletext_backend.teletext.template.api.dto.TeletextPageFullTemplateResponse;
+import pl.studia.teletext.teletext_backend.teletext.template.api.dto.TeletextPageTemplateCreateRequest;
+import pl.studia.teletext.teletext_backend.teletext.template.api.dto.TeletextPageTemplateResponse;
+import pl.studia.teletext.teletext_backend.teletext.template.api.dto.TeletextPageTemplateUpdateRequest;
 import pl.studia.teletext.teletext_backend.teletext.template.mapper.TeletextPageTemplateMapper;
 import pl.studia.teletext.teletext_backend.teletext.template.service.TeletextPageTemplateService;
 

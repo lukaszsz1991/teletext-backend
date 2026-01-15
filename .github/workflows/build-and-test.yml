@@ -18,6 +18,9 @@ jobs:
       - name: Grant execute permission for mvnw
         run: chmod +x ./mvnw
 
+      - name: Install curl
+        run: sudo apt-get update && sudo apt-get install -y curl
+
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:

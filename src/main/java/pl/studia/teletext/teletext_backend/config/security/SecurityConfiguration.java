@@ -9,6 +9,7 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
@@ -30,17 +31,24 @@ public class SecurityConfiguration {
       AuthenticationEntryPoint authEntryPoint,
       AccessDeniedHandler accessDeniedHandler)
       throws Exception {
-    return http.authorizeHttpRequests(
+    return http.headers(
+            headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+        .authorizeHttpRequests(
             request ->
                 request
                     .requestMatchers(
-                        "/api/public/**", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**")
+                        "/api/public/**",
+                        "/swagger-ui.html",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/actuator/health",
+                        "/h2-console/**")
                     .permitAll()
                     .requestMatchers("/api/admin/auth/login", "/api/admin/auth/refresh")
                     .permitAll()
                     .requestMatchers("/api/admin/auth/logout")
                     .authenticated()
-                    .requestMatchers("/api/admin/**")
+                    .requestMatchers("/api/admin/**", "/actuator/**")
                     .hasRole("ADMIN")
                     .anyRequest()
                     .denyAll())

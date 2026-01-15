@@ -16,6 +16,8 @@ import pl.studia.teletext.teletext_backend.common.exception.not_found.PageNotFou
 import pl.studia.teletext.teletext_backend.events.stats.PageViewedEvent;
 import pl.studia.teletext.teletext_backend.teletext.category.domain.TeletextCategory;
 import pl.studia.teletext.teletext_backend.teletext.page.api.admin.dto.*;
+import pl.studia.teletext.teletext_backend.teletext.page.api.admin.dto.TemplatePageCreateRequest;
+import pl.studia.teletext.teletext_backend.teletext.page.api.admin.dto.TemplatePageUpdateRequest;
 import pl.studia.teletext.teletext_backend.teletext.page.api.publicapi.dto.TeletextDetailedPageResponse;
 import pl.studia.teletext.teletext_backend.teletext.page.api.publicapi.dto.TeletextPageResponse;
 import pl.studia.teletext.teletext_backend.teletext.page.domain.TeletextPage;

@@ -1,11 +1,11 @@
-package pl.studia.teletext.teletext_backend.teletext.page.mapper;
+package pl.studia.teletext.teletext_backend.teletext.stats.mapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
-import pl.studia.teletext.teletext_backend.teletext.page.domain.TeletextPageStats;
 import pl.studia.teletext.teletext_backend.teletext.stats.api.dto.SingleTeletextPageStatsResponse;
 import pl.studia.teletext.teletext_backend.teletext.stats.api.dto.TeletextPageStatsResponse;
+import pl.studia.teletext.teletext_backend.teletext.stats.domain.TeletextPageStats;
 
 @Mapper(componentModel = "spring")
 public interface TeletextPageStatsMapper {

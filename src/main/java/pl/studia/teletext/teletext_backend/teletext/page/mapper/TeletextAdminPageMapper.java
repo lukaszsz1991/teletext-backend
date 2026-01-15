@@ -3,6 +3,8 @@ package pl.studia.teletext.teletext_backend.teletext.page.mapper;
 import org.mapstruct.*;
 import pl.studia.teletext.teletext_backend.teletext.category.mapper.TeletextCategoryMapper;
 import pl.studia.teletext.teletext_backend.teletext.page.api.admin.dto.*;
+import pl.studia.teletext.teletext_backend.teletext.page.api.admin.dto.TemplatePageCreateRequest;
+import pl.studia.teletext.teletext_backend.teletext.page.api.admin.dto.TemplatePageUpdateRequest;
 import pl.studia.teletext.teletext_backend.teletext.page.domain.TeletextPage;
 
 @Mapper(

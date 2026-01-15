@@ -3,12 +3,15 @@ package pl.studia.teletext.teletext_backend.api;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.ValidationException;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -33,6 +36,8 @@ public class GlobalExceptionHandler {
       case "UserNotFoundException" -> problemDetail.setTitle("Użytkownik nie znaleziony");
       case "PageNotFoundException" -> problemDetail.setTitle("Strona telegazety nie znaleziona");
       case "TemplateNotFoundException" -> problemDetail.setTitle("Szablon strony nie znaleziony");
+      case "PageStatsNotFoundException" ->
+          problemDetail.setTitle("Statystyki stron nie znalezione");
       case "CityNotFoundException" -> problemDetail.setTitle("Miasto nie znalezione");
       case "SchemaNotFoundException" ->
           problemDetail.setTitle("Schemat źródła strony nie znaleziony");
@@ -85,17 +90,28 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(status).body(problemDetail);
   }
 
-  @ExceptionHandler({MethodArgumentNotValidException.class, ValidationException.class})
+  @ExceptionHandler({
+    MethodArgumentNotValidException.class,
+    ValidationException.class,
+    IllegalArgumentException.class,
+    TypeMismatchException.class,
+    InvalidDataAccessApiUsageException.class,
+    HttpMessageNotReadableException.class
+  })
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<ProblemDetail> handleValidationErrors(Exception e) {
-    String errorMessage;
-    if (e instanceof MethodArgumentNotValidException manve) {
-      errorMessage = manve.getBindingResult().getAllErrors().getFirst().getDefaultMessage();
-    } else {
-      errorMessage = e.getMessage();
+    String errorMessage = e.getMessage();
+    String title = "Błąd walidacji";
+    if (e instanceof MethodArgumentNotValidException ex) {
+      errorMessage = ex.getBindingResult().getAllErrors().getFirst().getDefaultMessage();
+    } else if (e instanceof IllegalArgumentException || e instanceof TypeMismatchException) {
+      title = "Nieprawidłowy argument";
+    } else if (e instanceof InvalidDataAccessApiUsageException
+        || e instanceof HttpMessageNotReadableException) {
+      title = "Nieprawidłowe typy danych w wysyłanym żądaniu";
     }
     var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, errorMessage);
-    problemDetail.setTitle("Błąd walidacji");
+    problemDetail.setTitle(title);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
   }
 

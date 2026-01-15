@@ -2,7 +2,7 @@ import pytest
 import requests
 
 BASE_URL = 'http://localhost:8080/api/admin'
-LOGIN_URL = f'{BASE_URL}/auth/login'  # Upewnij się, że to właściwy endpoint logowania
+LOGIN_URL = f'{BASE_URL}/auth/login'
 
 @pytest.fixture
 def token():
@@ -11,8 +11,14 @@ def token():
     assert response.status_code == 200
     return response.json()['token']
 
+def auth_header(token):
+    return {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json"
+    }
+
 def test_get_page_stats(token):
-    page_number = 4
+    page_number = 101
     include_details = True
     headers = {
         'Authorization': f'Bearer {token}',
@@ -31,11 +37,10 @@ def test_get_page_stats(token):
     assert 'pageNumber' in data
     assert 'views' in data
 
-    # 🖨️ Wyświetlenie danych w konsoli
     print(f"Strona: {data['pageNumber']}, Odsłony: {data['views']}")
 
 def test_page_stats_not_found(token):
-    page_number = 7  # zakładamy, że taka strona nie istnieje
+    page_number = 7
     headers = {
         'Authorization': f'Bearer {token}',
         'Accept': 'application/json'
@@ -52,7 +57,7 @@ def test_page_stats_not_found(token):
     print("Odpowiedź dla nieistniejącej strony:", response.json())
 
 def test_page_stats_without_details(token):
-    page_number = 1
+    page_number = 101
     headers = {
         'Authorization': f'Bearer {token}',
         'Accept': 'application/json'
@@ -83,7 +88,7 @@ def test_page_stats_unauthorized():
     print("Odpowiedź bez tokena:", response.json())
 
 def test_page_stats_invalid_param(token):
-    page_number = 1
+    page_number = 101
     headers = {
         'Authorization': f'Bearer {token}',
         'Accept': 'application/json'
@@ -96,8 +101,22 @@ def test_page_stats_invalid_param(token):
         timeout=5
     )
 
-    assert response.status_code in [400, 200]
-    print("Odpowiedź z błędnym parametrem:", response.json())
-    print("Kod odpowiedzi:", response.status_code)
-    print("Treść odpowiedzi:", response.text)
+    assert response.status_code in [200, 400]
+
+def test_all_pages_stats_with_details(token):
+    response = requests.get(
+        f"{BASE_URL}/stats/pages",
+        params={"includeDetails": "true"},
+        headers=auth_header(token),
+        timeout=5
+    )
+    assert response.status_code == 200
+    stats = response.json()
+    assert isinstance(stats, list)
+
+    for stat in stats:
+        assert "details" in stat and isinstance(stat["details"], list)
+        for detail in stat["details"]:
+            assert "id" in detail and isinstance(detail["id"], int)
+            assert "openedAt" in detail and isinstance(detail["openedAt"], str)
 

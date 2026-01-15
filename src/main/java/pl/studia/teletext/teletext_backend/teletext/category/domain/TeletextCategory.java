@@ -3,6 +3,7 @@ package pl.studia.teletext.teletext_backend.teletext.category.domain;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 import pl.studia.teletext.teletext_backend.common.dto.ExternalDataResponse;
+import pl.studia.teletext.teletext_backend.common.exception.IllegalPageNumberException;
 import pl.studia.teletext.teletext_backend.teletext.page.domain.TeletextSource;
 
 @Getter
@@ -70,9 +71,9 @@ public enum TeletextCategory {
 
   private static void validateMainPage(int mainPage) {
     if (mainPage < 100 || mainPage > 900)
-      throw new IllegalArgumentException("Strona kategorii musi być między 100 a 900");
+      throw new IllegalPageNumberException("Strona kategorii musi być między 100 a 900");
     if (mainPage % 100 != 0)
-      throw new IllegalArgumentException("Strona kategorii musi być wielokrotnością 100");
+      throw new IllegalPageNumberException("Strona kategorii musi być wielokrotnością 100");
   }
 
   public void validateSource(TeletextSource source) {
