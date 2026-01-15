@@ -78,11 +78,11 @@ public class UserService {
   public void changePassword(Long id, ChangeUserPasswordRequest request) {
     var user = getUserEntityById(id);
     user.setPassword(passwordEncoder.encode(request.password()));
-    userRepository.save(user);
+    var saved = userRepository.save(user);
     eventPublisher.publishEvent(
         new PasswordChangedEmailEvent(
-            user.getEmail(),
-            user.getUpdatedAt().toLocalDateTime(),
+            saved.getEmail(),
+            saved.getUpdatedAt().toLocalDateTime(),
             currentUserService.getCurrentUsername()));
   }
 
@@ -93,12 +93,12 @@ public class UserService {
       throw new AccessDeniedException("Nie można usunąć własnego konta");
     var user = getUserEntityById(id);
     user.setDeletedAt(Timestamp.from(Instant.now()));
-    userRepository.save(user);
+    var saved = userRepository.save(user);
     eventPublisher.publishEvent(
         new AccountStatusChangedEmailEvent(
-            user.getEmail(),
+            saved.getEmail(),
             false,
-            user.getDeletedAt().toLocalDateTime(),
+            saved.getDeletedAt().toLocalDateTime(),
             currentUserService.getCurrentUsername()));
   }
 
@@ -110,9 +110,9 @@ public class UserService {
     var saved = userRepository.save(user);
     eventPublisher.publishEvent(
         new AccountStatusChangedEmailEvent(
-            user.getEmail(),
+            saved.getEmail(),
             true,
-            user.getUpdatedAt().toLocalDateTime(),
+            saved.getUpdatedAt().toLocalDateTime(),
             currentUserService.getCurrentUsername()));
     return mapper.toUserResponse(saved);
   }
