@@ -23,44 +23,48 @@ public class HoroscopeClient {
   }
 
   public Mono<HoroscopeResponse> getTodayHoroscope() {
-    return horoscopeWebClient
-        .get()
-        .uri(uri -> uri.path(BASE_PREFIX).queryParam("type", TODAY_PARAM_TYPE).build())
-        .retrieve()
-        .onStatus(
-            status -> status.is4xxClientError() || status.is5xxServerError(),
-            clientResponse ->
-                clientResponse
-                    .bodyToMono(String.class)
-                    .flatMap(
-                        errorBody -> {
-                          log.error("Error fetching data from Horoscope/Today: {}", errorBody);
-                          return Mono.error(
-                              new ExternalApiException(
-                                  "Błąd podczas pobierania danych Horoskopu - dziś",
-                                  clientResponse.statusCode().value()));
-                        }))
-        .bodyToMono(HoroscopeResponse.class);
+    return fetchHoroscope(TODAY_PARAM_TYPE, "dziś");
   }
 
   public Mono<HoroscopeResponse> getTomorrowHoroscope() {
+    return fetchHoroscope(TOMORROW_PARAM_TYPE, "jutro");
+  }
+
+  private Mono<HoroscopeResponse> fetchHoroscope(String type, String label) {
     return horoscopeWebClient
         .get()
-        .uri(uri -> uri.path(BASE_PREFIX).queryParam("type", TOMORROW_PARAM_TYPE).build())
-        .retrieve()
-        .onStatus(
-            status -> status.is4xxClientError() || status.is5xxServerError(),
-            clientResponse ->
-                clientResponse
-                    .bodyToMono(String.class)
-                    .flatMap(
-                        errorBody -> {
-                          log.error("Error fetching data from Horoscope/Tomorrow: {}", errorBody);
-                          return Mono.error(
-                              new ExternalApiException(
-                                  "Błąd podczas pobierania danych Horoskopu - jutro",
-                                  clientResponse.statusCode().value()));
-                        }))
-        .bodyToMono(HoroscopeResponse.class);
+        .uri(uri -> uri.path(BASE_PREFIX).queryParam("type", type).build())
+        .exchangeToMono(
+            response -> {
+              var status = response.statusCode();
+
+              return response
+                  .bodyToMono(HoroscopeResponse.class)
+                  .flatMap(
+                      body -> {
+                        if (status.is2xxSuccessful()) {
+                          return Mono.just(body);
+                        }
+
+                        if (status.is5xxServerError()) {
+                          log.warn(
+                              "Horoscope API returned {} but body is present ({}): {}",
+                              status.value(),
+                              label,
+                              body);
+                          // degraded success - external api sends 500 even with good body...
+                          return Mono.just(body);
+                        }
+                        // 4xx etc
+                        return Mono.error(
+                            new ExternalApiException(
+                                "Błąd podczas pobierania danych Horoskopu - " + label,
+                                status.value()));
+                      })
+                  .switchIfEmpty(
+                      Mono.error(
+                          new ExternalApiException(
+                              "Pusta odpowiedź z API Horoskopu - " + label, status.value())));
+            });
   }
 }
