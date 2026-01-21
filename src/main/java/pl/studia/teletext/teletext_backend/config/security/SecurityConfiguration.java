@@ -1,5 +1,6 @@
 package pl.studia.teletext.teletext_backend.config.security;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,8 +23,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
 
 @Slf4j
 @Configuration
@@ -81,9 +80,7 @@ public class SecurityConfiguration {
   }
 
   @Bean
-  CorsConfigurationSource corsConfigurationSource(
-    @Value("${frontend.url}") String frontendUrl
-  ) {
+  CorsConfigurationSource corsConfigurationSource(@Value("${frontend.url}") String frontendUrl) {
     var config = new CorsConfiguration();
 
     config.setAllowCredentials(true);
@@ -96,5 +93,4 @@ public class SecurityConfiguration {
     source.registerCorsConfiguration("/**", config);
     return source;
   }
-
 }
