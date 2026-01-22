@@ -81,7 +81,6 @@ def test_get_page_by_id(token):
     assert isinstance(cat["mainPage"], int)
     assert cat["nextFreePage"] is None or isinstance(cat["nextFreePage"], int)
 
-    # content
     assert "content" in page and isinstance(page["content"], dict)
     content = page["content"]
     assert isinstance(content["source"], str)
@@ -91,7 +90,6 @@ def test_get_page_by_id(token):
     assert isinstance(content["createdAt"], str)
     assert isinstance(content["updatedAt"], str)
 
-    # timestamps
     assert isinstance(page["createdAt"], str)
     assert isinstance(page["updatedAt"], str)
     assert "deletedAt" in page
@@ -102,9 +100,9 @@ def test_create_manual_page_with_inactive_number(token):
         "type": "MANUAL",
         "pageNumber": 911,
         "category": "misc",
-        "title": "Piata strona dodana ręcznie",
+        "title": "Strona testowa dodana recznie",
         "description": (
-            "Test - dodaję stronę z numerem strony która jest"
+            "Test"
         )
     }
 
@@ -127,10 +125,10 @@ def test_delete_page_by_id(token):
         timeout=5
     )
     print(response.status_code, response.text)
-    assert response.status_code == 204  # lub 200, zależnie od implementacji
+    assert response.status_code == 204
 
 def test_activate_page_by_id(token):
-    page_id = 2  # ID strony, którą chcesz aktywować
+    page_id = 2
 
     response = requests.patch(
         url=f"{BASE_URL}/pages/{page_id}/activate",
@@ -151,7 +149,7 @@ def test_activate_page_not_found(token):
 
     assert response.status_code == 404
 def test_activate_page_already_active(token):
-    page_id = 6  # strona aktywna
+    page_id = 6
 
     second = requests.patch(
         url=f"{BASE_URL}/pages/{page_id}/activate",
@@ -163,9 +161,9 @@ def test_activate_page_already_active(token):
 
 
 @pytest.mark.parametrize("bad_payload", [
-    {"type": "MANUAL", "pageNumber": "abc"},  # zły typ
-    {"type": "UNKNOWN", "pageNumber": 999},   # nieznany typ
-    {"type": "MANUAL", "pageNumber": 999, "title": ""},  # pusty tytuł
+    {"type": "MANUAL", "pageNumber": "abc"},
+    {"type": "UNKNOWN", "pageNumber": 999},
+    {"type": "MANUAL", "pageNumber": 999, "title": ""},
 ])
 def test_create_page_invalid_data(token, bad_payload):
     response = requests.post(
@@ -181,7 +179,7 @@ def test_create_template_page_missing_template(token):
         "type": "TEMPLATE",
         "pageNumber": 410,
         "category": "tv",
-        "templateId": 9999  # zakładamy, że nie istnieje
+        "templateId": 9999
     }
 
     response = requests.post(
@@ -193,14 +191,32 @@ def test_create_template_page_missing_template(token):
 
     assert response.status_code == 404
 
+def test_create_template_based_page(token):
+    payload = {
+        "type": "TEMPLATE",
+        "pageNumber": 203,
+        "category": "sports",
+        "templateId": 3
+    }
+
+    response = requests.post(
+        url=f"{BASE_URL}/pages",
+        headers=auth_header(token),
+        json=payload,
+        timeout=5
+    )
+
+    assert response.status_code == 201
+
+
 def test_update_manual_page(token):
-    page_number = 2 # zakładamy, że strona istnieje
+    page_number = 2
 
     payload = {
         "type": "MANUAL",
         "pageNumber": 901,
         "category": "misc",
-        "title": "Druga strona dodana ręcznie - zedytowana v2.0",
+        "title": "Druga strona dodana ręcznie - edytowana v2.0",
         "description": "Wszem i wobec ogłaszam"
     }
 
@@ -213,3 +229,20 @@ def test_update_manual_page(token):
 
     assert response.status_code == 200
 
+def test_update_template_based_page(token):
+    page_id = 4
+    payload = {
+        "type": "TEMPLATE",
+        "pageNumber": 269,
+        "category": "sports",
+        "templateId": 5
+    }
+
+    response = requests.put(
+        url=f"{BASE_URL}/pages/{page_id}",
+        headers=auth_header(token),
+        json=payload,
+        timeout=5
+    )
+
+    assert response.status_code == 200

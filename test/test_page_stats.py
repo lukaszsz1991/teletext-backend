@@ -37,8 +37,6 @@ def test_get_page_stats(token):
     assert 'pageNumber' in data
     assert 'views' in data
 
-    print(f"Strona: {data['pageNumber']}, Odsłony: {data['views']}")
-
 def test_page_stats_not_found(token):
     page_number = 7
     headers = {
@@ -53,8 +51,7 @@ def test_page_stats_not_found(token):
         timeout=5
     )
 
-    assert response.status_code == 404 or response.status_code == 200
-    print("Odpowiedź dla nieistniejącej strony:", response.json())
+    assert response.status_code == 404
 
 def test_page_stats_without_details(token):
     page_number = 101

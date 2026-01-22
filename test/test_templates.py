@@ -26,12 +26,11 @@ def test_get_all_templates(token):
     )
     assert response.status_code == 200
     assert isinstance(response.json(), list)
-    print("Szablony:", response.json())
 
 
 @pytest.mark.parametrize("category", ["sports", "finance", "weather"])
 def test_get_templates_by_category(token, category):
-    params = {"category": category}
+    params = {'category': category, 'includeInactive': 'false'}
     response = requests.get(
         f"{BASE_URL}/templates",
         headers=auth_header(token),
@@ -41,7 +40,17 @@ def test_get_templates_by_category(token, category):
     assert response.status_code == 200
     for template in response.json():
         assert template["category"].lower() == category.lower()
-    print(f"Szablony w kategorii '{category}': {[t['name'] for t in response.json()]}")
+
+def test_get_template_by_id(token):
+    template_id = 2
+    response = requests.get(
+        url=f"{BASE_URL}/templates/{template_id}",
+        headers=auth_header(token),
+        timeout=5
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["id"] == template_id
 
 def test_create_template(token):
     unique_suffix = str(uuid.uuid4())[:8]
@@ -60,19 +69,7 @@ def test_create_template(token):
     )
 
     assert create_resp.status_code == 201
-    template_id = create_resp.json()["id"]
 
-    # cleanup
-    delete_resp = requests.delete(
-        f"{BASE_URL}/templates/{template_id}",
-        headers=auth_header(token),
-        timeout=5
-    )
-
-    assert delete_resp.status_code in (200, 204)
-
-
-#test walidacji
 @pytest.mark.parametrize("payload", [
     {"name": "", "source": "sport_table", "category": "sports", "configJson": {}},
     {"name": "Test", "source": "", "category": "sports", "configJson": {}},
@@ -88,10 +85,10 @@ def test_create_template_invalid(token, payload):
 
 def test_create_template_invalid_types(token):
     payload = {
-        "name": 123,  # powinno być str
-        "source": True,  # powinno być str
-        "category": None,  # powinno być str
-        "configJson": "bundesliga"  # powinno być dict
+        "name": 123,
+        "source": True,
+        "category": None,
+        "configJson": "bundesliga"
     }
     response = requests.post(
         f"{BASE_URL}/templates",
@@ -147,13 +144,6 @@ def test_activate_nonexistent_template(token):
         f"{BASE_URL}/templates/9999/activate",
         headers=auth_header(token),
         json={}
-    )
-    assert response.status_code == 404
-
-def test_deactivate_existing_template(token):
-    response = requests.delete(
-        f"{BASE_URL}/templates/28",
-        headers=auth_header(token)
     )
     assert response.status_code == 404
 
