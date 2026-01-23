@@ -43,19 +43,4 @@ jobs:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
-          script: |
-            docker pull europe-central2-docker.pkg.dev/composite-drive-483612-v1/teletext-backend/backend-image:prod
-            docker stop teletext-backend || true
-            docker rm teletext-backend || true
-            docker run -d \
-              --name teletext-backend \
-              --cpus="1.5" \
-              --memory="1536m" \
-              --memory-swap="1536m" \
-              -e JAVA_OPTS="-Xms512m -Xmx1024m" \
-              --env-file /opt/teletext.env \
-              -p 8080:8080 \
-              --restart unless-stopped \
-              europe-central2-docker.pkg.dev/composite-drive-483612-v1/teletext-backend/backend-image:prod
-
-
+          script: /opt/pull-and-run.sh
