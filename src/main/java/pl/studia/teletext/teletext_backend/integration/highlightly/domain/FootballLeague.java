@@ -20,9 +20,10 @@ public enum FootballLeague {
   @JsonCreator
   public static FootballLeague fromString(String value) {
     try {
+      value = value.trim().toUpperCase();
       return FootballLeague.valueOf(value);
-    } catch (IllegalArgumentException ignored) {
-      for (FootballLeague league : FootballLeague.values()) {
+    } catch (IllegalArgumentException e) {
+      for (var league : FootballLeague.values()) {
         if (league.getParamName().equalsIgnoreCase(value)) {
           return league;
         }

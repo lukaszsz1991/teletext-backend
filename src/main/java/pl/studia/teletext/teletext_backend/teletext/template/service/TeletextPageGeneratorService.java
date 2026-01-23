@@ -113,7 +113,7 @@ public class TeletextPageGeneratorService {
   }
 
   private Mono<ExternalDataResponse> getFootballMatchData(Map<String, Object> config) {
-    var league = FootballLeague.valueOf(((String) config.get("league")).toUpperCase());
+    var league = FootballLeague.fromString(((String) config.get("league")));
     var week = (int) config.get("week");
 
     return footballService
@@ -122,7 +122,7 @@ public class TeletextPageGeneratorService {
   }
 
   private Mono<ExternalDataResponse> getFootballTableData(Map<String, Object> config) {
-    var league = FootballLeague.valueOf(((String) config.get("league")).toUpperCase());
+    var league = FootballLeague.fromString(((String) config.get("league")));
 
     return footballService
         .getTableForLeague(league)
@@ -161,7 +161,7 @@ public class TeletextPageGeneratorService {
   }
 
   private Mono<ExternalDataResponse> getHoroscopeData(Map<String, Object> config) {
-    var sign = HoroscopeSign.valueOf(((String) config.get("sign")).toUpperCase());
+    var sign = HoroscopeSign.fromString(((String) config.get("sign")));
     var forTomorrow = (boolean) config.getOrDefault("forTomorrow", false);
     return horoscopeService
         .getSingleSignHoroscope(sign, forTomorrow)
