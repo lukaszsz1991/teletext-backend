@@ -49,7 +49,12 @@ jobs:
             docker rm teletext-backend || true
             docker run -d \
               --name teletext-backend \
+              --cpus="0.75" \
+              --memory="384m" \
+              --memory-swap="384m" \
+              -e JAVA_OPTS="-Xms128m -Xmx256m" \
               --env-file /opt/teletext.env \
               -p 8080:8080 \
               --restart unless-stopped \
               europe-central2-docker.pkg.dev/composite-drive-483612-v1/teletext-backend/backend-image:prod
+
