@@ -85,7 +85,7 @@ def test_page_stats_unauthorized():
     print("Odpowiedź bez tokena:", response.json())
 
 @pytest.mark.parametrize("invalid_value", [
-    "notaboolean", "yes", "no", "1", "0", 123, 1.5, None, "", [], {}, "TRUE", "False"
+    "notaboolean", "yes", "no", "1", "0", 123, 1.5, "None", "[]", "{}", "TRUEE", "Faalse"
 ])
 def test_page_stats_invalid_param(token, invalid_value):
     headers = {

@@ -7,7 +7,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.studia.teletext.teletext_backend.common.dto.ExternalDataResponse;
-import pl.studia.teletext.teletext_backend.common.time.FlexibleDateParser;
+import pl.studia.teletext.teletext_backend.common.utils.time.FlexibleDateParser;
 import pl.studia.teletext.teletext_backend.integration.highlightly.domain.FootballLeague;
 import pl.studia.teletext.teletext_backend.integration.highlightly.mapper.FootballExternalDataMapper;
 import pl.studia.teletext.teletext_backend.integration.highlightly.service.FootballService;

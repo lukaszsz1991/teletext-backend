@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pl.studia.teletext.teletext_backend.common.utils.bool.BooleanUtils;
 import pl.studia.teletext.teletext_backend.teletext.stats.api.dto.TeletextPageStatsResponse;
 import pl.studia.teletext.teletext_backend.teletext.stats.service.TeletextPageStatsService;
 
@@ -44,10 +45,12 @@ public class AdminTeletextPageStatsController {
                   "End date for filtering stats (inclusive), preferred format: YYYY-MM-DD. If not passed then current date is used.")
           @RequestParam(required = false)
           LocalDate toDate,
-      @RequestParam(defaultValue = "false") Boolean includeDetails) {
+      @RequestParam(defaultValue = "false") String includeDetails) {
     PageRequest pageRequest = PageRequest.of(pageNumber - 1, size);
+    var includeDetailsBool = BooleanUtils.parseStrictBoolean(includeDetails);
     var page =
-        teletextPageStatsService.getAllPagesStats(pageRequest, includeDetails, fromDate, toDate);
+        teletextPageStatsService.getAllPagesStats(
+            pageRequest, includeDetailsBool, fromDate, toDate);
     return ResponseEntity.ok(page);
   }
 
@@ -58,8 +61,9 @@ public class AdminTeletextPageStatsController {
   @GetMapping("pages/{pageNumber}")
   public ResponseEntity<TeletextPageStatsResponse> getPageStats(
       @PathVariable Integer pageNumber,
-      @RequestParam(defaultValue = "false") Boolean includeDetails) {
-    var page = teletextPageStatsService.getStatsForPage(pageNumber, includeDetails);
+      @RequestParam(defaultValue = "false") String includeDetails) {
+    var includeDetailsBool = BooleanUtils.parseStrictBoolean(includeDetails);
+    var page = teletextPageStatsService.getStatsForPage(pageNumber, includeDetailsBool);
     return ResponseEntity.ok(page);
   }
 }
