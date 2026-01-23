@@ -1,6 +1,6 @@
 import pytest
 import requests
-import uuid
+import random
 
 BASE_URL = 'http://localhost:8080/api/admin'
 LOGIN_URL = f'{BASE_URL}/auth/login'
@@ -53,9 +53,9 @@ def test_get_template_by_id(token):
     assert data["id"] == template_id
 
 def test_create_template(token):
-    unique_suffix = str(uuid.uuid4())[:8]
+    number = random.randint(1, 10000)
     payload = {
-        "name": f"TEST_TEMPLATE_{unique_suffix}",
+        "name": f"TEST_TEMPLATE_{number}",
         "source": "sport_table",
         "category": "sports",
         "configJson": {"league": "bundesliga"}
@@ -81,7 +81,7 @@ def test_create_template_invalid(token, payload):
         headers=auth_header(token),
         json=payload
     )
-    assert response.status_code in [400, 500]
+    assert response.status_code == 400
 
 def test_create_template_invalid_types(token):
     payload = {
@@ -95,7 +95,7 @@ def test_create_template_invalid_types(token):
         headers=auth_header(token),
         json=payload
     )
-    assert response.status_code in [400, 422]
+    assert response.status_code == 400
 
 def test_create_duplicate_template(token):
     payload = {
@@ -137,7 +137,7 @@ def test_activate_template(token):
         headers=auth_header(token),
         json={}
     )
-    assert response.status_code in [200, 204]
+    assert response.status_code == 204
 
 def test_activate_nonexistent_template(token):
     response = requests.patch(

@@ -67,7 +67,6 @@ def test_page_stats_without_details(token):
     )
 
     assert response.status_code == 200
-    print("Odpowiedź bez includeDetails:", response.json())
 
 def test_page_stats_unauthorized():
     page_number = 1
@@ -82,7 +81,6 @@ def test_page_stats_unauthorized():
     )
 
     assert response.status_code == 401
-    print("Odpowiedź bez tokena:", response.json())
 
 @pytest.mark.parametrize("invalid_value", [
     "notaboolean", "yes", "no", "1", "0", 123, 1.5, "None", "[]", "{}", "TRUEE", "Faalse"
@@ -98,7 +96,7 @@ def test_page_stats_invalid_param(token, invalid_value):
         headers=headers,
         timeout=5
     )
-    assert response.status_code in [400, 422]
+    assert response.status_code == 400
 
 def test_all_pages_stats_with_details(token):
     response = requests.get(

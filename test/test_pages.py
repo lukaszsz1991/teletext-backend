@@ -1,5 +1,6 @@
 import pytest
 import requests
+import random
 
 BASE_URL = 'http://localhost:8080/api/admin'
 LOGIN_URL = f'{BASE_URL}/auth/login'
@@ -56,7 +57,7 @@ def test_get_all_pages_including_inactive(token):
 
 def test_get_pages_without_token():
     response = requests.get(f"{BASE_URL}/pages?includeInactive=false")
-    assert response.status_code in [401, 403]
+    assert response.status_code == 401
 
 def test_get_page_by_id(token):
     page_id = 1
@@ -96,9 +97,10 @@ def test_get_page_by_id(token):
     assert page["deletedAt"] is None or isinstance(page["deletedAt"], str)
 
 def test_create_manual_page_with_inactive_number(token):
+    page_number = random.randint(920, 990)
     payload = {
         "type": "MANUAL",
-        "pageNumber": 911,
+        "pageNumber": page_number,
         "category": "misc",
         "title": "Strona testowa dodana recznie",
         "description": (
@@ -192,9 +194,10 @@ def test_create_template_page_missing_template(token):
     assert response.status_code == 404
 
 def test_create_template_based_page(token):
+    page_number = random.randint(250, 290)
     payload = {
         "type": "TEMPLATE",
-        "pageNumber": 203,
+        "pageNumber": page_number,
         "category": "sports",
         "templateId": 3
     }

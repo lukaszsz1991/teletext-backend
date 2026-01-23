@@ -55,11 +55,11 @@ def test_schema_for_weather(token):
 
 def test_schema_for_unknown_source(token):
     response = requests.get(f"{BASE_URL}/schemas/unknown-source", headers=auth_header(token))
-    assert response.status_code == 400 or 404
+    assert response.status_code == 400
 
 def test_all_schemas_requires_authentication():
     response = requests.get(f"{BASE_URL}/schemas")
-    assert response.status_code in [401, 403]
+    assert response.status_code == 401
 
 
 

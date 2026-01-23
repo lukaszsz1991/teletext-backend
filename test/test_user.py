@@ -1,5 +1,6 @@
 import pytest
 import requests
+import random
 
 BASE_URL = "http://localhost:8080/api"
 LOGIN_URL = f"{BASE_URL}/admin/auth/login"
@@ -54,9 +55,10 @@ def test_get_nonexist_user(token):
     assert response.status_code == 404
 
 def test_add_user(token):
+    number = random.randint(1, 9999)
     payload = {
-        "username": "testuser12",
-        "email": "testuser12@example.com",
+        "username": "testuser" + str(number),
+        "email": "testuser"+ str(number) +"@example.com",
         "password": "pass123",
         "repeatPassword": "pass123"
     }
@@ -87,7 +89,7 @@ def test_edit_user(token):
         timeout=5
     )
 
-    assert response.status_code == 200  # zakładamy, że edycja zwraca 200 OK
+    assert response.status_code == 200
     data = response.json()
     assert data["id"] == user_id
     assert data["username"] == payload["username"]
@@ -134,7 +136,7 @@ def test_delete_user(token):
         timeout=5
     )
 
-    assert response.status_code in [200, 204]
+    assert response.status_code == 204
 
 def test_restore_user(token):
     user_id = 2
@@ -145,4 +147,4 @@ def test_restore_user(token):
         timeout=5
     )
 
-    assert response.status_code in [200, 204]
+    assert response.status_code == 204

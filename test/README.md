@@ -1,52 +1,46 @@
 
-# teletext-backend
+# 🚀 teletext-backend
 
-Testy aplikacji Teletext.
+️Testy aplikacji Teletext.
 
 ---
 
-## Dokumentacja testów
+## ⚙ Dokumentacja testów
 
-Wstępnie są tu zmiany które należy wprowadzić, aby móc uruchomić te testy.
 W pliku  `requirements.txt` znajdują się zależności potrzebne do testów.
 - pytest
 - requests
+```
+pip install -r requirements.txt
+```
+
 ---
-Internet mi podpowiada, że trzeba dodać osobny plik 
-`docker-files/python-tests.Dockerfile` z zawartością: 
+Ustawienie zmiennej JWT 
 
 ```
-FROM python:3.11-slim
-
-WORKDIR /app
-
-COPY tests/python/ /app
-COPY .env.example /app/.env
-
-RUN pip install --no-cache-dir -r requirements.txt
-
-CMD ["pytest"]
+$env:TELETEXT_JWT_SECRET="K9vR4d3Zx+5K0Yx7C1nR2r9Qk6yMZc8E0sJX4p0m5uE="
 ```
-docker-compose.yml rozszerzyć o:
+Uruchomienie backendu:
 
 ```
-services:
-  python-tests:
-    build:
-      context: .
-      dockerfile: docker-files/python-tests.Dockerfile
-    env_file:
-      - .env
-    depends_on:
-      - java-backend
+.\mvnw.cmd clean spring-boot:run -Plocal-dev
 ```
-a do Makefile:
-```
-test-python:
-    docker compose run --rm python-tests
-```
-## Uruchamianie testów w Pythonie
+## 🎯 Uruchamianie testów w Pythonie
 
 ```
-make test-python
+pytest ./test
 ```
+
+## 🧪 Opis plików testowych
+
+Projekt zawiera testy, podzielone według obszarów funkcjonalnych backendu:
+
+| Plik testowy             | Zakres testów                                                                              |
+|--------------------------|--------------------------------------------------------------------------------------------|
+| `test_page_stats.py`     | Testy statystyk stron – np. liczba odwiedzin.                                              |
+| `test_pages.py`          | Testy logiki stron: tworzenie, edycja, usuwanie, aktywacja, obsługa błędów (`404`, `400`). |
+| `test_schemas.py`        | Walidacja danych wejściowych zgodnie ze schematami.                                        |
+| `test_templates.py`      | Testy szablonów – poprawność renderowania, dostępność, integracja z danymi.                |
+| `test_user.py`           | Testy użytkowników: dodawanie, usuwanie, zmiana hasła, edycja użytkownika.                 |
+
+> Każdy plik testowy odpowiada konkretnej warstwie logiki aplikacji.
