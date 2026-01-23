@@ -3,7 +3,7 @@ package pl.studia.teletext.teletext_backend.teletext.schema.validator;
 import java.util.List;
 import java.util.Map;
 import pl.studia.teletext.teletext_backend.common.exception.InvalidJsonConfigException;
-import pl.studia.teletext.teletext_backend.common.time.FlexibleDateParser;
+import pl.studia.teletext.teletext_backend.common.utils.time.FlexibleDateParser;
 import pl.studia.teletext.teletext_backend.integration.tvp.domain.TvpChannel;
 import pl.studia.teletext.teletext_backend.teletext.schema.ConfigSchema;
 

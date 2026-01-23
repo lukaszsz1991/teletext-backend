@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import pl.studia.teletext.teletext_backend.common.time.FlexibleDateParser;
+import pl.studia.teletext.teletext_backend.common.utils.time.FlexibleDateParser;
 import pl.studia.teletext.teletext_backend.integration.jooble.domain.JobResponse;
 import pl.studia.teletext.teletext_backend.integration.jooble.domain.JoobleResponse;
 

@@ -1,4 +1,4 @@
-package pl.studia.teletext.teletext_backend.common.time;
+package pl.studia.teletext.teletext_backend.common.utils.time;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -10,7 +10,7 @@ import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalQueries;
 import java.util.List;
 
-public class FlexibleDateParser {
+public final class FlexibleDateParser {
 
   private static final DateTimeFormatter TVP_FORMATTER =
       DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

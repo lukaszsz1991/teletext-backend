@@ -37,8 +37,6 @@ def test_get_page_stats(token):
     assert 'pageNumber' in data
     assert 'views' in data
 
-    print(f"Strona: {data['pageNumber']}, Odsłony: {data['views']}")
-
 def test_page_stats_not_found(token):
     page_number = 7
     headers = {
@@ -53,8 +51,7 @@ def test_page_stats_not_found(token):
         timeout=5
     )
 
-    assert response.status_code == 404 or response.status_code == 200
-    print("Odpowiedź dla nieistniejącej strony:", response.json())
+    assert response.status_code == 404
 
 def test_page_stats_without_details(token):
     page_number = 101
@@ -87,21 +84,21 @@ def test_page_stats_unauthorized():
     assert response.status_code == 401
     print("Odpowiedź bez tokena:", response.json())
 
-def test_page_stats_invalid_param(token):
-    page_number = 101
+@pytest.mark.parametrize("invalid_value", [
+    "notaboolean", "yes", "no", "1", "0", 123, 1.5, "None", "[]", "{}", "TRUEE", "Faalse"
+])
+def test_page_stats_invalid_param(token, invalid_value):
     headers = {
         'Authorization': f'Bearer {token}',
         'Accept': 'application/json'
     }
-
     response = requests.get(
-        url=f'{BASE_URL}/stats/pages/{page_number}',
-        params={"includeDetails": "notaboolean"},
+        url=f'{BASE_URL}/stats/pages/101',
+        params={"includeDetails": invalid_value},
         headers=headers,
         timeout=5
     )
-
-    assert response.status_code in [200, 400]
+    assert response.status_code in [400, 422]
 
 def test_all_pages_stats_with_details(token):
     response = requests.get(
