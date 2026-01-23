@@ -11,7 +11,7 @@ public enum FootballLeague {
   PREMIER_LEAGUE(33973, "premier-league"),
   LA_LIGA(119924, "la-liga"),
   SERIE_A(115669, "serie-a"),
-  BUNDESLIGA(67172, "bundesliga"),
+  BUNDESLIGA(67162, "bundesliga"),
   LIGUE_1(52695, "ligue-1");
 
   private final int id;
